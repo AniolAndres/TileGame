@@ -1,3 +1,4 @@
+using Assets.Catalogs.Scripts;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,7 +42,7 @@ public class ScreenMachine : IScreenMachine
     private void PushStateLocally(IStateBase state) {
         screenStack.Push(state);
 
-        var stateEntry = statesCatalog.GetCatalogEntry(state.GetId());
+        var stateEntry = statesCatalog.GetEntry(state.GetId());
 
         InstantiateViews(stateEntry, state);
 

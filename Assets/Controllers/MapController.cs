@@ -4,10 +4,10 @@ using System.Collections;
 namespace Assets.Controllers {
     public class MapController {
 
-        private TileMap map;
+        private TileMapController map;
 
         public void CreateMap(int width, int height) {
-            map = new TileMap(width, height);
+            map = new TileMapController(width, height);
         }
         
     }

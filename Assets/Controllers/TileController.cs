@@ -1,16 +1,20 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿
 
-public enum TileType {
-    Grass,
-    Water
-}
+
+using Assets.Data.Models;
+using Assets.Views;
 
 namespace Assets.Controllers {
     public class TileController {
 
-        public TileType type;
+        private TileModel model;
 
+        private TileView view;
+
+        public TileController(TileModel model, TileView view) {
+            this.model = model;
+            this.view = view;
+        }
 
     }
 }

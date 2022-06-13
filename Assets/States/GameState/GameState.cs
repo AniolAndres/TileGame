@@ -10,7 +10,7 @@ public class GameState : BaseState, IStateBase
 
     private GameStateWorldView worldView;
 
-    private const string Id = "SecondState";
+    private const string Id = "GameState";
 
     private GameStateModel model = new GameStateModel();
 
