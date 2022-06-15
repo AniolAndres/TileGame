@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Assets.States.GameState {
+namespace Assets.Data.Models {
     public class GameStateModel {
 
         

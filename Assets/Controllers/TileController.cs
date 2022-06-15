@@ -1,7 +1,4 @@
-﻿
-
-
-using Assets.Data.Models;
+﻿using Assets.Data.Models;
 using Assets.Views;
 
 namespace Assets.Controllers {
