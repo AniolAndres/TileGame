@@ -1,25 +1,25 @@
 using Assets.Catalogs.Scripts;
-
+using Assets.Data.Player;
 using UnityEngine;
 
 namespace Assets.States {
     public class MainComponent : MonoBehaviour {
 
         [SerializeField]
-        private StatesCatalog statesCatalog;
-
-        private IScreenMachine screenMachine;
+        private CatalogsHolder catalogs;
 
         void Start() {
-            screenMachine = new ScreenMachine();
-            screenMachine.Init(statesCatalog);
 
-            screenMachine.PushState(new StartupState(screenMachine));
-        }
+            var screenMachine = new ScreenMachine();
+            screenMachine.Init(catalogs.StatesCatalog);
 
+            var context = new Context {
+                catalogs = catalogs,
+                playerData = new PlayerData(),
+                screenMachine = screenMachine
+            };
 
-        private void Update() {
-
+            screenMachine.PushState(new StartupState(context));
         }
 
     }

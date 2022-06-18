@@ -1,6 +1,4 @@
 using Assets.Views;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.States {
@@ -12,7 +10,7 @@ namespace Assets.States {
 
         private const string Id = "SecondState";
 
-        public SecondState(IScreenMachine screenMachine) : base(screenMachine) { }
+        public SecondState(Context context) : base(context) { }
 
         public string GetId() {
             return Id;

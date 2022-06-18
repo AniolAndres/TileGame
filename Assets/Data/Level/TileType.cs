@@ -1,6 +1,6 @@
 ﻿
 
-namespace Assets.Data.Models {
+namespace Assets.Data.Level {
     public enum TileType {
         Grass = 0,
         Water

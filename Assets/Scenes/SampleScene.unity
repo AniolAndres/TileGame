@@ -303,7 +303,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53ff292855a35a84c999a1fbda2a0208, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  statesCatalog: {fileID: 11400000, guid: 34213ac4737837c4aa2ec833456a4d5d, type: 2}
+  catalogs: {fileID: 11400000, guid: d6e3f4b6ab18dd44984a3dca52786cbc, type: 2}
 --- !u!4 &1582797208
 Transform:
   m_ObjectHideFlags: 0

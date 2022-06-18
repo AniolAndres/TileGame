@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e28817312cd2e243b537b79726a55bd, type: 3}
-  m_Name: GameStateConfig
+  m_Script: {fileID: 11500000, guid: eabf19f7b517be4499a3b3cf2c561534, type: 3}
+  m_Name: FirstLevelCatalogEntry
   m_EditorClassIdentifier: 
-  value: 49
+  id: 

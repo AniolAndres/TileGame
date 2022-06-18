@@ -9,7 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 33abc635d63c6cb4aa9f1c3015451366, type: 3}
-  m_Name: PHConfig
+  m_Script: {fileID: 11500000, guid: a99ac1e5188095d488ba7fdc9a73dc50, type: 3}
+  m_Name: LevelsCatalog
   m_EditorClassIdentifier: 
-  value: 
+  entries:
+  - {fileID: 11400000, guid: ee9fe0f378a70fb40b90f878eb0f3771, type: 2}

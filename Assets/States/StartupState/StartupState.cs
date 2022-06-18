@@ -10,7 +10,7 @@ namespace Assets.States {
 
         private const string Id = "StartUpState";
 
-        public StartupState(IScreenMachine screenMachine) : base(screenMachine) { }
+        public StartupState(Context context) : base(context) { }
 
         public string GetId() {
             return Id;
@@ -26,11 +26,11 @@ namespace Assets.States {
         }
 
         private void PushNewState() {
-            screenMachine.PushState(new GameState(screenMachine));
+            screenMachine.PushState(new GameState(context));
         }
 
         private void PresentNewState() {
-            screenMachine.PresentState(new GameState(screenMachine));
+            screenMachine.PresentState(new GameState(context));
         }
 
         public void OnDestroy() {
@@ -48,8 +48,8 @@ namespace Assets.States {
         }
 
         public void DestroyViews() {
-            GameObject.Destroy(uiView.gameObject);
-            GameObject.Destroy(worldView.gameObject);
+            Object.Destroy(uiView.gameObject);
+            Object.Destroy(worldView.gameObject);
         }
     }
 

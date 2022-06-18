@@ -17,7 +17,7 @@ namespace Assets.States {
 
         private MapController mapController;
 
-        public GameState(IScreenMachine screenMachine) : base(screenMachine) { }
+        public GameState(Context context) : base(context) { }
 
         public string GetId() {
             return Id;
@@ -28,8 +28,6 @@ namespace Assets.States {
         }
 
         public void OnCreate() {
-            var config = GetStateAsset<PlaceholderGameConfig>();
-            Debug.Log($"Fetching config, value is {config.Value}");
             var model = new TileMapModel(new Vector2Int(10, 10));
             mapController = new MapController(uiView.TileMapView, model);
             mapController.CreateMap();

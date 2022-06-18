@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 using System;
+using System.Linq;
 
 namespace Assets.Catalogs.Scripts {
     public class Catalog<T> : ScriptableObject  where T : CatalogEntry {
@@ -17,6 +17,10 @@ namespace Assets.Catalogs.Scripts {
             }
 
             throw new NotSupportedException($"Couldn't find any entry with id: {id}");
+        }
+
+        public List<T> GetAllEntries() {
+            return entries.ToList();
         }
     }
 }
