@@ -2,11 +2,7 @@ using Assets.Views;
 using UnityEngine;
 
 namespace Assets.States {
-    public class SecondState : BaseState, IStateBase {
-
-        private SecondStateUiView uiView;
-
-        private SecondStateWorldView worldView;
+    public class SecondState : BaseState<SecondStateUiView, SecondStateWorldView>, IStateBase {
 
         private const string Id = "SecondState";
 
@@ -34,16 +30,6 @@ namespace Assets.States {
 
         public void OnSendToBack() {
 
-        }
-
-        public void LinkViews(UiView uiView, WorldView worldView) {
-            this.uiView = uiView as SecondStateUiView;
-            this.worldView = worldView as SecondStateWorldView;
-        }
-
-        public void DestroyViews() {
-            Object.Destroy(uiView.gameObject);
-            Object.Destroy(worldView.gameObject);
         }
     }
 

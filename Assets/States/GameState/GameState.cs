@@ -5,11 +5,7 @@ using Assets.Views;
 using UnityEngine;
 
 namespace Assets.States {
-    public class GameState : BaseState, IStateBase {
-
-        private GameStateUiView uiView;
-
-        private GameStateWorldView worldView;
+    public class GameState : BaseState<GameStateUiView, GameStateWorldView>, IStateBase {
 
         private const string Id = "GameState";
 
@@ -45,15 +41,6 @@ namespace Assets.States {
 
         }
 
-        public void LinkViews(UiView uiView, WorldView worldView) {
-            this.uiView = uiView as GameStateUiView;
-            this.worldView = worldView as GameStateWorldView;
-        }
-
-        public void DestroyViews() {
-            Object.Destroy(uiView.gameObject);
-            Object.Destroy(worldView.gameObject);
-        }
     }
 
 }
