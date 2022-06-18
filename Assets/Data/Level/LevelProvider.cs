@@ -1,3 +1,4 @@
+
 using Assets.Catalogs.Scripts;
 using Assets.Data.Level;
 using Assets.Extensions;
@@ -5,7 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Assets.Levels {
+namespace Assets.Data.Levels {
 
     public class LevelProvider : ILevelProvider {
 

@@ -1,5 +1,6 @@
 using Assets.Catalogs.Scripts;
 using Assets.Controllers;
+using Assets.Data.Levels;
 using Assets.Data.Models;
 using Assets.Views;
 using UnityEngine;
@@ -9,7 +10,7 @@ namespace Assets.States {
 
         private const string Id = "GameState";
 
-        private GameStateModel model = new GameStateModel();
+        private GameStateModel model;
 
         private MapController mapController;
 
@@ -24,8 +25,12 @@ namespace Assets.States {
         }
 
         public void OnCreate() {
-            var model = new TileMapModel(new Vector2Int(10, 10));
-            mapController = new MapController(uiView.TileMapView, model);
+
+            var levelProvider = new LevelProvider(context.catalogs.LevelsCatalog);
+            model = new GameStateModel(levelProvider);
+
+            var tileMapModel = new TileMapModel(new Vector2Int(10, 10));
+            mapController = new MapController(uiView.TileMapView, tileMapModel);
             mapController.CreateMap();
 
         }

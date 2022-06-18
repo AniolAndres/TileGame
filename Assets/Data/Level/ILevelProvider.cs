@@ -1,7 +1,7 @@
 ﻿
 using Assets.Data.Level;
 
-namespace Assets.Levels {
+namespace Assets.Data.Levels {
     public interface ILevelProvider {
 
         LevelData GetLevel();
