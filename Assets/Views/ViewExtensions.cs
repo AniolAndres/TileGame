@@ -7,5 +7,6 @@ namespace Assets.Views {
         public static RectTransform AsRectTransform(this Transform transform) {
             return transform as RectTransform;
         }
+
     }
 }

@@ -1,6 +1,5 @@
 using Assets.Views;
-using System.Collections;
-using System.Collections.Generic;
+using Assets.Views.Game;
 using UnityEngine;
 
 namespace Assets.Views {
@@ -8,7 +7,13 @@ namespace Assets.Views {
         [SerializeField]
         private TileMapView tileMapView;
 
+        [SerializeField]
+        private CameraView cameraView;
+
         public TileMapView TileMapView => tileMapView;
+
+        public CameraView CameraView => cameraView;
+
     }
 
 }

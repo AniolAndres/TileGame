@@ -16,5 +16,4 @@ MonoBehaviour:
   uiView: {fileID: 7042250868762213974, guid: da138ad3e6b674b4ebc88cc6b0d1a653, type: 3}
   worldView: {fileID: 3482993604555068094, guid: f5023b3b2ed27ea4d90563416f78aca5, type: 3}
   stateAssets:
-  - {fileID: 11400000, guid: 8f6716d384d7c73488267289555171e0, type: 2}
-  - {fileID: 11400000, guid: 7a493d8337962c348bdb76d04d631ec2, type: 2}
+  - {fileID: 11400000, guid: d19ec0f8df2e59247bed74c659214cad, type: 2}

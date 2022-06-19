@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7709978840176355228}
   - component: {fileID: 2082807740572019725}
+  - component: {fileID: 6318957278220898463}
   m_Layer: 5
   m_Name: TileMapView
   m_TagString: Untagged
@@ -51,6 +52,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   grassPrefab: {fileID: 9160469664313777102, guid: f7bba6e8b1a231649a06eb117acff885, type: 3}
   waterPrefab: {fileID: 6923678520292207823, guid: 8947937b28758ab42b31572fab71e596, type: 3}
+--- !u!114 &6318957278220898463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2479936111331782691}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d69c66008fa46be48a00f05842cc922b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mapHolder: {fileID: 2479936111331782691}
 --- !u!1 &5536885821813227407
 GameObject:
   m_ObjectHideFlags: 0
@@ -97,6 +111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileMapView: {fileID: 2082807740572019725}
+  cameraView: {fileID: 6318957278220898463}
 --- !u!1 &7597936116251841457
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,7 +161,7 @@ Canvas:
   m_GameObject: {fileID: 7597936116251841457}
   m_Enabled: 1
   serializedVersion: 3
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0

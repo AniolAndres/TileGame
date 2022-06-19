@@ -2,7 +2,8 @@
     "name": "Catalogs",
     "rootNamespace": "",
     "references": [
-        "GUID:13ca35c520c8d0a45b405acf30f9b277"
+        "GUID:13ca35c520c8d0a45b405acf30f9b277",
+        "GUID:d0c1cb9dd6d78ce429dbb7a516544773"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

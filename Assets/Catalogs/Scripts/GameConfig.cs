@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
+using Assets.Configs;
 
 namespace Assets.Catalogs.Scripts {
 

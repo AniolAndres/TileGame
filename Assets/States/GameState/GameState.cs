@@ -1,9 +1,8 @@
-using Assets.Catalogs.Scripts;
+using Assets.Configs;
 using Assets.Controllers;
-using Assets.Data.Levels;
 using Assets.Data.Models;
 using Assets.Views;
-using UnityEngine;
+using System.Linq;
 
 namespace Assets.States {
     public class GameState : BaseState<GameStateUiView, GameStateWorldView>, IStateBase {
@@ -13,6 +12,8 @@ namespace Assets.States {
         private GameStateModel model;
 
         private MapController mapController;
+
+        private CameraController cameraController;
 
         public GameState(Context context) : base(context) { }
 
@@ -26,13 +27,24 @@ namespace Assets.States {
 
         public void OnCreate() {
 
-            var levelProvider = new LevelProvider(context.catalogs.LevelsCatalog);
-            model = new GameStateModel(levelProvider);
+            model = new GameStateModel();
 
-            var tileMapModel = new TileMapModel(new Vector2Int(10, 10));
+            CreateMapController();
+            CreateCameraController();
+
+        }
+
+        private void CreateMapController() {
+            var tileMapModel = new TileMapModel(context.catalogs.LevelsCatalog);
             mapController = new MapController(uiView.TileMapView, tileMapModel);
             mapController.CreateMap();
+        }
 
+        private void CreateCameraController() {
+            var cameraConfig = GetStateAsset<CameraConfig>();
+            var cameraModel = new CameraModel(cameraConfig, context.catalogs.LevelsCatalog.GetAllEntries().First());
+            cameraController = new CameraController(uiView.CameraView, cameraModel);
+            cameraController.Init();
         }
 
         private void PopState() {
@@ -40,6 +52,7 @@ namespace Assets.States {
         }
 
         public void OnDestroy() {
+            cameraController?.Destroy();
         }
 
         public void OnSendToBack() {

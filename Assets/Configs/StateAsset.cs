@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
-using System.Collections;
 
-namespace Assets.Catalogs.Scripts {
+
+namespace Assets.Configs {
     public abstract class StateAsset : ScriptableObject {
 
     }

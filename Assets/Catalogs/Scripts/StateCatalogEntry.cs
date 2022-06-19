@@ -2,6 +2,7 @@ using Assets.Views;
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using Assets.Configs;
 
 namespace Assets.Catalogs.Scripts {
 

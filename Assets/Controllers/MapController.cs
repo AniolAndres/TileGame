@@ -2,6 +2,9 @@
 using System.Collections;
 using Assets.Views;
 using Assets.Data.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System;
 
 namespace Assets.Controllers {
     public class MapController {
@@ -24,16 +27,55 @@ namespace Assets.Controllers {
             SetUp();
         }
 
+        //private async void SetUpAsync() {
+
+        //    var taskList = new List<Task>();
+
+        //    var time = DateTime.Now;
+
+        //    for (int i = 0; i < map.GetLength(0); ++i) {
+        //        for (int j = 0; j < map.GetLength(1); ++j) {
+
+        //            taskList.Add(Task.Run(() => CreateTile(i, j)));
+                
+        //        }
+        //    }
+
+        //    await Task.WhenAll(taskList);
+
+        //    var timeAfterLoad = DateTime.Now;
+
+        //    var timeloading = timeAfterLoad - time;
+
+        //    Debug.Log($"Created level async, took {timeloading.TotalMilliseconds} ms");
+        //}
+
         private void SetUp() {
+
+            var time = DateTime.Now;
+
             for (int i = 0; i < map.GetLength(0); ++i) {
                 for (int j = 0; j < map.GetLength(1); ++j) {
 
-                    var view = tileMapView.InstantiateTileView(i, j);
-                    var tileModel = new TileModel();
+                    CreateTile(i, j);
 
-                    map[i, j] = new TileController(tileModel, view);
                 }
             }
+
+            var timeAfterLoad = DateTime.Now;
+
+            var timeloading = timeAfterLoad - time;
+
+            Debug.Log($"Created level, took {timeloading.TotalMilliseconds} ms");
+        }
+
+        private void CreateTile(int x, int y) {
+
+            var tilePosition = model.GetTilePosition(x,y);
+
+            var view = tileMapView.InstantiateTileView(tilePosition.x, tilePosition.y);
+            var tileModel = new TileModel();
+            map[x, y] = new TileController(tileModel, view);
         }
 
         public TileController GetTileAtPosition(int x, int y) {

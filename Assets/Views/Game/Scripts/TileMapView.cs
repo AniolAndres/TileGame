@@ -11,10 +11,11 @@ namespace Assets.Views {
         [SerializeField]
         private TileView waterPrefab;
 
-        public TileView InstantiateTileView(int i, int j) {
-            Debug.Log($"Creating tile at {i} {j}");
-            var position = transform.AsRectTransform().localPosition + new Vector3(i * 30f, j * 30f, 0f);
-            return Instantiate(waterPrefab, position, Quaternion.identity, this.transform);
+        public TileView InstantiateTileView(float x, float y) {
+            var tileView = Instantiate(waterPrefab,  this.transform);
+            tileView.transform.AsRectTransform().anchoredPosition = new Vector2(x, y);
+            return tileView;
         }
+
     }
 }
