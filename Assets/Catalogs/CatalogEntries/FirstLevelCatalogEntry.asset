@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: FirstLevelCatalogEntry
   m_EditorClassIdentifier: 
   id: first
-  size: {x: 40, y: 10}
+  size: {x: 2, y: 2}

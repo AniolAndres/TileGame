@@ -12,7 +12,7 @@ namespace Assets.States {
 
         protected Context context;
 
-        protected IScreenMachine screenMachine => context.screenMachine;
+        private IScreenMachine screenMachine => context.screenMachine;
 
         public BaseState(Context context) {
             this.context = context;
@@ -21,6 +21,19 @@ namespace Assets.States {
         protected T GetStateAsset<T>() {
             return context.screenMachine.GetStateAsset<T>();
         }
+
+        protected void PopState() {
+            screenMachine.PopState();
+        }
+
+        protected void PushState(IStateBase state) {
+            screenMachine.PushState(state);
+        }
+
+        protected void PresentState(IStateBase state) {
+            screenMachine.PresentState(state);
+        }
+
 
         public void LinkViews(UiView uiView, WorldView worldView) {
             this.uiView = uiView as TuiView;

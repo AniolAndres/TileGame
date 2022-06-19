@@ -1,9 +1,6 @@
 ﻿using UnityEngine;
-using System.Collections;
 using Assets.Views;
 using Assets.Data.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using System;
 
 namespace Assets.Controllers {
@@ -14,6 +11,7 @@ namespace Assets.Controllers {
         private TileMapView tileMapView;
         private TileMapModel model;
 
+        public event Action OnTileClicked;
 
         public MapController(TileMapView tileMapView, TileMapModel model) {
             this.tileMapView = tileMapView;
@@ -57,8 +55,6 @@ namespace Assets.Controllers {
             var mapWidth = map.GetLength(0);
             var mapHeight = map.GetLength(1);
 
-            tileMapView.CenterCamera(mapWidth * model.TileSizeLength, mapHeight * model.TileSizeLength);
-
             for (int i = 0; i < mapWidth; ++i) {
                 for (int j = 0; j < mapHeight; ++j) {
 
@@ -74,13 +70,26 @@ namespace Assets.Controllers {
             Debug.Log($"Created level, took {timeloading.TotalMilliseconds} ms");
         }
 
+        public void OnDestroy() {
+
+            var mapWidth = map.GetLength(0);
+            var mapHeight = map.GetLength(1);
+
+            for (int i = 0; i < mapWidth; ++i) {
+                for (int j = 0; j < mapHeight; ++j) {
+                    map[i,j].OnTileClicked += FireTileClickedAction;
+                }
+            }
+        }
+
         private void CreateTile(int x, int y) {
 
             var tilePosition = model.GetTilePosition(x,y);
-
-            var tileView = tileMapView.InstantiateTileView(tilePosition.x, tilePosition.y);
+            var tileViewPrefab = model.GetTilePrefab();
+            var tileView = tileMapView.InstantiateTileView(tileViewPrefab, tilePosition.x, tilePosition.y);
             var tileModel = new TileModel(new Vector2Int(x,y));
             var tileController = new TileController(tileModel, tileView);
+            tileController.OnTileClicked += FireTileClickedAction;
             tileController.OnCreate();
             map[x, y] = tileController;
             
@@ -88,6 +97,10 @@ namespace Assets.Controllers {
 
         public TileController GetTileAtPosition(int x, int y) {
             return map[x, y];
+        }
+
+        private void FireTileClickedAction() {
+            OnTileClicked?.Invoke();
         }
     }
 }

@@ -22,11 +22,11 @@ namespace Assets.States {
         }
 
         private void PushNewState() {
-            screenMachine.PushState(new GameState(context));
+            PushState(new GameState(context));
         }
 
         private void PresentNewState() {
-            screenMachine.PresentState(new GameState(context));
+            PresentState(new GameState(context));
         }
 
         public void OnDestroy() {

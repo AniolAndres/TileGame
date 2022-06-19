@@ -1,12 +1,13 @@
-using Assets.Views;
-using UnityEngine;
+﻿
+using Assets.Views.States.Scripts;
+
 
 namespace Assets.States {
-    public class SecondState : BaseState<SecondStateUiView, SecondStateWorldView>, IStateBase {
+    public class PopupState : BaseState<PopupStateUiView, PopupStateWorldView>, IStateBase {
 
-        private const string Id = "SecondState";
+        private const string Id = "PopupState";
 
-        public SecondState(Context context) : base(context) { }
+        public PopupState(Context context) : base(context) { }
 
         public string GetId() {
             return Id;
@@ -27,6 +28,7 @@ namespace Assets.States {
         public void OnSendToBack() {
 
         }
+
     }
 
 }

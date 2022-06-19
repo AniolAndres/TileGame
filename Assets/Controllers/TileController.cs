@@ -10,6 +10,9 @@ namespace Assets.Controllers {
 
         private TileView view;
 
+        public event Action OnTileClicked;
+
+
         public TileController(TileModel model, TileView view) {
             this.model = model;
             this.view = view;
@@ -26,6 +29,8 @@ namespace Assets.Controllers {
         private void ReactToTilePressed() {
             var position = model.Position;
             Debug.Log($"Tile {position.x},{position.y} pressed");
+
+            OnTileClicked?.Invoke();
         }
     }
 }

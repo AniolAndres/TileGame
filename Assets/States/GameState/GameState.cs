@@ -2,6 +2,7 @@ using Assets.Configs;
 using Assets.Controllers;
 using Assets.Data.Models;
 using Assets.Views;
+using System;
 using System.Linq;
 
 namespace Assets.States {
@@ -35,9 +36,14 @@ namespace Assets.States {
         }
 
         private void CreateMapController() {
-            var tileMapModel = new TileMapModel(context.catalogs.LevelsCatalog);
+            var tileMapModel = new TileMapModel(context.catalogs.LevelsCatalog, context.catalogs.TilesCatalog);
             mapController = new MapController(uiView.TileMapView, tileMapModel);
+            mapController.OnTileClicked += PushPopupState;
             mapController.CreateMap();
+        }
+
+        private void PushPopupState() {
+            PushState(new PopupState(context));
         }
 
         private void CreateCameraController() {
@@ -47,12 +53,10 @@ namespace Assets.States {
             cameraController.Init();
         }
 
-        private void PopState() {
-            screenMachine.PopState();
-        }
-
         public void OnDestroy() {
             cameraController?.Destroy();
+            mapController?.OnDestroy();
+            mapController.OnTileClicked -= PushPopupState;
         }
 
         public void OnSendToBack() {
