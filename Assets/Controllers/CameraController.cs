@@ -35,9 +35,9 @@ namespace Assets.Controllers {
 
             var speed = cameraModel.GetSpeed();
 
-            speed *= Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? cameraModel.GetSpeedModifier() : 1.0f;
+            var speedModifier = cameraModel.GetSpeedModifier();
 
-            cameraView.MoveCamera(direction, speed);
+            cameraView.MoveCamera(direction, speed, speedModifier);
         }
 
         public void Destroy() {

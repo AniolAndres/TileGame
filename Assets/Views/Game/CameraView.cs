@@ -39,7 +39,10 @@ namespace Assets.Views.Game {
             OnCameraMoved?.Invoke(direction);
         }
 
-        public void MoveCamera(Vector2Int direction, float speed) {
+        public void MoveCamera(Vector2Int direction, float speed, float speedModifier) {
+
+            speed *= Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? speedModifier : 1.0f;
+
             mapHolder.transform.position -= direction.ToVector3() * speed * Time.smoothDeltaTime;
         }
     }

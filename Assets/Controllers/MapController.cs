@@ -78,9 +78,12 @@ namespace Assets.Controllers {
 
             var tilePosition = model.GetTilePosition(x,y);
 
-            var view = tileMapView.InstantiateTileView(tilePosition.x, tilePosition.y);
-            var tileModel = new TileModel();
-            map[x, y] = new TileController(tileModel, view);
+            var tileView = tileMapView.InstantiateTileView(tilePosition.x, tilePosition.y);
+            var tileModel = new TileModel(new Vector2Int(x,y));
+            var tileController = new TileController(tileModel, tileView);
+            tileController.OnCreate();
+            map[x, y] = tileController;
+            
         }
 
         public TileController GetTileAtPosition(int x, int y) {
