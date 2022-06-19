@@ -8,9 +8,9 @@ namespace Assets.Configs {
         private float speed;
 
         [SerializeField]
-        private Vector2Int tileSize;
+        private float speedModifier;
 
-        public Vector2Int TileSize => tileSize;
+        public float SpeedModifier => speedModifier;
 
         public float Speed => speed;
     }

@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: CameraConfig
   m_EditorClassIdentifier: 
   speed: 200
+  speedModifier: 2.5

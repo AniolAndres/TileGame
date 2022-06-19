@@ -54,8 +54,13 @@ namespace Assets.Controllers {
 
             var time = DateTime.Now;
 
-            for (int i = 0; i < map.GetLength(0); ++i) {
-                for (int j = 0; j < map.GetLength(1); ++j) {
+            var mapWidth = map.GetLength(0);
+            var mapHeight = map.GetLength(1);
+
+            tileMapView.CenterCamera(mapWidth * model.TileSizeLength, mapHeight * model.TileSizeLength);
+
+            for (int i = 0; i < mapWidth; ++i) {
+                for (int j = 0; j < mapHeight; ++j) {
 
                     CreateTile(i, j);
 

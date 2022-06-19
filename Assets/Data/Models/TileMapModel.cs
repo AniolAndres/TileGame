@@ -23,7 +23,7 @@ namespace Assets.Data.Models {
         }
 
         public Vector2 GetTilePosition(int x, int y) {
-            return new Vector2((x + 0.5f) * tileSizeLength, (y + 0.5f) * TileSizeLength);
+            return new Vector2((x - currentLevelEntry.Size.x/2f + 0.5f) * tileSizeLength, (y - currentLevelEntry.Size.y/2f + 0.5f) * TileSizeLength);
         }
     }
 }

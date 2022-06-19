@@ -3,7 +3,6 @@ using Assets.Data.Level;
 
 namespace Assets.Data.Levels {
     public interface ILevelProvider {
-
         LevelData GetLevel();
     }
 }

@@ -22,8 +22,22 @@ namespace Assets.Data.Models {
             return cameraConfig.Speed;
         }
 
-        public bool CanCameraMove(Vector2 camPosition) {
-            return true;
+        public bool CanCameraMoveVertical(Vector2 camPosition, Vector2Int direction) {
+
+            var leftOverHeight = levelCatalogEntry.Size.y * 64f - screenBounds.y;
+
+            return  - direction.y * camPosition.y < leftOverHeight / 2f;
+        }
+
+        public bool CanCameraMoveHorizontal(Vector2 camPosition, Vector2Int direction) {
+
+            var leftoverWidth = levelCatalogEntry.Size.x * 64f - screenBounds.x;
+
+            return camPosition.x * -direction.x < leftoverWidth / 2f;
+        }
+
+        public float GetSpeedModifier() {
+            return cameraConfig.SpeedModifier;
         }
     }
 }

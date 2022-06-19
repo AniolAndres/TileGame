@@ -21,11 +21,21 @@ namespace Assets.Controllers {
         private void MoveCamera(Vector2Int direction) {
             //check if it's okay to move it blabla
 
-            if (!cameraModel.CanCameraMove(cameraView.Position)) {
+            if(!cameraModel.CanCameraMoveHorizontal(cameraView.Position, direction)) {
+                direction.x = 0;
+            }
+
+            if (!cameraModel.CanCameraMoveVertical(cameraView.Position, direction)) {
+                direction.y = 0;
+            }
+
+            if(direction == Vector2Int.zero) {
                 return;
             }
 
             var speed = cameraModel.GetSpeed();
+
+            speed *= Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift) ? cameraModel.GetSpeedModifier() : 1.0f;
 
             cameraView.MoveCamera(direction, speed);
         }

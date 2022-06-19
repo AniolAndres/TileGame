@@ -1,6 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
-using System;
 
 namespace Assets.Views {
     public class TileMapView : MonoBehaviour {
@@ -17,5 +15,8 @@ namespace Assets.Views {
             return tileView;
         }
 
+        public void CenterCamera(float width, float height) {
+            transform.AsRectTransform().localPosition = new Vector2(0f, 0f);
+        }
     }
 }

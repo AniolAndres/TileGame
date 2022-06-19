@@ -7,7 +7,7 @@ namespace Assets.Views.Game {
 
         public event Action<Vector2Int> OnCameraMoved;
 
-        public Vector2 Position => mapHolder.transform.position;
+        public Vector2 Position => mapHolder.transform.localPosition;
 
         [SerializeField]
         private GameObject mapHolder;
