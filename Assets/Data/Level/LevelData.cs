@@ -6,7 +6,9 @@ namespace Assets.Data.Level {
 
         public List<TileData> TileData { get; set;  }
 
+        public int Width { get; set; }
 
-        //I'll need more stuff like existing units, victory condition etc etc.
+        public int Height { get; set; }
+
     }
 }

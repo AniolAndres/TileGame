@@ -25,15 +25,20 @@ namespace Assets.Data.Levels {
 
             for (int i = 0; i < entry.Size.x; ++i) {
                 for (int j = 0; j < entry.Size.y; ++j) {
-                    tileDataList.Add(new TileData { Type = TileType.Grass });
+                    tileDataList.Add(new TileData { Type = TileType.Grass,
+                    Position = new UnityEngine.Vector2Int(i,j)});
                 }
             }
+
 
             if (tileDataList.IsNullOrEmpty()) {
                 throw new NotSupportedException("Tile list was not build properly, check Level Provider");
             }
 
-            return new LevelData { TileData = tileDataList };
+            return new LevelData { 
+                TileData = tileDataList,
+                Width = entry.Size.x,
+                Height = entry.Size.y};
   
         }
     }

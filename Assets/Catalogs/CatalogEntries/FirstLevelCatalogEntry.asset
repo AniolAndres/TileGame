@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: FirstLevelCatalogEntry
   m_EditorClassIdentifier: 
   id: first
-  size: {x: 2, y: 2}
+  size: {x: 3, y: 3}
+  tileSideLength: 64

@@ -24,14 +24,14 @@ namespace Assets.Data.Models {
 
         public bool CanCameraMoveVertical(Vector2 camPosition, Vector2Int direction) {
 
-            var leftOverHeight = levelCatalogEntry.Size.y * 64f - screenBounds.y;
+            var leftOverHeight = levelCatalogEntry.Size.y * levelCatalogEntry.TileSideLength - screenBounds.y;
 
             return  - direction.y * camPosition.y < leftOverHeight / 2f;
         }
 
         public bool CanCameraMoveHorizontal(Vector2 camPosition, Vector2Int direction) {
 
-            var leftoverWidth = levelCatalogEntry.Size.x * 64f - screenBounds.x;
+            var leftoverWidth = levelCatalogEntry.Size.x * levelCatalogEntry.TileSideLength - screenBounds.x;
 
             return camPosition.x * -direction.x < leftoverWidth / 2f;
         }

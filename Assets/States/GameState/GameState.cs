@@ -1,5 +1,6 @@
 using Assets.Configs;
 using Assets.Controllers;
+using Assets.Data.Levels;
 using Assets.Data.Models;
 using Assets.Views;
 using System;
@@ -36,7 +37,8 @@ namespace Assets.States {
         }
 
         private void CreateMapController() {
-            var tileMapModel = new TileMapModel(context.catalogs.LevelsCatalog, context.catalogs.TilesCatalog);
+            var levelProvider = new LevelProvider(context.catalogs.LevelsCatalog);
+            var tileMapModel = new TileMapModel(context.catalogs.LevelsCatalog, context.catalogs.TilesCatalog, levelProvider);
             mapController = new MapController(uiView.TileMapView, tileMapModel);
             mapController.OnTileClicked += PushPopupState;
             mapController.CreateMap();

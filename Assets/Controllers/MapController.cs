@@ -2,12 +2,13 @@
 using Assets.Views;
 using Assets.Data.Models;
 using System;
+using Assets.Data.Levels;
+using Assets.Data.Level;
 
 namespace Assets.Controllers {
     public class MapController {
 
-
-        private TileController[,] map;
+        private ITileController[,] map;
         private TileMapView tileMapView;
         private TileMapModel model;
 
@@ -19,10 +20,11 @@ namespace Assets.Controllers {
         }
 
         public void CreateMap() {
-            var size = model.GetSize();
-            map = new TileController[size.x, size.y];
 
-            SetUp();
+            var levelData = model.GetLevelData();
+            map = new ITileController[levelData.Width, levelData.Height];
+
+            SetUp(levelData);
         }
 
         //private async void SetUpAsync() {
@@ -48,19 +50,14 @@ namespace Assets.Controllers {
         //    Debug.Log($"Created level async, took {timeloading.TotalMilliseconds} ms");
         //}
 
-        private void SetUp() {
+        private void SetUp(LevelData levelData) {
 
             var time = DateTime.Now;
 
-            var mapWidth = map.GetLength(0);
-            var mapHeight = map.GetLength(1);
+            var sideLength = model.GetSideLength();
 
-            for (int i = 0; i < mapWidth; ++i) {
-                for (int j = 0; j < mapHeight; ++j) {
-
-                    CreateTile(i, j);
-
-                }
+            foreach (var tile in levelData.TileData) {
+                CreateTile(tile.Position.x, tile.Position.y, sideLength);
             }
 
             var timeAfterLoad = DateTime.Now;
@@ -77,25 +74,24 @@ namespace Assets.Controllers {
 
             for (int i = 0; i < mapWidth; ++i) {
                 for (int j = 0; j < mapHeight; ++j) {
-                    map[i,j].OnTileClicked += FireTileClickedAction;
+                    map[i,j].OnDestroy();
                 }
             }
         }
 
-        private void CreateTile(int x, int y) {
+        private void CreateTile(int x, int y, float sideLength) {
 
             var tilePosition = model.GetTilePosition(x,y);
             var tileViewPrefab = model.GetTilePrefab();
-            var tileView = tileMapView.InstantiateTileView(tileViewPrefab, tilePosition.x, tilePosition.y);
+            var tileView = tileMapView.InstantiateTileView(tileViewPrefab, tilePosition.x, tilePosition.y, sideLength);
             var tileModel = new TileModel(new Vector2Int(x,y));
-            var tileController = new TileController(tileModel, tileView);
-            tileController.OnTileClicked += FireTileClickedAction;
+            var tileController = new TerrainTileController(tileView, tileModel);
             tileController.OnCreate();
             map[x, y] = tileController;
             
         }
 
-        public TileController GetTileAtPosition(int x, int y) {
+        public ITileController GetTileAtPosition(int x, int y) {
             return map[x, y];
         }
 

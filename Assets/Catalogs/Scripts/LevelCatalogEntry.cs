@@ -9,7 +9,12 @@ namespace Assets.Catalogs.Scripts {
         [SerializeField]
         private Vector2Int size;
 
+        [SerializeField]
+        private float tileSideLength;
+
         public Vector2Int Size => size;
+
+        public float TileSideLength => tileSideLength;
 
     }
 }

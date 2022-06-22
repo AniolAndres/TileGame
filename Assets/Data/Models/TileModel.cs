@@ -8,7 +8,9 @@ namespace Assets.Data.Models {
 
         private readonly Vector2Int position;
 
-        public Vector2Int Position => position;
+        protected Vector2Int Position => position;
+
+        protected TileType Type => type;
 
         public TileModel(Vector2Int position) {
             this.position = position;
