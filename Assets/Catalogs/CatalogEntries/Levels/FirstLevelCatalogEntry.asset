@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f1c0f703f9570254895b1b8cb625e5fb, type: 3}
-  m_Name: WaterTileCatalogEntry
+  m_Script: {fileID: 11500000, guid: eabf19f7b517be4499a3b3cf2c561534, type: 3}
+  m_Name: FirstLevelCatalogEntry
   m_EditorClassIdentifier: 
-  id: water
-  tilePrefab: {fileID: 6923678520292207823, guid: 8947937b28758ab42b31572fab71e596, type: 3}
+  id: first
+  size: {x: 5, y: 10}
+  tileSideLength: 128

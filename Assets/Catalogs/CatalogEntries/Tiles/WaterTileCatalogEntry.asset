@@ -10,7 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f1c0f703f9570254895b1b8cb625e5fb, type: 3}
-  m_Name: GrassTileCatalogEntry
+  m_Name: WaterTileCatalogEntry
   m_EditorClassIdentifier: 
-  id: grass
-  tilePrefab: {fileID: 9160469664313777102, guid: f7bba6e8b1a231649a06eb117acff885, type: 3}
+  id: water
+  tilePrefab: {fileID: 6923678520292207823, guid: 8947937b28758ab42b31572fab71e596, type: 3}
+  tileType: 1

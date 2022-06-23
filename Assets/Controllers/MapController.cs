@@ -57,7 +57,7 @@ namespace Assets.Controllers {
             var sideLength = model.GetSideLength();
 
             foreach (var tile in levelData.TileData) {
-                CreateTile(tile.Position.x, tile.Position.y, sideLength);
+                CreateTile(tile, sideLength);
             }
 
             var timeAfterLoad = DateTime.Now;
@@ -79,15 +79,16 @@ namespace Assets.Controllers {
             }
         }
 
-        private void CreateTile(int x, int y, float sideLength) {
+        private void CreateTile(TileData tileData, float sideLength) {
 
-            var tilePosition = model.GetTilePosition(x,y);
-            var tileViewPrefab = model.GetTilePrefab();
+            var tileEntry = model.GetTileEntry(tileData.TypeId);
+            var tilePosition = model.GetTilePosition(tileData.Position.x, tileData.Position.y);
+            var tileViewPrefab = tileEntry.TilePrefab;
             var tileView = tileMapView.InstantiateTileView(tileViewPrefab, tilePosition.x, tilePosition.y, sideLength);
-            var tileModel = new TileModel(new Vector2Int(x,y));
+            var tileModel = new TileModel(tileEntry, tileData.Position);
             var tileController = new TerrainTileController(tileView, tileModel);
             tileController.OnCreate();
-            map[x, y] = tileController;
+            map[tileData.Position.x, tileData.Position.y] = tileController;
             
         }
 

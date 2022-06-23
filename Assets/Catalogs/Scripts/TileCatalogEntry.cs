@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using Assets.Views;
 
 namespace Assets.Catalogs.Scripts {
@@ -10,7 +9,11 @@ namespace Assets.Catalogs.Scripts {
         [SerializeField]
         private TileView tilePrefab;
 
+        [SerializeField]
+        private TileType tileType;
+
         public TileView TilePrefab => tilePrefab;
-      
+
+        public TileType TileType => tileType;
     }
 }

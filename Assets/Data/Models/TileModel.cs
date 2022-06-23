@@ -1,20 +1,18 @@
 ﻿using UnityEngine;
-using Assets.Data.Level;
+using Assets.Catalogs.Scripts;
 
 namespace Assets.Data.Models {
     public class TileModel {
 
-        private readonly TileType type;
+        private readonly TileCatalogEntry tileEntry;
 
-        private readonly Vector2Int position;
+        protected Vector2Int Position { get; }
 
-        protected Vector2Int Position => position;
+        protected string TypeId => tileEntry.Id;
 
-        protected TileType Type => type;
-
-        public TileModel(Vector2Int position) {
-            this.position = position;
-            type = Random.Range(0f, 1f) > 0.5f ? TileType.Grass : TileType.Water;
+        public TileModel(TileCatalogEntry tileEntry, Vector2Int position) {
+            this.Position = position;
+            this.tileEntry = tileEntry;
         }
 
     }

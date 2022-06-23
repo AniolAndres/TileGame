@@ -32,14 +32,12 @@ namespace Assets.Data.Models {
             return new Vector2((x - currentLevelEntry.Size.x/2f + 0.5f) * currentLevelEntry.TileSideLength, (y - currentLevelEntry.Size.y/2f + 0.5f) * currentLevelEntry.TileSideLength);
         }
 
-        public TileView GetTilePrefab() {
-            var randomTypeId = Random.Range(0f, 1f) > 0.5f ? "water" :"grass";
-            var prefab = tilesCatalog.GetEntry(randomTypeId).TilePrefab;
-            return prefab;
-        }
-
         public float GetSideLength() {
             return currentLevelEntry.TileSideLength;
+        }
+
+        public TileCatalogEntry GetTileEntry(string typeId) {
+            return tilesCatalog.GetEntry(typeId);
         }
     }
 }
