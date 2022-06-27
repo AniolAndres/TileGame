@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
+using Assets.Data.Level;
 
 namespace Assets.Controllers {
     public interface ITileController {
@@ -7,6 +9,8 @@ namespace Assets.Controllers {
         void OnCreate();
 
         void OnDestroy();
+
+        event Action<TileData> OnTileClicked;
 
     }
 }

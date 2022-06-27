@@ -3,7 +3,7 @@ using System.Collections;
 
 namespace Assets.Catalogs.Scripts {
 
-    [CreateAssetMenu(fileName = "LevelCatalogEntry", menuName = "ScriptableObjects/Create level Catalog Entry", order = 1)]
+    [CreateAssetMenu(fileName = "LevelCatalogEntry", menuName = "ScriptableObjects/Catalogs/Create level Catalog Entry", order = 1)]
     public class LevelCatalogEntry : CatalogEntry {
 
         [SerializeField]

@@ -1,5 +1,6 @@
 using Assets.Configs;
 using Assets.Controllers;
+using Assets.Data.Level;
 using Assets.Data.Levels;
 using Assets.Data.Models;
 using Assets.Views;
@@ -44,7 +45,7 @@ namespace Assets.States {
             mapController.CreateMap();
         }
 
-        private void PushPopupState() {
+        private void PushPopupState(TileData tileData) {
             PushState(new PopupState(context));
         }
 

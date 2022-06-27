@@ -3,22 +3,25 @@ using Assets.Catalogs;
 using System;
 using Assets.Data.Models;
 using Assets.Views;
+using Assets.Data.Level;
+using Assets.Catalogs.Scripts;
 
 namespace Assets.Controllers {
     public class TileControllerFactory {
 
-        public ITileController GetTileController(TileType type, TileView view, TileModel model) {
+        public ITileController GetTileController(TileCatalogEntry entry, TileData data, TileView view) {
 
-            switch (type) {
+            switch (entry.TileType) {
                 case TileType.Building:
+                    var model = new BuildingTileModel(entry, data.Position);
                     return new BuildingTileController(view, model);
                 case TileType.Grass:
-                    return new TerrainTileController(view, model);
                 case TileType.Water:
-                    return new TerrainTileController(view, model);
+                    var genericTileModel = new TileModel(entry, data.Position);
+                    return new TerrainTileController(view, genericTileModel);
             }
 
-            throw new NotSupportedException($"Couldn't find any controller for type {type.ToString()}, check it's added to the factory");
+            throw new NotSupportedException($"Couldn't find any controller for type {entry.TileType.ToString()}, check it's added to the factory");
         }
     }
 }

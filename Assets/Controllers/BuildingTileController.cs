@@ -3,9 +3,13 @@ using System.Collections;
 using Assets.Data.Models;
 using Assets.Views;
 using System;
+using Assets.Data.Level;
 
 namespace Assets.Controllers {
     public class BuildingTileController :  BaseTileController<BuildingTileView, BuildingTileModel>, ITileController {
+
+        public event Action<TileData> OnTileClicked;
+
         public BuildingTileController(TileView view, TileModel model) : base(view,model) {
         }
 
@@ -14,7 +18,8 @@ namespace Assets.Controllers {
         }
 
         private void PushPopupState() {
-            
+            var tileData = model.GetTileData();
+            OnTileClicked?.Invoke(tileData);
         }
 
         public void OnDestroy() {

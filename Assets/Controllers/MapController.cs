@@ -12,7 +12,9 @@ namespace Assets.Controllers {
         private TileMapView tileMapView;
         private TileMapModel model;
 
-        public event Action OnTileClicked;
+        private readonly TileControllerFactory tileControllerFactory = new TileControllerFactory();
+
+        public event Action<TileData> OnTileClicked;
 
         public MapController(TileMapView tileMapView, TileMapModel model) {
             this.tileMapView = tileMapView;
@@ -26,29 +28,6 @@ namespace Assets.Controllers {
 
             SetUp(levelData);
         }
-
-        //private async void SetUpAsync() {
-
-        //    var taskList = new List<Task>();
-
-        //    var time = DateTime.Now;
-
-        //    for (int i = 0; i < map.GetLength(0); ++i) {
-        //        for (int j = 0; j < map.GetLength(1); ++j) {
-
-        //            taskList.Add(Task.Run(() => CreateTile(i, j)));
-                
-        //        }
-        //    }
-
-        //    await Task.WhenAll(taskList);
-
-        //    var timeAfterLoad = DateTime.Now;
-
-        //    var timeloading = timeAfterLoad - time;
-
-        //    Debug.Log($"Created level async, took {timeloading.TotalMilliseconds} ms");
-        //}
 
         private void SetUp(LevelData levelData) {
 
@@ -75,8 +54,13 @@ namespace Assets.Controllers {
             for (int i = 0; i < mapWidth; ++i) {
                 for (int j = 0; j < mapHeight; ++j) {
                     map[i,j].OnDestroy();
+                    map[i, j].OnTileClicked -= FireTileClickedEvent;
                 }
             }
+        }
+
+        private void FireTileClickedEvent(TileData data) {
+            OnTileClicked?.Invoke(data);
         }
 
         private void CreateTile(TileData tileData, float sideLength) {
@@ -85,19 +69,14 @@ namespace Assets.Controllers {
             var tilePosition = model.GetTilePosition(tileData.Position.x, tileData.Position.y);
             var tileViewPrefab = tileEntry.TilePrefab;
             var tileView = tileMapView.InstantiateTileView(tileViewPrefab, tilePosition.x, tilePosition.y, sideLength);
-            var tileModel = new TileModel(tileEntry, tileData.Position);
-            var tileController = new TerrainTileController(tileView, tileModel);
+            var tileController = tileControllerFactory.GetTileController(tileEntry, tileData, tileView);
+            tileController.OnTileClicked += FireTileClickedEvent;
             tileController.OnCreate();
-            map[tileData.Position.x, tileData.Position.y] = tileController;
-            
+            map[tileData.Position.x, tileData.Position.y] = tileController;    
         }
 
         public ITileController GetTileAtPosition(int x, int y) {
             return map[x, y];
-        }
-
-        private void FireTileClickedAction() {
-            OnTileClicked?.Invoke();
         }
     }
 }

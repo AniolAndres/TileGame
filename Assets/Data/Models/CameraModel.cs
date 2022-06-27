@@ -1,7 +1,6 @@
 ﻿
 using Assets.Catalogs.Scripts;
 using Assets.Configs;
-using System;
 using UnityEngine;
 
 namespace Assets.Data.Models {

@@ -6,7 +6,7 @@ using Assets.Configs;
 
 namespace Assets.Catalogs.Scripts {
 
-    [CreateAssetMenu(fileName = "States Catalog", menuName = "ScriptableObjects/Create States Catalog Entry", order = 1)]
+    [CreateAssetMenu(fileName = "States Catalog", menuName = "ScriptableObjects/Catalogs/Create States Catalog Entry", order = 1)]
     public class StateCatalogEntry : CatalogEntry{
 
         [SerializeField]

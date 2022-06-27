@@ -15,3 +15,4 @@ MonoBehaviour:
   statesCatalog: {fileID: 11400000, guid: 34213ac4737837c4aa2ec833456a4d5d, type: 2}
   levelsCatalog: {fileID: 11400000, guid: cf1711e6d054fe449b962947de0354e5, type: 2}
   tilesCatalog: {fileID: 11400000, guid: 18ed51f40a899494eb1c849fbb0c16f7, type: 2}
+  unitsCatalog: {fileID: 11400000, guid: 8fea3a997ed29bb48a621f347cf1c9ea, type: 2}
