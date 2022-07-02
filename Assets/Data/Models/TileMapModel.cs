@@ -29,7 +29,8 @@ namespace Assets.Data.Models {
         }
 
         public Vector2 GetTilePosition(int x, int y) {
-            return new Vector2((x - currentLevelEntry.Size.x/2f + 0.5f) * currentLevelEntry.TileSideLength, (y - currentLevelEntry.Size.y/2f + 0.5f) * currentLevelEntry.TileSideLength);
+            return new Vector2((x - currentLevelEntry.Size.x/2f + 0.5f) * currentLevelEntry.TileSideLength, 
+                (y - currentLevelEntry.Size.y/2f + 0.5f) * currentLevelEntry.TileSideLength);
         }
 
         public float GetSideLength() {

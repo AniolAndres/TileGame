@@ -16,9 +16,9 @@ namespace Assets.Views.States.Scripts {
             }
         }
 
-        public UnitPurchaseView InstantiatePurchaseView(UnitPurchaseView prefab, UnitPurchaseViewData unitPurchaseViewData) {
+        public UnitPurchaseView InstantiatePurchaseView(UnitPurchaseView prefab, ref UnitPurchaseViewData unitPurchaseViewData) {
             var view = Instantiate(prefab, parentPurchase);
-            view.Setup(unitPurchaseViewData);
+            view.Setup(ref unitPurchaseViewData);
             return view;
         }
     }

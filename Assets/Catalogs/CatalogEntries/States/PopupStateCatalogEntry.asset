@@ -15,4 +15,5 @@ MonoBehaviour:
   id: PopupState
   uiView: {fileID: 1888288635434652905, guid: 288bf70e9fef90749a2e9829c4bbee30, type: 3}
   worldView: {fileID: 761762677646463307, guid: fb3bdfb2f2796b24fa920fb9847d462a, type: 3}
-  stateAssets: []
+  stateAssets:
+  - {fileID: 11400000, guid: f072dd5f78ee8274b978345162a9826f, type: 2}

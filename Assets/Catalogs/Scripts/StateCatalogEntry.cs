@@ -29,7 +29,7 @@ namespace Assets.Catalogs.Scripts {
                 }
             }
 
-            throw new NotSupportedException($"Could not find any state asset of type {nameof(T)}");
+            throw new NotSupportedException($"Could not find any state asset of type {typeof(T).FullName}");
         }
  
     }

@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 using Assets.Views;
+using Assets.Configs;
 
 namespace Assets.Catalogs.Scripts {
-
 
     [CreateAssetMenu(fileName = "UnitCatalogEntry", menuName = "ScriptableObjects/Catalogs/Create Unit Catalog Entry", order = 1)]
     public class UnitCatalogEntry : CatalogEntry {
@@ -12,10 +12,11 @@ namespace Assets.Catalogs.Scripts {
         private UnitMapView unitView;
 
         [SerializeField]
-        private UnitPurchaseView unitPurchaseView;
+        private UnitPurchaseViewConfig unitPurchaseViewConfig;
 
         public UnitMapView UnitView => unitView;
 
-        public UnitPurchaseView UnitPurchaseView => unitPurchaseView;
+        public UnitPurchaseViewConfig UnitPurchaseViewConfig => unitPurchaseViewConfig;
+
     }
 }

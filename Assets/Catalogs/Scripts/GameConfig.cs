@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using Assets.Configs;
 
-namespace Assets.Catalogs.Scripts {
+namespace Assets.Catalogs {
 
-    [CreateAssetMenu(fileName = "State configs", menuName = "ScriptableObjects/Create gameState config", order = 1)]
+    [CreateAssetMenu(fileName = "State configs", menuName = "ScriptableObjects/Configs/Create gameState config", order = 1)]
     public class GameConfig : StateAsset {
 
         [SerializeField]
