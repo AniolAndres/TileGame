@@ -22,5 +22,9 @@ namespace Assets.Data.Models {
         public UnitPurchaseView GetUnitPrefab() {
             return popupStateConfig.UnitPurchaseView;
         }
+
+        public UnitCatalogEntry GetUnitEntry(string unitId) {
+            return unitsCatalog.GetEntry(unitId);
+        }
     }
 }
