@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System;
 
-namespace Assets.Views.States.Scripts {
+namespace Assets.Views {
     public class PopupStateUiView : UiView {
 
         [SerializeField]
         private Transform parentPurchase;
+
+        [SerializeField]
+        private PurchaseInfoView infoView;
 
         public event Action OnPopRequested;
 
@@ -20,6 +22,10 @@ namespace Assets.Views.States.Scripts {
             var view = Instantiate(prefab, parentPurchase);
             view.Setup(ref unitPurchaseViewData);
             return view;
+        }
+
+        public void RefreshInfoPanel(ref PurchaseInfoViewData infoData) {
+            infoView.SetUp(ref infoData);
         }
     }
 }

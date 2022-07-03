@@ -15,3 +15,4 @@ MonoBehaviour:
   id: basic
   unitView: {fileID: 439478769066515630, guid: 2bdc38fe55e5af641aa0b1669f873d55, type: 3}
   unitPurchaseViewConfig: {fileID: 11400000, guid: 7f3ce9cfadd285547bca46dd0515e3fe, type: 2}
+  unitSpecificationConfig: {fileID: 11400000, guid: b63a6ac47bfe522418afab0939ebc01c, type: 2}

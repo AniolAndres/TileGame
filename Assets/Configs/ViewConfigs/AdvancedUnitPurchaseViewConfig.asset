@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameKey: Tank
   cost: 3000
-  unitSprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  unitSprite: {fileID: 21300000, guid: 5100834b74675c44c8721d02972755bb, type: 3}
+  fullBodySprite: {fileID: 21300000, guid: 5100834b74675c44c8721d02972755bb, type: 3}

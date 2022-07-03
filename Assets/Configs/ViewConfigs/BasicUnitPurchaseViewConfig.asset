@@ -14,4 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nameKey: Soldier
   cost: 1000
-  unitSprite: {fileID: 10911, guid: 0000000000000000f000000000000000, type: 0}
+  unitSprite: {fileID: 21300000, guid: 9d7ed1c368c2e0e448c92b61fd18b02a, type: 3}
+  fullBodySprite: {fileID: 21300000, guid: 9d7ed1c368c2e0e448c92b61fd18b02a, type: 3}

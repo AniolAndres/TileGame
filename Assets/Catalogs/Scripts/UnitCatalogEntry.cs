@@ -14,9 +14,13 @@ namespace Assets.Catalogs.Scripts {
         [SerializeField]
         private UnitPurchaseViewConfig unitPurchaseViewConfig;
 
+        [SerializeField]
+        private UnitSpecificationConfig unitSpecificationConfig;
+
         public UnitMapView UnitView => unitView;
 
         public UnitPurchaseViewConfig UnitPurchaseViewConfig => unitPurchaseViewConfig;
 
+        public UnitSpecificationConfig UnitSpecificationConfig => unitSpecificationConfig;
     }
 }

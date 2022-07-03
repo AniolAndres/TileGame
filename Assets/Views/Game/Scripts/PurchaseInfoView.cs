@@ -2,7 +2,7 @@
 using TMPro;
 using UnityEngine.UI;
 
-namespace Assets.Views.Game.Scripts {
+namespace Assets.Views {
     public class PurchaseInfoView : MonoBehaviour {
 
         [SerializeField]
@@ -11,8 +11,13 @@ namespace Assets.Views.Game.Scripts {
         [SerializeField]
         private Image unitIcon;
 
-        public void SetUp() {
+        [SerializeField]
+        private UnitStatsView statsView;
 
+        public void SetUp(ref PurchaseInfoViewData viewData) {
+            unitIcon.sprite = viewData.UnitIcon;
+            statsView.SetUp(ref viewData);
         }
+
     }
 }

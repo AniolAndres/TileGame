@@ -9,15 +9,15 @@ namespace Assets.Configs {
         private string nameKey;
 
         [SerializeField]
-        private int cost;
+        private Sprite unitSprite;
 
         [SerializeField]
-        private Sprite unitSprite;
+        private Sprite fullBodySprite;
 
         public string NameKey => nameKey;
 
-        public int Cost => cost;
-
         public Sprite UnitSprite => unitSprite;
+
+        public Sprite FullBodySprite => fullBodySprite;
     }
 }

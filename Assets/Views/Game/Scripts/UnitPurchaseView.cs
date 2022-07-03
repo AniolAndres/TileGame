@@ -2,9 +2,10 @@
 using TMPro;
 using System;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 namespace Assets.Views {
-    public class UnitPurchaseView : MonoBehaviour {
+    public class UnitPurchaseView : MonoBehaviour, IPointerEnterHandler {
 
         [SerializeField]
         private TextMeshProUGUI nameText;
@@ -19,6 +20,8 @@ namespace Assets.Views {
         private Button purchaseButton;
 
         public event Action OnClickView;
+
+        public event Action OnHover;
 
         public void Setup(ref UnitPurchaseViewData unitPurchaseViewData) {
             nameText.text = unitPurchaseViewData.Name;
@@ -36,6 +39,10 @@ namespace Assets.Views {
 
         private void FireUnitClickedAction() {
             OnClickView?.Invoke();
+        }
+
+        public void OnPointerEnter(PointerEventData eventData) {
+            OnHover?.Invoke();
         }
     }
 }

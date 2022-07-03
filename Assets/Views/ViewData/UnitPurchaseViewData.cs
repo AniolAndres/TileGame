@@ -9,5 +9,11 @@ namespace Assets.Views {
         public Sprite UnitIcon { get; set; }
 
         public string Cost { get; set; }
+
+        public string Movement { get; set; }
+
+        public string Attack { get; set; }
+
+        public string Vision { get; set; }
     }
 }

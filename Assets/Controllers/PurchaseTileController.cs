@@ -12,6 +12,8 @@ namespace Assets.Controllers {
 
         public event Action<string> OnUnitBought;
 
+        public event Action<string> OnUnitHovered;
+
         public PurchaseTileController(UnitPurchaseView view, UnitPurchaseModel model) {
             this.view = view;
             this.model = model;
@@ -19,10 +21,17 @@ namespace Assets.Controllers {
 
         public void OnCreate() {
             view.OnClickView += OnViewClicked;
+            view.OnHover += OnViewHovered;
         }
 
         public void OnDestroy() {
             view.OnClickView -= OnViewClicked;
+            view.OnHover -= OnViewHovered;
+        }
+
+        private void OnViewHovered() {
+            var unitId = model.GetUnitId();
+            OnUnitHovered?.Invoke(unitId);
         }
 
         private void OnViewClicked() {
