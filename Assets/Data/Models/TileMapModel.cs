@@ -4,6 +4,7 @@ using System.Linq;
 using Assets.Views;
 using Assets.Data.Levels;
 using Assets.Data.Level;
+using System;
 
 namespace Assets.Data.Models {
     public class TileMapModel {
@@ -12,11 +13,14 @@ namespace Assets.Data.Models {
 
         private readonly TilesCatalog tilesCatalog;
 
+        private readonly UnitsCatalog unitsCatalog;
+
         private readonly ILevelProvider levelProvider;
 
-        public TileMapModel(LevelsCatalog levelsCatalog, TilesCatalog tilesCatalog, ILevelProvider levelProvider) {           
+        public TileMapModel(LevelsCatalog levelsCatalog, TilesCatalog tilesCatalog, UnitsCatalog unitsCatalog,ILevelProvider levelProvider) {           
             this.currentLevelEntry = levelsCatalog.GetAllEntries().First();
             this.tilesCatalog = tilesCatalog;
+            this.unitsCatalog = unitsCatalog;
             this.levelProvider = levelProvider;
         }
 
@@ -28,7 +32,7 @@ namespace Assets.Data.Models {
             return levelProvider.GetLevel(); ;
         }
 
-        public Vector2 GetTilePosition(int x, int y) {
+        public Vector2 GetRealTileWorldPosition(int x, int y) {
             return new Vector2((x - currentLevelEntry.Size.x/2f + 0.5f) * currentLevelEntry.TileSideLength, 
                 (y - currentLevelEntry.Size.y/2f + 0.5f) * currentLevelEntry.TileSideLength);
         }
@@ -39,6 +43,10 @@ namespace Assets.Data.Models {
 
         public TileCatalogEntry GetTileEntry(string typeId) {
             return tilesCatalog.GetEntry(typeId);
+        }
+
+        public UnitCatalogEntry GetUnitCatalogEntry(string unitId) {
+            return unitsCatalog.GetEntry(unitId);
         }
     }
 }

@@ -1,11 +1,12 @@
 using Assets.Configs;
 using Assets.Controllers;
+using Assets.Data;
 using Assets.Data.Level;
 using Assets.Data.Levels;
 using Assets.Data.Models;
 using Assets.Views;
-using System;
 using System.Linq;
+using UnityEngine;
 
 namespace Assets.States {
     public class GameState : BaseState<GameStateUiView, GameStateWorldView>, IStateBase {
@@ -39,14 +40,19 @@ namespace Assets.States {
 
         private void CreateMapController() {
             var levelProvider = new LevelProvider(context.catalogs.LevelsCatalog);
-            var tileMapModel = new TileMapModel(context.catalogs.LevelsCatalog, context.catalogs.TilesCatalog, levelProvider);
-            mapController = new MapController(uiView.TileMapView, tileMapModel);
-            mapController.OnTileClicked += PushPopupState;
+            var tileMapModel = new TileMapModel(context.catalogs.LevelsCatalog, context.catalogs.TilesCatalog, context.catalogs.UnitsCatalog, levelProvider);
+            mapController = new MapController(uiView.TileMapView, tileMapModel, new UnitHandler());
+            mapController.OnTerrainClicked += PushPopupState;
             mapController.CreateMap();
         }
 
         private void PushPopupState(TileData tileData) {
-            PushState(new PopupState(context));
+            var popupStateArgs = new PopupStateArgs { 
+                OnUnitCreated = CreateUnit,
+                Position = tileData.Position
+            };
+            
+            PushState(new PopupState(context, popupStateArgs));
         }
 
         private void CreateCameraController() {
@@ -59,11 +65,15 @@ namespace Assets.States {
         public void OnDestroy() {
             cameraController?.Destroy();
             mapController?.OnDestroy();
-            mapController.OnTileClicked -= PushPopupState;
+            mapController.OnTerrainClicked -= PushPopupState;
         }
 
         public void OnSendToBack() {
 
+        }
+
+        private void CreateUnit(BuyUnitData unitData) {
+            mapController.CreateUnit(unitData);
         }
 
     }

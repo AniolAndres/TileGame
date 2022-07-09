@@ -1,5 +1,6 @@
 using UnityEngine;
 using Assets.Views;
+using System;
 
 namespace Assets.States {
     public abstract class BaseState<TuiView, TWorldView> 
@@ -41,8 +42,8 @@ namespace Assets.States {
         }
 
         public void DestroyViews() {
-            Object.Destroy(uiView.gameObject);
-            Object.Destroy(worldView.gameObject);
+            GameObject.Destroy(uiView.gameObject);
+            GameObject.Destroy(worldView.gameObject);
         }
     }
 }

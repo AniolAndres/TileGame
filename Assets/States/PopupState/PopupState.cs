@@ -20,7 +20,11 @@ namespace Assets.States {
 
         private List<PurchaseTileController> tileControllerList = new List<PurchaseTileController>();
 
-        public PopupState(Context context) : base(context) { }
+        private readonly PopupStateArgs stateArgs;
+
+        public PopupState(Context context, PopupStateArgs args = null) : base(context) {
+            stateArgs = args;
+        }
 
         public string GetId() {
             return Id;
@@ -93,13 +97,16 @@ namespace Assets.States {
 
         private void CreateUnitAndPopState(string unitId) {
             var unitEntry = model.GetUnitEntry(unitId);
-            CreateUnit(unitEntry);
-
             PopState();
+            CreateUnit(unitEntry);
         }
 
         private void CreateUnit(UnitCatalogEntry unitEntry) {
-            Debug.Log($"Creating unit {unitEntry.Id}");
+            var buyData = new BuyUnitData {
+                UnitId = unitEntry.Id,
+                Position = stateArgs.Position
+            };
+            stateArgs.OnUnitCreated?.Invoke(buyData);
         }
     }
 

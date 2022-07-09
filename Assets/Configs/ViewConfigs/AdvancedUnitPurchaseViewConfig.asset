@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: AdvancedUnitPurchaseViewConfig
   m_EditorClassIdentifier: 
   nameKey: Tank
-  cost: 3000
-  unitSprite: {fileID: 21300000, guid: 5100834b74675c44c8721d02972755bb, type: 3}
-  fullBodySprite: {fileID: 21300000, guid: 5100834b74675c44c8721d02972755bb, type: 3}
+  unitSprite: {fileID: 21300000, guid: 20bb71f9fc6f0a848866ccaeba0ca104, type: 3}
+  fullBodySprite: {fileID: 21300000, guid: 20bb71f9fc6f0a848866ccaeba0ca104, type: 3}
