@@ -42,7 +42,7 @@ namespace Assets.States {
             var levelProvider = new LevelProvider(context.catalogs.LevelsCatalog);
             var tileMapModel = new TileMapModel(context.catalogs.LevelsCatalog, context.catalogs.TilesCatalog, context.catalogs.UnitsCatalog, levelProvider);
             mapController = new MapController(uiView.TileMapView, tileMapModel, new UnitHandler());
-            mapController.OnTerrainClicked += PushPopupState;
+            mapController.OnTerrainClicked += PushPopupState;            
             mapController.CreateMap();
         }
 

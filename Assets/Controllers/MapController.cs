@@ -72,7 +72,7 @@ namespace Assets.Controllers {
         private void FireTileClickedEvent(TileData data) {
             if (!unitHandler.IsSpaceEmpty(data.Position)) {
                 var unitController = unitHandler.GetUnitControllerAtPosition(data.Position);
-                OnUnitClicked?.Invoke(unitController);
+                unitHandler.SetUnitSelected(unitController);
                 return;
             }
 

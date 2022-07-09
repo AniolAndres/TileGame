@@ -9,6 +9,8 @@ namespace Assets.Controllers {
 
         private Dictionary<Vector2Int, UnitController> unitControllerDictionary = new Dictionary<Vector2Int, UnitController>();
 
+        private UnitController selectedUnitController;
+
         public void AddUnit(UnitController unitController, Vector2Int position) {
             if (unitControllerDictionary.ContainsKey(position)) {
                 throw new NotSupportedException($"Trying to create {unitController.GetUnitId()} in ({position.x},{position.y})," +
@@ -50,6 +52,11 @@ namespace Assets.Controllers {
             }
 
             return unitControllerDictionary[position];
+        }
+
+        public void SetUnitSelected(UnitController unitController) {
+            unitController.OnSelect();
+            selectedUnitController = unitController;
         }
     }
 }

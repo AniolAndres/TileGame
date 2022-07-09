@@ -1,6 +1,7 @@
 ﻿
 using Assets.Data;
 using Assets.Views;
+using System;
 
 namespace Assets.Controllers {
     public class UnitController {
@@ -16,6 +17,10 @@ namespace Assets.Controllers {
 
         public string GetUnitId() {
             return unitModel.GetId();
+        }
+
+        public void OnSelect() {
+            unitView.SetSelectStatus(true);
         }
     }
 }
