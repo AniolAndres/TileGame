@@ -7,6 +7,8 @@ namespace Assets.States {
 
         public Action<BuyUnitData> OnUnitCreated;
 
+        public string TileTypeId { get; set; }
+
         public Vector2Int Position { get; set; }
     }
 }

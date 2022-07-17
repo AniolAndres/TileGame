@@ -32,9 +32,9 @@ namespace Assets.Data.Models {
             return levelProvider.GetLevel(); ;
         }
 
-        public Vector2 GetRealTileWorldPosition(int x, int y) {
-            return new Vector2((x - currentLevelEntry.Size.x/2f + 0.5f) * currentLevelEntry.TileSideLength, 
-                (y - currentLevelEntry.Size.y/2f + 0.5f) * currentLevelEntry.TileSideLength);
+        public Vector2 GetRealTileWorldPosition(Vector2Int tilePosition) {
+            return new Vector2((tilePosition.x - currentLevelEntry.Size.x/2f + 0.5f) * currentLevelEntry.TileSideLength, 
+                (tilePosition.y - currentLevelEntry.Size.y/2f + 0.5f) * currentLevelEntry.TileSideLength);
         }
 
         public float GetSideLength() {
@@ -47,6 +47,11 @@ namespace Assets.Data.Models {
 
         public UnitCatalogEntry GetUnitCatalogEntry(string unitId) {
             return unitsCatalog.GetEntry(unitId);
+        }
+
+        public bool IsBuilding(string tileType) {
+            var tileEntry = tilesCatalog.GetEntry(tileType);
+            return tileEntry.CanCreate;
         }
     }
 }

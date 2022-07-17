@@ -22,7 +22,7 @@ namespace Assets.States {
 
         private readonly PopupStateArgs stateArgs;
 
-        public PopupState(Context context, PopupStateArgs args = null) : base(context) {
+        public PopupState(Context context, PopupStateArgs args) : base(context) {
             stateArgs = args;
         }
 
@@ -38,7 +38,7 @@ namespace Assets.States {
             uiView.OnPopRequested += PopState;
 
             var popupStateConfig = GetStateAsset<PopupStateConfig>();
-            model = new PopupStateModel(context.catalogs.UnitsCatalog, popupStateConfig);
+            model = new PopupStateModel(context.catalogs.UnitsCatalog, context.catalogs.TilesCatalog, popupStateConfig);
 
             CreatePurchaseControllers();
         }
@@ -49,7 +49,7 @@ namespace Assets.States {
 
         private void CreatePurchaseControllers() {
 
-            var units = model.GetUnits();
+            var units = model.GetUnits(stateArgs.TileTypeId);
             var unitPrefab = model.GetUnitPrefab();
 
             foreach(var unit in units) {

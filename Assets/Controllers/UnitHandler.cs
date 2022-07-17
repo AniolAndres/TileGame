@@ -1,5 +1,4 @@
 ﻿
-using Assets.Data;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,7 +8,9 @@ namespace Assets.Controllers {
 
         private Dictionary<Vector2Int, UnitController> unitControllerDictionary = new Dictionary<Vector2Int, UnitController>();
 
-        private UnitController selectedUnitController;
+        private Vector2Int? selectedUnitKey = null;
+
+        public bool HasUnitSelected => selectedUnitKey.HasValue;
 
         public void AddUnit(UnitController unitController, Vector2Int position) {
             if (unitControllerDictionary.ContainsKey(position)) {
@@ -54,9 +55,38 @@ namespace Assets.Controllers {
             return unitControllerDictionary[position];
         }
 
-        public void SetUnitSelected(UnitController unitController) {
-            unitController.OnSelect();
-            selectedUnitController = unitController;
+        public void SetUnitSelected(Vector2Int newSelectedPosition) {
+            if (HasUnitSelected) {
+                if (!unitControllerDictionary.ContainsKey(selectedUnitKey.Value)) {
+                    throw new NotSupportedException($"Trying to deselect something that doesn't exist at ({selectedUnitKey.Value.x},{selectedUnitKey.Value.y})");
+                }
+
+                var controller = unitControllerDictionary[selectedUnitKey.Value];
+                controller.OnDeselect();
+            }
+
+            if (!unitControllerDictionary.ContainsKey(newSelectedPosition)) {
+                throw new NotSupportedException($"Trying to select something that doesn't exist at ({newSelectedPosition.x},{newSelectedPosition.y})");
+            }
+
+            unitControllerDictionary[newSelectedPosition].OnSelect();
+            
+            selectedUnitKey = newSelectedPosition;
+        }
+
+        public void MoveSelectedUnit(Vector2Int newPosition, Vector2 realNewPosition) {
+            if(selectedUnitKey == null) {
+                throw new NotSupportedException("Moving selected unit without having anything selected!");
+            }
+            var controller = unitControllerDictionary[selectedUnitKey.Value];
+
+            MoveUnitFromTo(selectedUnitKey.Value, newPosition);
+
+            controller.OnMove(realNewPosition);
+
+            controller.OnDeselect();
+
+            selectedUnitKey = null;
         }
     }
 }

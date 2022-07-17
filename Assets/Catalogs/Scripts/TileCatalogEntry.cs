@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Assets.Views;
+using System.Collections.Generic;
 
 namespace Assets.Catalogs.Scripts {
 
@@ -12,8 +13,15 @@ namespace Assets.Catalogs.Scripts {
         [SerializeField]
         private TileType tileType;
 
+        [SerializeField]
+        private List<UnitCatalogEntry> spawnableUnits = new List<UnitCatalogEntry>();
+
         public TileView TilePrefab => tilePrefab;
 
         public TileType TileType => tileType;
+
+        public List<UnitCatalogEntry> SpawnableUnits => spawnableUnits;
+
+        public bool CanCreate => spawnableUnits.Count != 0;
     }
 }

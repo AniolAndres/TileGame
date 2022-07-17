@@ -13,11 +13,16 @@ namespace Assets.Controllers {
         }
 
         public void OnCreate() {
-            
+            view.OnTilePressed += FireTerrainClickedEvent;
+        }
+
+        private void FireTerrainClickedEvent() {
+            var tileData = model.GetTileData();
+            OnTileClicked?.Invoke(tileData);
         }
 
         public void OnDestroy() {
-            
+            view.OnTilePressed -= FireTerrainClickedEvent;
         }
     }
 }

@@ -42,13 +42,14 @@ namespace Assets.States {
             var levelProvider = new LevelProvider(context.catalogs.LevelsCatalog);
             var tileMapModel = new TileMapModel(context.catalogs.LevelsCatalog, context.catalogs.TilesCatalog, context.catalogs.UnitsCatalog, levelProvider);
             mapController = new MapController(uiView.TileMapView, tileMapModel, new UnitHandler());
-            mapController.OnTerrainClicked += PushPopupState;            
+            mapController.OnBuildingClicked += PushPopupState;            
             mapController.CreateMap();
         }
 
         private void PushPopupState(TileData tileData) {
             var popupStateArgs = new PopupStateArgs { 
                 OnUnitCreated = CreateUnit,
+                TileTypeId = tileData.TypeId,
                 Position = tileData.Position
             };
             
@@ -65,7 +66,7 @@ namespace Assets.States {
         public void OnDestroy() {
             cameraController?.Destroy();
             mapController?.OnDestroy();
-            mapController.OnTerrainClicked -= PushPopupState;
+            mapController.OnBuildingClicked -= PushPopupState;
         }
 
         public void OnSendToBack() {

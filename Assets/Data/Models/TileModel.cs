@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using Assets.Catalogs.Scripts;
+using Assets.Data.Level;
 
 namespace Assets.Data.Models {
     public class TileModel {
@@ -13,6 +14,13 @@ namespace Assets.Data.Models {
         public TileModel(TileCatalogEntry tileEntry, Vector2Int position) {
             this.Position = position;
             this.tileEntry = tileEntry;
+        }
+
+        public TileData GetTileData() {
+            return new TileData {
+                Position = Position,
+                TypeId = TypeId
+            };
         }
 
     }

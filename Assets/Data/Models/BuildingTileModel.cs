@@ -9,11 +9,5 @@ namespace Assets.Data.Models {
         public BuildingTileModel(TileCatalogEntry tileCatalogEntry, Vector2Int position) : base(tileCatalogEntry, position) {
         }
 
-        public TileData GetTileData() {
-            return new TileData {
-                Position = Position,
-                TypeId = TypeId
-            };
-        }
     }
 }

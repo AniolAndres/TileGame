@@ -6,17 +6,21 @@ using Assets.Views;
 namespace Assets.Data.Models {
     public class PopupStateModel {
 
+        private readonly TilesCatalog tilesCatalog;
+
         private readonly UnitsCatalog unitsCatalog;
 
         private readonly PopupStateConfig popupStateConfig;
 
-        public PopupStateModel(UnitsCatalog unitsCatalog, PopupStateConfig popupStateConfig) {
+        public PopupStateModel(UnitsCatalog unitsCatalog, TilesCatalog tilesCatalog, PopupStateConfig popupStateConfig) {
             this.unitsCatalog = unitsCatalog;
+            this.tilesCatalog = tilesCatalog;
             this.popupStateConfig = popupStateConfig;
         }
 
-        public List<UnitCatalogEntry> GetUnits() {
-            return unitsCatalog.GetAllEntries();
+        public List<UnitCatalogEntry> GetUnits(string tileId) {
+            var entry = tilesCatalog.GetEntry(tileId);
+            return entry.SpawnableUnits;
         }
 
         public UnitPurchaseView GetUnitPrefab() {
