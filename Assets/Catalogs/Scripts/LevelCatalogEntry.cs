@@ -7,6 +7,9 @@ namespace Assets.Catalogs.Scripts {
     public class LevelCatalogEntry : CatalogEntry {
 
         [SerializeField]
+        private int playersCount;
+
+        [SerializeField]
         private Vector2Int size;
 
         [SerializeField]
@@ -16,5 +19,6 @@ namespace Assets.Catalogs.Scripts {
 
         public float TileSideLength => tileSideLength;
 
+        public int PlayersCount => playersCount;
     }
 }

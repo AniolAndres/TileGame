@@ -1,18 +1,18 @@
-using System.Collections;
-using System.Collections.Generic;
+using Assets.Views.Game;
 using UnityEngine;
 
 namespace Assets.Views {
     public class GameStateWorldView : WorldView {
-        // Start is called before the first frame update
-        void Start() {
 
-        }
+        [SerializeField]
+        private TileMapView tileMapView;
 
-        // Update is called once per frame
-        void Update() {
+        [SerializeField]
+        private CameraView cameraView;
 
-        }
+        public TileMapView TileMapView => tileMapView;
+
+        public CameraView CameraView => cameraView;
     }
 
 }

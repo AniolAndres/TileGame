@@ -15,7 +15,7 @@ namespace Assets.States {
 
             var context = new Context {
                 catalogs = catalogs,
-                playerData = new PlayerData(),
+                userData = new UserData(),
                 screenMachine = screenMachine
             };
 

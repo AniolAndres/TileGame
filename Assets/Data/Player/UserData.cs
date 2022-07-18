@@ -2,7 +2,7 @@
 using System.Collections;
 
 namespace Assets.Data.Player {
-    public class PlayerData {
+    public class UserData {
 
 
     }

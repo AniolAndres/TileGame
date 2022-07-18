@@ -12,6 +12,5 @@ namespace Assets.Controllers {
 
         event Action<TileData> OnTileClicked;
 
-
     }
 }

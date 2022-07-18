@@ -17,11 +17,14 @@ namespace Assets.Data.Models {
 
         private readonly ILevelProvider levelProvider;
 
-        public TileMapModel(LevelsCatalog levelsCatalog, TilesCatalog tilesCatalog, UnitsCatalog unitsCatalog,ILevelProvider levelProvider) {           
+        private readonly string levelId;
+
+        public TileMapModel(LevelsCatalog levelsCatalog, TilesCatalog tilesCatalog, UnitsCatalog unitsCatalog,ILevelProvider levelProvider, string levelId) {           
             this.currentLevelEntry = levelsCatalog.GetAllEntries().First();
             this.tilesCatalog = tilesCatalog;
             this.unitsCatalog = unitsCatalog;
             this.levelProvider = levelProvider;
+            this.levelId = levelId;
         }
 
         public Vector2Int GetSize() {
@@ -29,7 +32,7 @@ namespace Assets.Data.Models {
         }
 
         public LevelData GetLevelData() {
-            return levelProvider.GetLevel(); ;
+            return levelProvider.GetLevel(levelId);
         }
 
         public Vector2 GetRealTileWorldPosition(Vector2Int tilePosition) {

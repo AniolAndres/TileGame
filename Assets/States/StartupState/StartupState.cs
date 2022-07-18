@@ -22,11 +22,17 @@ namespace Assets.States {
         }
 
         private void PushNewState() {
-            PushState(new GameState(context));
+            var gameStateArgs = new GameStateArgs {
+                LevelId = "first"
+            };
+            PushState(new GameState(context, gameStateArgs));
         }
 
         private void PresentNewState() {
-            PresentState(new GameState(context));
+            var gameStateArgs = new GameStateArgs {
+                LevelId = "first"
+            };
+            PresentState(new GameState(context, gameStateArgs));
         }
 
         public void OnDestroy() {

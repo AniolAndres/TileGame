@@ -17,11 +17,11 @@ namespace Assets.Data.Levels {
             this.levelsCatalog = levelsCatalog;
         }
 
-        public LevelData GetLevel() {
+        public LevelData GetLevel(string levelId) {
 
             var tileDataList = new List<TileData>();
 
-            var entry = levelsCatalog.GetAllEntries().First();
+            var entry = levelsCatalog.GetEntry(levelId);
 
             for (int i = 0; i < entry.Size.x; ++i) {
                 for (int j = 0; j < entry.Size.y; ++j) {

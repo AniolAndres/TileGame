@@ -6,7 +6,7 @@ namespace Assets.States {
 
         public CatalogsHolder catalogs { get; set; }
 
-        public PlayerData playerData { get; set; }
+        public UserData userData { get; set; }
 
         public IScreenMachine screenMachine { get; set; }
 

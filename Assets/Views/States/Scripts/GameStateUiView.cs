@@ -1,19 +1,21 @@
 using Assets.Views;
 using Assets.Views.Game;
+using System;
 using UnityEngine;
 
 namespace Assets.Views {
     public class GameStateUiView : UiView {
-        [SerializeField]
-        private TileMapView tileMapView;
 
         [SerializeField]
-        private CameraView cameraView;
+        private PlayerView playerViewPrefab;
 
-        public TileMapView TileMapView => tileMapView;
+        [SerializeField]
+        private Transform playersParent;
 
-        public CameraView CameraView => cameraView;
-
+        public PlayerView InstantiatePlayerView() {
+            var playerView = Instantiate(playerViewPrefab, playersParent);
+            return playerView;
+        }
     }
 
 }
