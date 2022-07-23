@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: FirstLevelCatalogEntry
   m_EditorClassIdentifier: 
   id: first
+  playersCount: 2
   size: {x: 12, y: 10}
   tileSideLength: 128

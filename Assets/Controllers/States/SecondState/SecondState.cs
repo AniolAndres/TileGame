@@ -2,7 +2,7 @@ using Assets.Views;
 using UnityEngine;
 
 namespace Assets.States {
-    public class SecondState : BaseState<SecondStateUiView, SecondStateWorldView>, IStateBase {
+    public class SecondState : BaseStateController<SecondStateUiView, SecondStateWorldView>, IStateBase {
 
         private const string Id = "SecondState";
 

@@ -10,7 +10,7 @@ using System.Linq;
 using UnityEngine;
 
 namespace Assets.States {
-    public class GameState : BaseState<GameStateUiView, GameStateWorldView>, IStateBase {
+    public class GameStateController : BaseStateController<GameStateUiView, GameStateWorldView>, IStateBase {
 
         private const string Id = "GameState";
 
@@ -24,7 +24,7 @@ namespace Assets.States {
 
         private readonly GameStateArgs gameStateArgs;
 
-        public GameState(Context context, GameStateArgs stateArgs) : base(context) {
+        public GameStateController(Context context, GameStateArgs stateArgs) : base(context) {
             this.gameStateArgs = stateArgs;
         }
 
@@ -74,7 +74,7 @@ namespace Assets.States {
                 Position = tileData.Position
             };
             
-            PushState(new PopupState(context, popupStateArgs));
+            PushState(new CreateUnitStateController(context, popupStateArgs));
         }
 
         private void CreateCameraController() {

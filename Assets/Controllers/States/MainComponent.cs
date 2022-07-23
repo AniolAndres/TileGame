@@ -19,7 +19,7 @@ namespace Assets.States {
                 screenMachine = screenMachine
             };
 
-            screenMachine.PushState(new StartupState(context));
+            screenMachine.PushState(new StartupStateController(context));
         }
 
     }

@@ -12,7 +12,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.States {
-    public class PopupState : BaseState<PopupStateUiView, PopupStateWorldView>, IStateBase {
+    public class CreateUnitStateController : BaseStateController<PopupStateUiView, PopupStateWorldView>, IStateBase {
 
         private const string Id = "PopupState";
 
@@ -22,7 +22,7 @@ namespace Assets.States {
 
         private readonly PopupStateArgs stateArgs;
 
-        public PopupState(Context context, PopupStateArgs args) : base(context) {
+        public CreateUnitStateController(Context context, PopupStateArgs args) : base(context) {
             stateArgs = args;
         }
 

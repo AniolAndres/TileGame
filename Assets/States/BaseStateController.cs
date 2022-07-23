@@ -3,7 +3,7 @@ using Assets.Views;
 using System;
 
 namespace Assets.States {
-    public abstract class BaseState<TuiView, TWorldView> 
+    public abstract class BaseStateController<TuiView, TWorldView> 
         where TuiView : UiView 
         where TWorldView : WorldView {
 
@@ -15,7 +15,7 @@ namespace Assets.States {
 
         private IScreenMachine screenMachine => context.screenMachine;
 
-        public BaseState(Context context) {
+        public BaseStateController(Context context) {
             this.context = context;
         }
 

@@ -2,11 +2,11 @@ using Assets.Views;
 using UnityEngine;
 
 namespace Assets.States {
-    public class StartupState : BaseState<StartupStateUiView, StartupStateWorldView>, IStateBase {
+    public class StartupStateController : BaseStateController<StartupStateUiView, StartupStateWorldView>, IStateBase {
 
         private const string Id = "StartUpState";
 
-        public StartupState(Context context) : base(context) { }
+        public StartupStateController(Context context) : base(context) { }
 
         public string GetId() {
             return Id;
@@ -25,14 +25,14 @@ namespace Assets.States {
             var gameStateArgs = new GameStateArgs {
                 LevelId = "first"
             };
-            PushState(new GameState(context, gameStateArgs));
+            PushState(new GameStateController(context, gameStateArgs));
         }
 
         private void PresentNewState() {
             var gameStateArgs = new GameStateArgs {
                 LevelId = "first"
             };
-            PresentState(new GameState(context, gameStateArgs));
+            PresentState(new GameStateController(context, gameStateArgs));
         }
 
         public void OnDestroy() {
