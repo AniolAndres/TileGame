@@ -33,6 +33,7 @@ namespace Assets.ScreenMachine {
             if (screenStack.Count != 0) {
                 var previousState = screenStack.Peek();
                 previousState.OnSendToBack();
+                previousState.DisableRaycasts();
             }
 
             PushStateLocally(state);
@@ -72,6 +73,7 @@ namespace Assets.ScreenMachine {
             if(screenStack.Count != 0) {
                 var nextState = screenStack.Peek();
                 nextState.OnBringToFront();
+                nextState.EnableRaycasts();
             }
         }
 

@@ -17,6 +17,8 @@ namespace Assets.ScreenMachine {
         void OnDestroy();
 
         void OnUpdate();
+        void EnableRaycasts();
+        void DisableRaycasts();
     }
 
 }

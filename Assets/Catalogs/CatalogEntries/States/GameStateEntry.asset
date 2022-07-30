@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GameStateEntry
   m_EditorClassIdentifier: 
   id: GameState
-  uiView: {fileID: 455334068352290434, guid: f5023b3b2ed27ea4d90563416f78aca5, type: 3}
-  worldView: {fileID: 1185333201619414502, guid: da138ad3e6b674b4ebc88cc6b0d1a653, type: 3}
+  uiView: {fileID: 407008081641699042, guid: 5e3bb1317ebe5d449bada515a65d1efe, type: 3}
+  worldView: {fileID: 8677256143794096493, guid: d85a7a058bf527a4bafd23e0f97543be, type: 3}
   stateAssets:
   - {fileID: 11400000, guid: d19ec0f8df2e59247bed74c659214cad, type: 2}

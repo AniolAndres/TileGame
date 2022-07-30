@@ -40,6 +40,16 @@ namespace Assets.ScreenMachine {
             worldView.OnUpdate();
         }
 
+        public void DisableRaycasts() {
+            uiView.DisableRaycast();
+            worldView.DisableRaycast();
+        }
+
+        public void EnableRaycasts() {
+            uiView.EnableRaycast();
+            worldView.EnableRaycast();
+        }
+
         public void LinkViews(UiView uiView, WorldView worldView) {
             this.uiView = uiView as TuiView;
             this.worldView = worldView as TWorldView;
