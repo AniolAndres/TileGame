@@ -11,7 +11,7 @@ using System.Collections.Generic;
 namespace Assets.Controllers {
     public class CreateUnitStateController : BaseStateController<PopupStateUiView, PopupStateWorldView>, IStateBase {
 
-        private const string Id = "PopupState";
+        private const string Id = "CreateUnit";
 
         private PopupStateModel model;
 
