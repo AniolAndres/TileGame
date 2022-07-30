@@ -10,8 +10,11 @@ namespace Assets.ScreenMachine {
 
         private StatesCatalog statesCatalog;
 
+        private InputLocker inputLocker;
+
         public void Init(StatesCatalog statesCatalog) {
             screenStack = new Stack<IStateBase>();
+            inputLocker = new InputLocker();
             this.statesCatalog = statesCatalog;
         }
 
@@ -44,11 +47,16 @@ namespace Assets.ScreenMachine {
                 throw new NotSupportedException("Trying to call OnUpdate on the screenstack but it's empty!");
             }
 
+            if (inputLocker.IsInputLocked) {
+                return;
+            }
+
             var currentState = screenStack.Peek();
             currentState.OnUpdate();
         }
 
         private void PushStateLocally(IStateBase state) {
+
             screenStack.Push(state);
 
             var stateEntry = statesCatalog.GetEntry(state.GetId());
@@ -82,6 +90,12 @@ namespace Assets.ScreenMachine {
             var entry = statesCatalog.GetEntry(state.GetId());
 
             return entry.GetStateAsset<T>();
+        }
+
+        public LockHandle Lock() {
+            var currentState = screenStack.Peek();
+            inputLocker.Lock(currentState);
+            return new LockHandle(inputLocker);
         }
     }
 
