@@ -9,17 +9,17 @@ using Assets.Views.States.Scripts;
 using System.Collections.Generic;
 
 namespace Assets.Controllers {
-    public class CreateUnitStateController : BaseStateController<PopupStateUiView, PopupStateWorldView>, IStateBase {
+    public class CreateUnitStateController : BaseStateController<CreateUnitStateUiView, CreateUnitStateWorldView>, IStateBase {
 
         private const string Id = "CreateUnit";
 
-        private PopupStateModel model;
+        private CreateUnitStateModel model;
 
         private List<PurchaseTileController> tileControllerList = new List<PurchaseTileController>();
 
-        private readonly PopupStateArgs stateArgs;
+        private readonly CreateUnitStateArgs stateArgs;
 
-        public CreateUnitStateController(Context context, PopupStateArgs args) : base(context) {
+        public CreateUnitStateController(Context context, CreateUnitStateArgs args) : base(context) {
             stateArgs = args;
         }
 
@@ -34,8 +34,8 @@ namespace Assets.Controllers {
         public void OnCreate() {
             uiView.OnPopRequested += PopState;
 
-            var popupStateConfig = GetStateAsset<PopupStateConfig>();
-            model = new PopupStateModel(context.catalogs.UnitsCatalog, context.catalogs.TilesCatalog, popupStateConfig);
+            var popupStateConfig = GetStateAsset<CreateUnitStateConfig>();
+            model = new CreateUnitStateModel(context.catalogs.UnitsCatalog, context.catalogs.TilesCatalog, popupStateConfig);
 
             CreatePurchaseControllers();
         }

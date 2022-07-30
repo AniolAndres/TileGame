@@ -4,15 +4,15 @@ using Assets.Catalogs.Scripts;
 using Assets.Views;
 
 namespace Assets.Data.Models {
-    public class PopupStateModel {
+    public class CreateUnitStateModel {
 
         private readonly TilesCatalog tilesCatalog;
 
         private readonly UnitsCatalog unitsCatalog;
 
-        private readonly PopupStateConfig popupStateConfig;
+        private readonly CreateUnitStateConfig popupStateConfig;
 
-        public PopupStateModel(UnitsCatalog unitsCatalog, TilesCatalog tilesCatalog, PopupStateConfig popupStateConfig) {
+        public CreateUnitStateModel(UnitsCatalog unitsCatalog, TilesCatalog tilesCatalog, CreateUnitStateConfig popupStateConfig) {
             this.unitsCatalog = unitsCatalog;
             this.tilesCatalog = tilesCatalog;
             this.popupStateConfig = popupStateConfig;

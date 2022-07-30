@@ -2,7 +2,7 @@
 using System;
 
 namespace Assets.Views {
-    public class PopupStateUiView : UiView {
+    public class CreateUnitStateUiView : UiView {
 
         [SerializeField]
         private Transform parentPurchase;

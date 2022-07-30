@@ -3,7 +3,7 @@ using System;
 using Assets.Data;
 
 namespace Assets.Controllers {
-    public class PopupStateArgs {
+    public class CreateUnitStateArgs {
 
         public Action<BuyUnitData> OnUnitCreated;
 

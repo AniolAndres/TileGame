@@ -66,7 +66,7 @@ namespace Assets.Controllers {
         }
 
         private void PushPopupState(TileData tileData) {
-            var popupStateArgs = new PopupStateArgs { 
+            var popupStateArgs = new CreateUnitStateArgs { 
                 OnUnitCreated = CreateUnit,
                 TileTypeId = tileData.TypeId,
                 Position = tileData.Position
