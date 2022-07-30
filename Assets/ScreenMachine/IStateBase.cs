@@ -1,6 +1,6 @@
 using Assets.Views;
 
-namespace Assets.States {
+namespace Assets.ScreenMachine {
     public interface IStateBase {
         string GetId();
 
@@ -15,6 +15,8 @@ namespace Assets.States {
         void OnCreate();
 
         void OnDestroy();
+
+        void OnUpdate();
     }
 
 }

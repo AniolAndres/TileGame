@@ -1,16 +1,19 @@
 using Assets.Catalogs.Scripts;
 using Assets.Data.Player;
+using Assets.ScreenMachine;
 using UnityEngine;
 
-namespace Assets.States {
+namespace Assets.Controllers {
     public class MainComponent : MonoBehaviour {
 
         [SerializeField]
         private CatalogsHolder catalogs;
 
+        private GameScreenMachine screenMachine;
+
         void Start() {
 
-            var screenMachine = new ScreenMachine();
+            screenMachine = new GameScreenMachine();
             screenMachine.Init(catalogs.StatesCatalog);
 
             var context = new Context {
@@ -20,6 +23,10 @@ namespace Assets.States {
             };
 
             screenMachine.PushState(new StartupStateController(context));
+        }
+
+        private void Update() {
+            screenMachine.OnUpdate();
         }
 
     }

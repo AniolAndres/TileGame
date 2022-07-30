@@ -1,15 +1,13 @@
 using Assets.Configs;
-using Assets.Controllers;
 using Assets.Data;
 using Assets.Data.Level;
 using Assets.Data.Levels;
 using Assets.Data.Models;
+using Assets.ScreenMachine;
 using Assets.Views;
-using System;
 using System.Linq;
-using UnityEngine;
 
-namespace Assets.States {
+namespace Assets.Controllers {
     public class GameStateController : BaseStateController<GameStateUiView, GameStateWorldView>, IStateBase {
 
         private const string Id = "GameState";

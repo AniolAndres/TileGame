@@ -2,7 +2,7 @@ using UnityEngine;
 using Assets.Views;
 using System;
 
-namespace Assets.States {
+namespace Assets.ScreenMachine {
     public abstract class BaseStateController<TuiView, TWorldView> 
         where TuiView : UiView 
         where TWorldView : WorldView {
@@ -35,6 +35,10 @@ namespace Assets.States {
             screenMachine.PresentState(state);
         }
 
+        public void OnUpdate() {
+            uiView.OnUpdate();
+            worldView.OnUpdate();
+        }
 
         public void LinkViews(UiView uiView, WorldView worldView) {
             this.uiView = uiView as TuiView;

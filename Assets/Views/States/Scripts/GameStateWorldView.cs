@@ -13,6 +13,12 @@ namespace Assets.Views {
         public TileMapView TileMapView => tileMapView;
 
         public CameraView CameraView => cameraView;
+
+        public override void OnUpdate() {
+            base.OnUpdate();
+
+            cameraView.OnUpdate();
+        }
     }
 
 }

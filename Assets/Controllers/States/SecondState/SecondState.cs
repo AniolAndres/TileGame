@@ -1,7 +1,7 @@
+using Assets.ScreenMachine;
 using Assets.Views;
-using UnityEngine;
 
-namespace Assets.States {
+namespace Assets.Controllers {
     public class SecondState : BaseStateController<SecondStateUiView, SecondStateWorldView>, IStateBase {
 
         private const string Id = "SecondState";

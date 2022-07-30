@@ -1,6 +1,6 @@
 using Assets.Catalogs.Scripts;
 
-namespace Assets.States {
+namespace Assets.ScreenMachine {
     public interface IScreenMachine {
         void Init(StatesCatalog statesCatalog);
 

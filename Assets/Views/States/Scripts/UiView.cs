@@ -7,5 +7,7 @@ namespace Assets.Views {
 
     public abstract class UiView : MonoBehaviour {
 
+        public virtual void OnUpdate() { }
+
     }
 }

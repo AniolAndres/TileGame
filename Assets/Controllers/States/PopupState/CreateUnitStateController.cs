@@ -1,17 +1,14 @@
 ﻿
 using Assets.Catalogs;
 using Assets.Catalogs.Scripts;
-using Assets.Configs;
-using Assets.Controllers;
 using Assets.Data;
 using Assets.Data.Models;
+using Assets.ScreenMachine;
 using Assets.Views;
 using Assets.Views.States.Scripts;
-using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-namespace Assets.States {
+namespace Assets.Controllers {
     public class CreateUnitStateController : BaseStateController<PopupStateUiView, PopupStateWorldView>, IStateBase {
 
         private const string Id = "PopupState";

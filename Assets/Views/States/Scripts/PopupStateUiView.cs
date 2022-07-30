@@ -12,7 +12,7 @@ namespace Assets.Views {
 
         public event Action OnPopRequested;
 
-        private void Update() {
+        public override void OnUpdate() {
             if (Input.GetMouseButton(1)) {
                 OnPopRequested?.Invoke();
             }

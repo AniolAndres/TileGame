@@ -1,12 +1,10 @@
 using Assets.Catalogs.Scripts;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-namespace Assets.States {
+namespace Assets.ScreenMachine {
 
-    public class ScreenMachine : IScreenMachine {
+    public class GameScreenMachine : IScreenMachine {
 
         private Stack<IStateBase> screenStack;
 
@@ -40,6 +38,15 @@ namespace Assets.States {
             PushStateLocally(state);
         }
 
+        public void OnUpdate() {
+            if(screenStack.Count == 0) {
+                throw new NotSupportedException("Trying to call OnUpdate on the screenstack but it's empty!");
+            }
+
+            var currentState = screenStack.Peek();
+            currentState.OnUpdate();
+        }
+
         private void PushStateLocally(IStateBase state) {
             screenStack.Push(state);
 
@@ -61,6 +68,11 @@ namespace Assets.States {
             state.OnDestroy();
             state.DestroyViews();
             screenStack.Pop();
+
+            if(screenStack.Count != 0) {
+                var nextState = screenStack.Peek();
+                nextState.OnBringToFront();
+            }
         }
 
         public T GetStateAsset<T>() {

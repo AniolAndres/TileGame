@@ -2,7 +2,7 @@
 using System;
 using Assets.Data;
 
-namespace Assets.States {
+namespace Assets.Controllers {
     public class PopupStateArgs {
 
         public Action<BuyUnitData> OnUnitCreated;

@@ -12,8 +12,7 @@ namespace Assets.Views.Game {
         [SerializeField]
         private GameObject mapHolder;
 
-        private void Update() {
-
+        public void OnUpdate() {
             var direction = Vector2Int.zero;
 
             if (Input.GetKey(KeyCode.W)) {
@@ -32,7 +31,7 @@ namespace Assets.Views.Game {
                 direction += Vector2Int.right;
             }
 
-            if(direction == Vector2Int.zero) {
+            if (direction == Vector2Int.zero) {
                 return;
             }
 
