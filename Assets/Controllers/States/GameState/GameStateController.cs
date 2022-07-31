@@ -36,7 +36,7 @@ namespace Assets.Controllers {
 
         public void OnCreate() {
 
-            model = new GameStateModel(context.catalogs.LevelsCatalog, gameStateArgs.LevelId);
+            model = new GameStateModel(context.Catalogs.LevelsCatalog, gameStateArgs.LevelId);
 
             CreatePlayers();
             CreateMapController();
@@ -57,8 +57,8 @@ namespace Assets.Controllers {
         }
 
         private void CreateMapController() {
-            var levelProvider = new LevelProvider(context.catalogs.LevelsCatalog);
-            var tileMapModel = new TileMapModel(context.catalogs.LevelsCatalog, context.catalogs.TilesCatalog, context.catalogs.UnitsCatalog, 
+            var levelProvider = new LevelProvider(context.Catalogs.LevelsCatalog);
+            var tileMapModel = new TileMapModel(context.Catalogs.LevelsCatalog, context.Catalogs.TilesCatalog, context.Catalogs.UnitsCatalog, 
                 levelProvider, gameStateArgs.LevelId);
             mapController = new MapController(worldView.TileMapView, tileMapModel, new UnitHandler());
             mapController.OnBuildingClicked += PushPopupState;            
@@ -77,7 +77,7 @@ namespace Assets.Controllers {
 
         private void CreateCameraController() {
             var cameraConfig = GetStateAsset<CameraConfig>();
-            var cameraModel = new CameraModel(cameraConfig, context.catalogs.LevelsCatalog.GetAllEntries().First());
+            var cameraModel = new CameraModel(cameraConfig, context.Catalogs.LevelsCatalog.GetAllEntries().First());
             cameraController = new CameraController(worldView.CameraView, cameraModel);
             cameraController.Init();
         }

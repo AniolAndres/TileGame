@@ -13,7 +13,15 @@ MonoBehaviour:
   m_Name: CreateUnitStateCatalogEntry
   m_EditorClassIdentifier: 
   id: CreateUnit
-  uiView: {fileID: 3487763801963165648, guid: 05f2064252775b240b33d5accbfb727d, type: 3}
-  worldView: {fileID: 1894004973241340473, guid: 5a4c1cc91d89ae141901319655f77d81, type: 3}
+  uiView:
+    m_AssetGUID: 05f2064252775b240b33d5accbfb727d
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  worldView:
+    m_AssetGUID: 5a4c1cc91d89ae141901319655f77d81
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   stateAssets:
   - {fileID: 11400000, guid: f072dd5f78ee8274b978345162a9826f, type: 2}

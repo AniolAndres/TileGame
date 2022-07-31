@@ -35,7 +35,7 @@ namespace Assets.Controllers {
             uiView.OnPopRequested += PopState;
 
             var popupStateConfig = GetStateAsset<CreateUnitStateConfig>();
-            model = new CreateUnitStateModel(context.catalogs.UnitsCatalog, context.catalogs.TilesCatalog, popupStateConfig);
+            model = new CreateUnitStateModel(context.Catalogs.UnitsCatalog, context.Catalogs.TilesCatalog, popupStateConfig);
 
             CreatePurchaseControllers();
         }

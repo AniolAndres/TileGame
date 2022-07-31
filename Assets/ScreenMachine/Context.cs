@@ -1,14 +1,16 @@
-﻿using Assets.Catalogs.Scripts;
-using Assets.Data.Player;
+﻿
+using Assets.Catalogs;
 
 namespace Assets.ScreenMachine {
     public class Context {
 
-        public CatalogsHolder catalogs { get; set; }
+        public CatalogsHolder Catalogs { get; set; }
 
-        public UserData userData { get; set; }
+        public UserData UserData { get; set; }
 
-        public IScreenMachine screenMachine { get; set; }
+        public IScreenMachine ScreenMachine { get; set; }
+
+        public AssetLoaderFactory AssetLoaderFactory { get; set; }
 
     }
 }

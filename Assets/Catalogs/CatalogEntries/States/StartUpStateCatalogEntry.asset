@@ -10,9 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1f904888582774544b9cedb9ef77eabb, type: 3}
-  m_Name: StartUpStateEntry
+  m_Name: StartUpStateCatalogEntry
   m_EditorClassIdentifier: 
   id: StartUpState
-  uiView: {fileID: 5506821445196339695, guid: 203a4769fc2b3d64ab5f561ce62f3abe, type: 3}
-  worldView: {fileID: 4846335390166093024, guid: b65c870f55c675640a7e0631d01d6d5e, type: 3}
+  uiView:
+    m_AssetGUID: 203a4769fc2b3d64ab5f561ce62f3abe
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  worldView:
+    m_AssetGUID: b65c870f55c675640a7e0631d01d6d5e
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   stateAssets: []

@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: StartUpState
+  m_EditorClassIdentifier: 
+  m_GroupName: StartUpState
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 60593842463bc004aa2ff1d524425932
+  m_SerializeEntries:
+  - m_GUID: 203a4769fc2b3d64ab5f561ce62f3abe
+    m_Address: Assets/Views/States/Prefabs/StartUp/StartUpStateUiView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: b65c870f55c675640a7e0631d01d6d5e
+    m_Address: Assets/Views/States/Prefabs/StartUp/StartUpStateWorldView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 36d4236fd7f3d9748b5421c063efdda6, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 98971c9289ff0ad4fa36245c540847cb, type: 2}
+    - {fileID: 11400000, guid: 17a7ac1143b24614caaef2d11a6b3104, type: 2}

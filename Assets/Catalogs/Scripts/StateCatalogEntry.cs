@@ -3,6 +3,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using Assets.Configs;
+using UnityEngine.AddressableAssets;
 
 namespace Assets.Catalogs.Scripts {
 
@@ -10,17 +11,17 @@ namespace Assets.Catalogs.Scripts {
     public class StateCatalogEntry : CatalogEntry{
 
         [SerializeField]
-        private UiView uiView;
+        private AssetReference uiView;
 
         [SerializeField]
-        private WorldView worldView;
+        private AssetReference worldView;
 
         [SerializeField]
         private List<StateAsset> stateAssets;
 
-        public UiView UiView => uiView;
+        public AssetReference UiView => uiView;
 
-        public WorldView WorldView => worldView;
+        public AssetReference WorldView => worldView;
 
         public T GetStateAsset<T>() {
             foreach(var asset in stateAssets) {

@@ -1,5 +1,4 @@
-using Assets.Catalogs.Scripts;
-using Assets.Data.Player;
+using Assets.Catalogs;
 using Assets.ScreenMachine;
 using UnityEngine;
 
@@ -17,9 +16,10 @@ namespace Assets.Controllers {
             screenMachine.Init(catalogs.StatesCatalog);
 
             var context = new Context {
-                catalogs = catalogs,
-                userData = new UserData(),
-                screenMachine = screenMachine
+                Catalogs = catalogs,
+                UserData = new UserData(),
+                AssetLoaderFactory = new AssetLoaderFactory(),
+                ScreenMachine = screenMachine
             };
 
             screenMachine.PushState(new StartupStateController(context));

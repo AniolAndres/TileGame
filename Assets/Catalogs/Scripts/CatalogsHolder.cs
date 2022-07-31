@@ -1,7 +1,8 @@
-﻿using UnityEngine;
+﻿using Assets.Catalogs.Scripts;
+using UnityEngine;
 
 
-namespace Assets.Catalogs.Scripts {
+namespace Assets.Catalogs {
 
     [CreateAssetMenu(fileName = "Catalogs", menuName = "ScriptableObjects/Catalogs/Create Catalogs catalog", order = 1)]
     public class CatalogsHolder : ScriptableObject {

@@ -1,6 +1,6 @@
 using UnityEngine;
-using Assets.Views;
 using System;
+using Assets.Views;
 
 namespace Assets.ScreenMachine {
     public abstract class BaseStateController<TuiView, TWorldView> 
@@ -13,14 +13,16 @@ namespace Assets.ScreenMachine {
 
         protected Context context;
 
-        private IScreenMachine screenMachine => context.screenMachine;
+        protected AssetLoaderFactory assetLoaderFactory => context.AssetLoaderFactory;
+
+        private IScreenMachine screenMachine => context.ScreenMachine;
 
         public BaseStateController(Context context) {
             this.context = context;
         }
 
         protected T GetStateAsset<T>() {
-            return context.screenMachine.GetStateAsset<T>();
+            return context.ScreenMachine.GetStateAsset<T>();
         }
 
         protected void PopState() {

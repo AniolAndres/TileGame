@@ -1,4 +1,5 @@
 using Assets.Catalogs.Scripts;
+using Assets.Views;
 using System;
 using System.Collections.Generic;
 
@@ -11,6 +12,10 @@ namespace Assets.ScreenMachine {
         private StatesCatalog statesCatalog;
 
         private InputLocker inputLocker;
+
+        private IAssetLoader screenMachineAssetLoader = new AssetLoader();
+
+        private bool isLoading;
 
         public void Init(StatesCatalog statesCatalog) {
             screenStack = new Stack<IStateBase>();
@@ -33,6 +38,8 @@ namespace Assets.ScreenMachine {
 
         public void PushState(IStateBase state) {
 
+            isLoading = true;
+
             if (screenStack.Count != 0) {
                 var previousState = screenStack.Peek();
                 previousState.OnSendToBack();
@@ -47,7 +54,7 @@ namespace Assets.ScreenMachine {
                 throw new NotSupportedException("Trying to call OnUpdate on the screenstack but it's empty!");
             }
 
-            if (inputLocker.IsInputLocked) {
+            if (inputLocker.IsInputLocked || isLoading) {
                 return;
             }
 
@@ -62,14 +69,22 @@ namespace Assets.ScreenMachine {
             var stateEntry = statesCatalog.GetEntry(state.GetId());
 
             InstantiateViews(stateEntry, state);
-
-            state.OnCreate();
         }
 
-        private void InstantiateViews(StateCatalogEntry stateEntry, IStateBase state) {
-            var worldView = UnityEngine.Object.Instantiate(stateEntry.WorldView);
-            var uiView = UnityEngine.Object.Instantiate(stateEntry.UiView);
+        private async void InstantiateViews(StateCatalogEntry stateEntry, IStateBase state) {
+            screenMachineAssetLoader.AddReference(stateEntry.WorldView);
+            screenMachineAssetLoader.AddReference(stateEntry.UiView);
+
+            await screenMachineAssetLoader.LoadAsync();
+
+            var uiView = screenMachineAssetLoader.GetAsset<UiView>(stateEntry.UiView);
+            var worldView = screenMachineAssetLoader.GetAsset<WorldView>(stateEntry.WorldView);
+
             state.LinkViews(uiView, worldView);
+
+            state.OnCreate();
+
+            isLoading = false;
         }
 
         private void PopStateLocally() {
@@ -97,6 +112,7 @@ namespace Assets.ScreenMachine {
             inputLocker.Lock(currentState);
             return new LockHandle(inputLocker);
         }
+
     }
 
 }
