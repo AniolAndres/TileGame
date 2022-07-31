@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Assets.Views;
 
 namespace Assets.Controllers {
-    public class PlayerController : MonoBehaviour {
+    public class PlayerController {
 
         private readonly PlayerView playerView;
 

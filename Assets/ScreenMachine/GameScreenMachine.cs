@@ -38,8 +38,6 @@ namespace Assets.ScreenMachine {
 
         public void PushState(IStateBase state) {
 
-            isLoading = true;
-
             if (screenStack.Count != 0) {
                 var previousState = screenStack.Peek();
                 previousState.OnSendToBack();
@@ -64,6 +62,8 @@ namespace Assets.ScreenMachine {
 
         private void PushStateLocally(IStateBase state) {
 
+            isLoading = true;
+
             screenStack.Push(state);
 
             var stateEntry = statesCatalog.GetEntry(state.GetId());
@@ -77,8 +77,11 @@ namespace Assets.ScreenMachine {
 
             await screenMachineAssetLoader.LoadAsync();
 
-            var uiView = screenMachineAssetLoader.GetAsset<UiView>(stateEntry.UiView);
-            var worldView = screenMachineAssetLoader.GetAsset<WorldView>(stateEntry.WorldView);
+            var uiViewAsset = screenMachineAssetLoader.GetAsset<UiView>(stateEntry.UiView);
+            var worldViewAsset = screenMachineAssetLoader.GetAsset<WorldView>(stateEntry.WorldView);
+
+            var uiView = UnityEngine.Object.Instantiate(uiViewAsset);
+            var worldView = UnityEngine.Object.Instantiate(worldViewAsset);
 
             state.LinkViews(uiView, worldView);
 
@@ -89,6 +92,7 @@ namespace Assets.ScreenMachine {
 
         private void PopStateLocally() {
             var state = screenStack.Peek();
+            screenMachineAssetLoader.Dispose();
             state.OnDestroy();
             state.DestroyViews();
             screenStack.Pop();

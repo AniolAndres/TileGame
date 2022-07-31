@@ -11,5 +11,6 @@ namespace Assets.ScreenMachine {
         T GetAsset<T>(AssetReference reference);
 
         void AddReference(AssetReference reference);
+        void Dispose();
     }
 }

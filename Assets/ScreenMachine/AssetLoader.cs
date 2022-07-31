@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
@@ -10,7 +11,7 @@ namespace Assets.ScreenMachine {
 
         private readonly List<AssetReference> assetsToLoad = new List<AssetReference>();
 
-        private readonly Dictionary<AssetReference, AsyncOperationHandle> assetsLoaded = new Dictionary<AssetReference, AsyncOperationHandle>();
+        private readonly Dictionary<AssetReference, AsyncOperationHandle<GameObject>> assetsLoaded = new Dictionary<AssetReference, AsyncOperationHandle<GameObject>>();
 
         public event Action<AssetLoader> OnDispose;
 
@@ -23,7 +24,7 @@ namespace Assets.ScreenMachine {
 
         public T GetAsset<T>(AssetReference reference){
             var asset = assetsLoaded[reference].Result;
-            return (T)asset;
+            return asset.GetComponent<T>();
         }
 
         public Task LoadAsync() {
@@ -32,7 +33,7 @@ namespace Assets.ScreenMachine {
 
             foreach(var asset in assetsToLoad) {
 
-                var handle = Addressables.LoadAssetAsync<object>(asset);
+                var handle = Addressables.LoadAssetAsync<GameObject>(asset);
 
                 if (assetsLoaded.ContainsKey(asset)) {
                     throw new NotSupportedException($"Trying to load asset {asset} twice! Check asset loader");
@@ -41,6 +42,8 @@ namespace Assets.ScreenMachine {
                 taskList.Add(handle.Task);
                 assetsLoaded[asset] = handle;          
             }
+
+            assetsToLoad.Clear();
 
             return Task.WhenAll(taskList);
         }
