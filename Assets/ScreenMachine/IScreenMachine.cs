@@ -11,8 +11,6 @@ namespace Assets.ScreenMachine {
         void PopState();
 
         LockHandle Lock();
-
-        T GetStateAsset<T>();
     }
 
 }

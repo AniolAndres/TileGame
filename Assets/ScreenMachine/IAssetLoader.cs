@@ -8,9 +8,14 @@ namespace Assets.ScreenMachine {
 
         Task LoadAsync();
 
-        T GetAsset<T>(AssetReference reference);
+        T GetPrefabAsset<T>(AssetReference reference);
 
-        void AddReference(AssetReference reference);
+        ScriptableObject GetScriptableObject(AssetReference reference);
+
+        void AddPrefabReference(AssetReference reference);
+
+        void AddScriptableObjectReference(AssetReference reference);
+
         void Dispose();
     }
 }

@@ -15,8 +15,6 @@ namespace Assets.Controllers {
 
         private readonly TileControllerFactory tileControllerFactory = new TileControllerFactory();
 
-        public event Action<UnitController> OnUnitClicked;
-
         public event Action<TileData> OnBuildingClicked;
 
         public MapController(TileMapView tileMapView, TileMapModel model, UnitHandler unitHandler) {

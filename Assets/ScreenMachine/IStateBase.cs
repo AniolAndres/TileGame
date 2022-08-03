@@ -1,4 +1,6 @@
 using Assets.Views;
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.ScreenMachine {
     public interface IStateBase {
@@ -19,6 +21,8 @@ namespace Assets.ScreenMachine {
         void OnUpdate();
         void EnableRaycasts();
         void DisableRaycasts();
+
+        void CacheStateAssets(List<ScriptableObject> stateAssets);
     }
 
 }

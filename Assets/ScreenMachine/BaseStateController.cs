@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using Assets.Views;
+using System.Collections.Generic;
 
 namespace Assets.ScreenMachine {
     public abstract class BaseStateController<TuiView, TWorldView> 
@@ -15,14 +16,22 @@ namespace Assets.ScreenMachine {
 
         protected AssetLoaderFactory assetLoaderFactory => context.AssetLoaderFactory;
 
+        private List<ScriptableObject> stateAssets = new List<ScriptableObject>(); 
+
         private IScreenMachine screenMachine => context.ScreenMachine;
 
         public BaseStateController(Context context) {
             this.context = context;
         }
 
-        protected T GetStateAsset<T>() {
-            return context.ScreenMachine.GetStateAsset<T>();
+        protected T GetStateAsset<T>() where T : ScriptableObject {
+            foreach(var stateAsset in stateAssets) {
+                if(stateAsset is T) {
+                    return stateAsset as T;
+                }
+            }
+
+            throw new NotSupportedException("Couldn't find any state asset of type " + typeof(T).FullName);
         }
 
         protected void PopState() {
@@ -50,6 +59,10 @@ namespace Assets.ScreenMachine {
         public void EnableRaycasts() {
             uiView.EnableRaycast();
             worldView.EnableRaycast();
+        }
+
+        public void CacheStateAssets(List<ScriptableObject> stateAssets) {
+            this.stateAssets = stateAssets;
         }
 
         public void LinkViews(UiView uiView, WorldView worldView) {

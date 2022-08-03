@@ -24,4 +24,11 @@ MonoBehaviour:
     m_SubObjectType: 
     m_EditorAssetChanged: 0
   stateAssets:
-  - {fileID: 11400000, guid: d19ec0f8df2e59247bed74c659214cad, type: 2}
+  - m_AssetGUID: d19ec0f8df2e59247bed74c659214cad
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  - m_AssetGUID: 8f6716d384d7c73488267289555171e0
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0

@@ -2,6 +2,7 @@ using Assets.Catalogs.Scripts;
 using Assets.Views;
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Assets.ScreenMachine {
 
@@ -72,13 +73,25 @@ namespace Assets.ScreenMachine {
         }
 
         private async void InstantiateViews(StateCatalogEntry stateEntry, IStateBase state) {
-            screenMachineAssetLoader.AddReference(stateEntry.WorldView);
-            screenMachineAssetLoader.AddReference(stateEntry.UiView);
+            screenMachineAssetLoader.AddPrefabReference(stateEntry.WorldView);
+            screenMachineAssetLoader.AddPrefabReference(stateEntry.UiView);
+
+            foreach(var stateAsset in stateEntry.StateAssets) {
+                screenMachineAssetLoader.AddScriptableObjectReference(stateAsset);
+            }
 
             await screenMachineAssetLoader.LoadAsync();
 
-            var uiViewAsset = screenMachineAssetLoader.GetAsset<UiView>(stateEntry.UiView);
-            var worldViewAsset = screenMachineAssetLoader.GetAsset<WorldView>(stateEntry.WorldView);
+            var uiViewAsset = screenMachineAssetLoader.GetPrefabAsset<UiView>(stateEntry.UiView);
+            var worldViewAsset = screenMachineAssetLoader.GetPrefabAsset<WorldView>(stateEntry.WorldView);
+
+            var stateAssetsList = new List<ScriptableObject>();
+
+            foreach(var stateAsset in stateEntry.StateAssets) {
+                stateAssetsList.Add(screenMachineAssetLoader.GetScriptableObject(stateAsset));
+            }
+
+            state.CacheStateAssets(stateAssetsList);
 
             var uiView = UnityEngine.Object.Instantiate(uiViewAsset);
             var worldView = UnityEngine.Object.Instantiate(worldViewAsset);
@@ -102,13 +115,6 @@ namespace Assets.ScreenMachine {
                 nextState.OnBringToFront();
                 nextState.EnableRaycasts();
             }
-        }
-
-        public T GetStateAsset<T>() {
-            var state = screenStack.Peek();
-            var entry = statesCatalog.GetEntry(state.GetId());
-
-            return entry.GetStateAsset<T>();
         }
 
         public LockHandle Lock() {

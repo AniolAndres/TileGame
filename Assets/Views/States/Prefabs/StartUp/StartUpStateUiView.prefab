@@ -639,3 +639,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   presentButton: {fileID: 8012598139620121258}
   pushButton: {fileID: 2035573837520103234}
+  psrite: {fileID: 21300000, guid: 5100834b74675c44c8721d02972755bb, type: 3}

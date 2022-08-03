@@ -17,21 +17,13 @@ namespace Assets.Catalogs.Scripts {
         private AssetReference worldView;
 
         [SerializeField]
-        private List<StateAsset> stateAssets;
+        private List<AssetReference> stateAssets;
 
         public AssetReference UiView => uiView;
 
         public AssetReference WorldView => worldView;
 
-        public T GetStateAsset<T>() {
-            foreach(var asset in stateAssets) {
-                if(asset is T found) {
-                    return found;
-                }
-            }
-
-            throw new NotSupportedException($"Could not find any state asset of type {typeof(T).FullName}");
-        }
+        public List<AssetReference> StateAssets => stateAssets;
  
     }
 
