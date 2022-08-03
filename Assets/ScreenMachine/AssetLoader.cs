@@ -1,4 +1,5 @@
-﻿using Assets.Views;
+﻿using Assets.Catalogs.Scripts;
+using Assets.Views;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -52,22 +53,34 @@ namespace Assets.ScreenMachine {
             return Task.WhenAll(taskList);
         }
 
-        public void Dispose() {
+        public void DisposeStateLoadedAssets(StateCatalogEntry stateCatalogEntry) {
             prefabAssetsToLoad.Clear();
             scriptablesAssetsToLoad.Clear();
 
-            foreach (var asset in prefabsAssetsLoaded) {
-                Addressables.Release(asset.Value);
-            }
+            ReleasePrefabReference(stateCatalogEntry.UiView);
+            ReleasePrefabReference(stateCatalogEntry.WorldView);
 
-            foreach (var asset in scriptableAssetsLoaded) {
-                Addressables.Release(asset.Value);
+            foreach(var asset in stateCatalogEntry.StateAssets) {
+                ReleaseScriptableReference(asset);
             }
-
-            scriptableAssetsLoaded.Clear();
-            prefabsAssetsLoaded.Clear();
 
             OnDispose?.Invoke(this);
+        }
+
+        private void ReleaseScriptableReference(AssetReference assetReference) {
+            if (assetReference.RuntimeKeyIsValid()) {
+                Addressables.Release(scriptableAssetsLoaded[assetReference]);
+            }
+
+            scriptableAssetsLoaded.Remove(assetReference);
+        }
+
+        private void ReleasePrefabReference(AssetReference assetReference) {
+            if (assetReference.RuntimeKeyIsValid()) {
+                Addressables.Release(prefabsAssetsLoaded[assetReference]);
+            }
+
+            prefabsAssetsLoaded.Remove(assetReference);
         }
 
         private void LoadScriptableObjects(List<Task> taskList) {

@@ -105,7 +105,8 @@ namespace Assets.ScreenMachine {
 
         private void PopStateLocally() {
             var state = screenStack.Peek();
-            screenMachineAssetLoader.Dispose();
+            var stateEntry = statesCatalog.GetEntry(state.GetId());
+            screenMachineAssetLoader.DisposeStateLoadedAssets(stateEntry);
             state.OnDestroy();
             state.DestroyViews();
             screenStack.Pop();

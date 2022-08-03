@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.AddressableAssets;
 using System.Threading.Tasks;
+using Assets.Catalogs.Scripts;
 
 namespace Assets.ScreenMachine {
     public interface IAssetLoader {
@@ -16,6 +17,6 @@ namespace Assets.ScreenMachine {
 
         void AddScriptableObjectReference(AssetReference reference);
 
-        void Dispose();
+        void DisposeStateLoadedAssets(StateCatalogEntry stateCatalogEntry);
     }
 }
