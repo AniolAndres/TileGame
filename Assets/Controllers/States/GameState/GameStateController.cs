@@ -60,7 +60,9 @@ namespace Assets.Controllers {
             var levelProvider = new LevelProvider(context.Catalogs.LevelsCatalog);
             var tileMapModel = new TileMapModel(context.Catalogs.LevelsCatalog, context.Catalogs.TilesCatalog, context.Catalogs.UnitsCatalog, 
                 levelProvider, gameStateArgs.LevelId);
-            mapController = new MapController(worldView.TileMapView, tileMapModel, new UnitHandler());
+            var inputLocker = new GameplayInputLocker(context.ScreenMachine);
+            var unitHandler = new UnitHandler(inputLocker);
+            mapController = new MapController(worldView.TileMapView, tileMapModel, unitHandler);
             mapController.OnBuildingClicked += PushPopupState;            
             mapController.CreateMap();
         }

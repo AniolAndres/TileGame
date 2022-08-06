@@ -1,6 +1,7 @@
 ﻿
 using Assets.Data;
 using Assets.Views;
+using System;
 using UnityEngine;
 
 namespace Assets.Controllers {
@@ -29,6 +30,10 @@ namespace Assets.Controllers {
 
         public void OnMove(Vector2 newPosition) {
             unitView.MoveUnitViewTo(newPosition);
+        }
+
+        public void OnDestroy() {
+            throw new NotImplementedException();
         }
     }
 }

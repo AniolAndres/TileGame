@@ -1,4 +1,5 @@
 ﻿
+using Assets.ScreenMachine;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,9 +7,17 @@ using UnityEngine;
 namespace Assets.Controllers {
     public class UnitHandler {
 
+        private readonly GameplayInputLocker inputLocker;
+
         private Dictionary<Vector2Int, UnitController> unitControllerDictionary = new Dictionary<Vector2Int, UnitController>();
 
         private Vector2Int? selectedUnitKey = null;
+
+        private LockHandle inputLock;
+
+        public UnitHandler(GameplayInputLocker inputLocker) {
+            this.inputLocker = inputLocker;
+        }
 
         public bool HasUnitSelected => selectedUnitKey.HasValue;
 
@@ -82,11 +91,21 @@ namespace Assets.Controllers {
 
             MoveUnitFromTo(selectedUnitKey.Value, newPosition);
 
+            inputLock = inputLocker.LockInput();
+
             controller.OnMove(realNewPosition);
 
             controller.OnDeselect();
 
             selectedUnitKey = null;
+        }
+
+        public void TryUnlockInput() {
+            if(inputLock == null) {
+                throw new NotSupportedException("You're tyring to unlock input after movement, but it was never locked in the first place");
+            }
+
+            inputLock?.Unlock();
         }
     }
 }

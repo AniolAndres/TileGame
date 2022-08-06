@@ -108,8 +108,16 @@ namespace Assets.Controllers {
             var tilePosition = model.GetRealTileWorldPosition(buyUnitData.Position);
             var sideLength = model.GetSideLength();
             var unitView = tileMapView.CreateUnitView(unitEntry.UnitView, unitEntry.UnitPurchaseViewConfig.UnitSprite, tilePosition, sideLength);
+            unitView.OnMovementEnd += unitHandler.TryUnlockInput;
             var unitController = new UnitController(unitView, unitModel);
             unitHandler.AddUnit(unitController, buyUnitData.Position);
         }
+
+        public void RemoveUnit(Vector2Int position) {
+            var removedController = unitHandler.GetUnitControllerAtPosition(position);
+            removedController.OnDestroy();
+            unitHandler.RemoveUnitAtPosition(position);
+        }
+
     }
 }
