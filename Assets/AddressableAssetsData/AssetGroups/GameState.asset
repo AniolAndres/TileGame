@@ -25,6 +25,14 @@ MonoBehaviour:
     m_Address: Assets/Views/States/Prefabs/Game/GameStateUiView.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 8f6716d384d7c73488267289555171e0
+    m_Address: Assets/Catalogs/Configs/GameStateConfig.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: d19ec0f8df2e59247bed74c659214cad
+    m_Address: Assets/Configs/CameraConfig.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 36d4236fd7f3d9748b5421c063efdda6, type: 2}
   m_SchemaSet:

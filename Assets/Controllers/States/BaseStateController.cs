@@ -1,9 +1,10 @@
 using UnityEngine;
 using System;
-using Assets.Views;
 using System.Collections.Generic;
+using Assets.ScreenMachine;
+using Assets.Data;
 
-namespace Assets.ScreenMachine {
+namespace Assets.Controllers {
     public abstract class BaseStateController<TuiView, TWorldView> 
         where TuiView : UiView 
         where TWorldView : WorldView {

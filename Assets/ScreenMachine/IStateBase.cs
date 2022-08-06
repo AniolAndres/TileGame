@@ -1,4 +1,3 @@
-using Assets.Views;
 using System.Collections.Generic;
 using UnityEngine;
 

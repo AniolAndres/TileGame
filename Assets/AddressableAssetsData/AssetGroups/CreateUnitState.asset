@@ -25,6 +25,10 @@ MonoBehaviour:
     m_Address: Assets/Views/States/Prefabs/CreateUnit/CreateUnitStateWorldView.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: f072dd5f78ee8274b978345162a9826f
+    m_Address: Assets/Catalogs/Configs/CreateUnitStateConfig.asset
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 36d4236fd7f3d9748b5421c063efdda6, type: 2}
   m_SchemaSet:

@@ -1,6 +1,4 @@
-﻿using Assets.Catalogs.Scripts;
-using Assets.Views;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -53,14 +51,15 @@ namespace Assets.ScreenMachine {
             return Task.WhenAll(taskList);
         }
 
-        public void DisposeStateLoadedAssets(StateCatalogEntry stateCatalogEntry) {
+        public void DisposeStateLoadedAssets(List<AssetReference> viewsAssetReferences, List<AssetReference> stateAssetsReferences) {
             prefabAssetsToLoad.Clear();
             scriptablesAssetsToLoad.Clear();
 
-            ReleasePrefabReference(stateCatalogEntry.UiView);
-            ReleasePrefabReference(stateCatalogEntry.WorldView);
+            foreach(var asset in viewsAssetReferences) {
+                ReleasePrefabReference(asset);
+            }
 
-            foreach(var asset in stateCatalogEntry.StateAssets) {
+            foreach(var asset in stateAssetsReferences) {
                 ReleaseScriptableReference(asset);
             }
 

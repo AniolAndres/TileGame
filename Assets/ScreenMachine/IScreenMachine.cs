@@ -1,8 +1,8 @@
-using Assets.Catalogs.Scripts;
+
 
 namespace Assets.ScreenMachine {
     public interface IScreenMachine {
-        void Init(StatesCatalog statesCatalog);
+        void Init();
 
         void PresentState(IStateBase state);
 

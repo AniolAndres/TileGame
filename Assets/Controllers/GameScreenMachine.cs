@@ -1,10 +1,10 @@
 using Assets.Catalogs.Scripts;
-using Assets.Views;
+using Assets.ScreenMachine;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.ScreenMachine {
+namespace Assets.Controllers {
 
     public class GameScreenMachine : IScreenMachine {
 
@@ -18,10 +18,13 @@ namespace Assets.ScreenMachine {
 
         private bool isLoading;
 
-        public void Init(StatesCatalog statesCatalog) {
+        public GameScreenMachine(StatesCatalog statesCatalog) {
+            this.statesCatalog = statesCatalog;
+        }
+
+        public void Init() {
             screenStack = new Stack<IStateBase>();
             inputLocker = new InputLocker();
-            this.statesCatalog = statesCatalog;
         }
 
         public void PopState() {
@@ -106,7 +109,7 @@ namespace Assets.ScreenMachine {
         private void PopStateLocally() {
             var state = screenStack.Peek();
             var stateEntry = statesCatalog.GetEntry(state.GetId());
-            screenMachineAssetLoader.DisposeStateLoadedAssets(stateEntry);
+            screenMachineAssetLoader.DisposeStateLoadedAssets(stateEntry.GetViewsAssetReferences(), stateEntry.StateAssets);
             state.OnDestroy();
             state.DestroyViews();
             screenStack.Pop();

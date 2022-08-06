@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Assets.ScreenMachine {
+namespace Assets.Data {
     public class UserData {
 
 

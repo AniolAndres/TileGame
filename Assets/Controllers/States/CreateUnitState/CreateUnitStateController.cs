@@ -5,7 +5,6 @@ using Assets.Data;
 using Assets.Data.Models;
 using Assets.ScreenMachine;
 using Assets.Views;
-using Assets.Views.States.Scripts;
 using System.Collections.Generic;
 
 namespace Assets.Controllers {

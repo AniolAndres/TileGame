@@ -1,4 +1,5 @@
 using Assets.Catalogs;
+using Assets.Data;
 using Assets.ScreenMachine;
 using UnityEngine;
 
@@ -12,8 +13,8 @@ namespace Assets.Controllers {
 
         void Start() {
 
-            screenMachine = new GameScreenMachine();
-            screenMachine.Init(catalogs.StatesCatalog);
+            screenMachine = new GameScreenMachine(catalogs.StatesCatalog);
+            screenMachine.Init();
 
             var context = new Context {
                 Catalogs = catalogs,

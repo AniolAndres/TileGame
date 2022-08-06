@@ -1,7 +1,8 @@
 ﻿
 using Assets.Catalogs;
+using Assets.ScreenMachine;
 
-namespace Assets.ScreenMachine {
+namespace Assets.Data {
     public class Context {
 
         public CatalogsHolder Catalogs { get; set; }

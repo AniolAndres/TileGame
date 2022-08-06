@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Assets.Views {
-
-    public abstract class UiView : MonoBehaviour {
+namespace Assets.ScreenMachine {
+    public abstract class WorldView : MonoBehaviour {
 
         private GraphicRaycaster graphicRaycaster;
 
@@ -24,4 +23,5 @@ namespace Assets.Views {
             graphicRaycaster.enabled = true;
         }
     }
+
 }

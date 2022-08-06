@@ -24,6 +24,13 @@ namespace Assets.Catalogs.Scripts {
         public AssetReference WorldView => worldView;
 
         public List<AssetReference> StateAssets => stateAssets;
+
+        public List<AssetReference> GetViewsAssetReferences() {
+            var referenceList = new List<AssetReference>();
+            referenceList.Add(uiView);
+            referenceList.Add(worldView);
+            return referenceList;
+        }
  
     }
 

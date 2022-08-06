@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using Assets.ScreenMachine;
 
 namespace Assets.Views {
     public class CreateUnitStateUiView : UiView {

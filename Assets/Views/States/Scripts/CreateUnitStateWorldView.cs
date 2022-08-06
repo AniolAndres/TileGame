@@ -1,7 +1,7 @@
-﻿using UnityEngine;
-using System.Collections;
+﻿
+using Assets.ScreenMachine;
 
-namespace Assets.Views.States.Scripts {
+namespace Assets.Views {
     public class CreateUnitStateWorldView : WorldView {
 
 
