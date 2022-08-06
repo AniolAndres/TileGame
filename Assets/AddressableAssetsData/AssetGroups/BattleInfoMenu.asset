@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: BattleInfoMenu
+  m_EditorClassIdentifier: 
+  m_GroupName: BattleInfoMenu
+  m_Data:
+    m_SerializedData: []
+  m_GUID: 9ea925d7e11455f488cfe1e27f9ba5f2
+  m_SerializeEntries:
+  - m_GUID: 61214074f55f83a4b96052aca1495d5d
+    m_Address: Assets/Views/States/Prefabs/BattleInfoMenu/BattleInfoMenuUiView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: f36098fae0a20d049a0e84be3c14e5ae
+    m_Address: Assets/Views/States/Prefabs/BattleInfoMenu/BattleInfoMenuWorldView.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 36d4236fd7f3d9748b5421c063efdda6, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 373bcdffeae8bea4ea0ca9a9423a9a62, type: 2}
+    - {fileID: 11400000, guid: 0bdb7560e2fe07b4aaa5966f626aff2a, type: 2}

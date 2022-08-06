@@ -87,14 +87,18 @@ namespace Assets.Controllers {
             if(selectedUnitKey == null) {
                 throw new NotSupportedException("Moving selected unit without having anything selected!");
             }
-            var controller = unitControllerDictionary[selectedUnitKey.Value];
+
+            var empty = IsSpaceEmpty(newPosition);
+            if (!empty) {
+                return;
+            }
 
             MoveUnitFromTo(selectedUnitKey.Value, newPosition);
 
             inputLock = inputLocker.LockInput();
 
+            var controller = unitControllerDictionary[selectedUnitKey.Value];
             controller.OnMove(realNewPosition);
-
             controller.OnDeselect();
 
             selectedUnitKey = null;
