@@ -36,6 +36,8 @@ namespace Assets.Controllers {
 
         public void OnCreate() {
 
+            uiView.OnBattleInfoMenuRequested += PushBattleInfoMenu;
+
             model = new GameStateModel(context.Catalogs.LevelsCatalog, gameStateArgs.LevelId);
 
             CreatePlayers();
@@ -88,6 +90,7 @@ namespace Assets.Controllers {
             cameraController?.Destroy();
             mapController?.OnDestroy();
             mapController.OnBuildingClicked -= PushPopupState;
+            uiView.OnBattleInfoMenuRequested -= PushBattleInfoMenu;
         }
 
         public void OnSendToBack() {
@@ -96,6 +99,14 @@ namespace Assets.Controllers {
 
         private void CreateUnit(BuyUnitData unitData) {
             mapController.CreateUnit(unitData);
+        }
+
+
+        private void PushBattleInfoMenu() {
+            var battleInfoMenuStateArgs = new BattleInfoMenuStateArgs();
+            var battleInfoMenuController = new BattleInfoMenuStateController(context, battleInfoMenuStateArgs);
+
+            PushState(battleInfoMenuController);
         }
 
     }

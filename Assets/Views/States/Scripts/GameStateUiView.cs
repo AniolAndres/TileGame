@@ -13,6 +13,16 @@ namespace Assets.Views {
         [SerializeField]
         private Transform playersParent;
 
+        public event Action OnBattleInfoMenuRequested;
+
+        public override void OnUpdate() {
+            base.OnUpdate();
+
+            if (Input.GetKeyDown(KeyCode.P)) {
+                OnBattleInfoMenuRequested?.Invoke();
+            }
+        }
+
         public PlayerView InstantiatePlayerView() {
             var playerView = Instantiate(playerViewPrefab, playersParent);
             return playerView;

@@ -5,7 +5,7 @@ using Assets.ScreenMachine;
 using Assets.Views;
 
 namespace Assets.Controllers {
-    public class BattleInfoMenuStateController : BaseStateController<GameStateUiView, GameStateWorldView>, IStateBase {
+    public class BattleInfoMenuStateController : BaseStateController<BattleInfoMenuStateUiView, BattleInfoMenuStateWorldView>, IStateBase {
 
         private const string Id = "BattleInfoMenu";
 
@@ -27,15 +27,17 @@ namespace Assets.Controllers {
 
         public void OnCreate() {
 
+            uiView.OnPopRequested += PopState;
+
+            uiView.InstantiateOptions();
+
             model = new BattleInfoMenuModel();
-
-
 
         }
 
 
         public void OnDestroy() {
-
+            uiView.OnPopRequested -= PopState;
         }
 
         public void OnSendToBack() {
