@@ -76,22 +76,22 @@ namespace Assets.Controllers {
         }
 
         private async void InstantiateViews(StateCatalogEntry stateEntry, IStateBase state) {
-            screenMachineAssetLoader.AddPrefabReference(stateEntry.WorldView);
-            screenMachineAssetLoader.AddPrefabReference(stateEntry.UiView);
+            screenMachineAssetLoader.AddReference(stateEntry.WorldView);
+            screenMachineAssetLoader.AddReference(stateEntry.UiView);
 
             foreach(var stateAsset in stateEntry.StateAssets) {
-                screenMachineAssetLoader.AddScriptableObjectReference(stateAsset);
+                screenMachineAssetLoader.AddReference(stateAsset);
             }
 
             await screenMachineAssetLoader.LoadAsync();
 
-            var uiViewAsset = screenMachineAssetLoader.GetPrefabAsset<UiView>(stateEntry.UiView);
-            var worldViewAsset = screenMachineAssetLoader.GetPrefabAsset<WorldView>(stateEntry.WorldView);
+            var uiViewAsset = screenMachineAssetLoader.GetAsset<UiView>(stateEntry.UiView);
+            var worldViewAsset = screenMachineAssetLoader.GetAsset<WorldView>(stateEntry.WorldView);
 
             var stateAssetsList = new List<ScriptableObject>();
 
             foreach(var stateAsset in stateEntry.StateAssets) {
-                stateAssetsList.Add(screenMachineAssetLoader.GetScriptableObject(stateAsset));
+                stateAssetsList.Add(screenMachineAssetLoader.GetAsset<ScriptableObject>(stateAsset));
             }
 
             state.CacheStateAssets(stateAssetsList);
@@ -109,7 +109,7 @@ namespace Assets.Controllers {
         private void PopStateLocally() {
             var state = screenStack.Peek();
             var stateEntry = statesCatalog.GetEntry(state.GetId());
-            screenMachineAssetLoader.DisposeStateLoadedAssets(stateEntry.GetViewsAssetReferences(), stateEntry.StateAssets);
+            screenMachineAssetLoader.DisposeStateLoadedAssets(stateEntry.GetAllAssetReferences());
             state.OnDestroy();
             state.DestroyViews();
             screenStack.Pop();

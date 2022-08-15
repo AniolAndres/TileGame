@@ -8,15 +8,11 @@ namespace Assets.ScreenMachine {
 
         Task LoadAsync();
 
-        T GetPrefabAsset<T>(AssetReference reference);
+        T GetAsset<T>(AssetReference reference) where T : UnityEngine.Object;
 
-        ScriptableObject GetScriptableObject(AssetReference reference);
+        void AddReference(AssetReference reference);
 
-        void AddPrefabReference(AssetReference reference);
-
-        void AddScriptableObjectReference(AssetReference reference);
-
-        void DisposeStateLoadedAssets(List<AssetReference> viewsReferences, List<AssetReference> stateAssetsReferences);
+        void DisposeStateLoadedAssets(List<AssetReference> viewsReferences);
 
 
     }

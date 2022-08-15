@@ -31,7 +31,17 @@ namespace Assets.Catalogs.Scripts {
             referenceList.Add(worldView);
             return referenceList;
         }
- 
+
+        public List<AssetReference> GetAllAssetReferences() {
+            var referenceList = new List<AssetReference>();
+            referenceList.Add(uiView);
+            referenceList.Add(worldView);
+            foreach(var asset in stateAssets) {
+                referenceList.Add(asset);
+            }
+            return referenceList;
+        }
+
     }
 
 }
