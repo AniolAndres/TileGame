@@ -38,7 +38,7 @@ namespace Assets.Controllers {
 
             uiView.OnBattleInfoMenuRequested += PushBattleInfoMenu;
 
-            model = new GameStateModel(context.Catalogs.LevelsCatalog, gameStateArgs.LevelId);
+            model = new GameStateModel(context.Catalogs.LevelsCatalog, context.Catalogs.CommandersCatalog, gameStateArgs.LevelId);
 
             CreatePlayers();
             CreateMapController();
@@ -48,14 +48,18 @@ namespace Assets.Controllers {
 
         private void CreatePlayers() {
             warController = new WarController();
-            var totalPlayers = model.GetTotalPlayers();
-            
-            for(int i = 0; i< totalPlayers; ++i) {
+
+            foreach(var commanderId in gameStateArgs.CommanderIds) {
+                var commanderEntry = model.GetCommanderEntry(commanderId);
                 var fundsController = new FundsController();
+                var playerModel = new PlayerModel(commanderEntry);
                 var playerView = uiView.InstantiatePlayerView();
-                var playerController = new PlayerController(playerView, fundsController);
+                var playerController = new PlayerController(playerView, playerModel, fundsController);
+                playerController.OnCreate();
                 warController.AddPlayer(playerController);
             }
+
+            warController.SetInitialPlayer();
         }
 
         private void CreateMapController() {
@@ -103,12 +107,17 @@ namespace Assets.Controllers {
 
 
         private void PushBattleInfoMenu() {
-            var battleInfoMenuStateArgs = new BattleInfoMenuStateArgs();
+            var battleInfoMenuStateArgs = new BattleInfoMenuStateArgs {
+                OnOptionClicked = EndTurn,
+            };
             var battleInfoMenuController = new BattleInfoMenuStateController(context, battleInfoMenuStateArgs);
 
             PushState(battleInfoMenuController);
         }
 
+        private void EndTurn() {
+            warController.SetNextPlayer();
+        }
     }
 
 }

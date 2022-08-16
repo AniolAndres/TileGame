@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using Assets.Views;
+using Assets.Data;
+using System;
 
 namespace Assets.Controllers {
     public class PlayerController {
 
         private readonly PlayerView playerView;
+
+        private readonly PlayerModel playerModel;
 
         private readonly List<UnitController> controlledUnits = new List<UnitController>();
 
@@ -13,8 +17,17 @@ namespace Assets.Controllers {
 
         private readonly FundsController fundsController;
 
-        public PlayerController(PlayerView playerView, FundsController fundsController) {
+        public void Hide(bool instant) {
+            playerView.Hide(instant);
+        }
+
+        public void Show(bool instant) {
+            playerView.Show(instant);
+        }
+
+        public PlayerController(PlayerView playerView, PlayerModel model, FundsController fundsController) {
             this.fundsController = fundsController;
+            this.playerModel = model;
             this.playerView = playerView;
         }
 
@@ -28,11 +41,20 @@ namespace Assets.Controllers {
 
         public void OnTurnStart() {
             fundsController.GainFunds(controlledBuildings.Count * 1000);
+            playerView.Show(false);
         }
 
         public void OnTurnEnd() {
-
+            playerView.Hide(false);
         }
 
+        public void OnCreate() {
+            var uiData = playerModel.GetCommanderViewData();
+            playerView.Setup(ref uiData);
+        }
+
+        public void OnDestroy() {
+            
+        }
     }
 }

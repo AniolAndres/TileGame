@@ -3,6 +3,7 @@ using Assets.Data;
 using Assets.Data.Models;
 using Assets.ScreenMachine;
 using Assets.Views;
+using System;
 
 namespace Assets.Controllers {
     public class BattleInfoMenuStateController : BaseStateController<BattleInfoMenuStateUiView, BattleInfoMenuStateWorldView>, IStateBase {
@@ -28,6 +29,7 @@ namespace Assets.Controllers {
         public void OnCreate() {
 
             uiView.OnPopRequested += PopState;
+            uiView.OnOptionClicked += OnOptionClicked;
 
             uiView.InstantiateOptions();
 
@@ -37,7 +39,13 @@ namespace Assets.Controllers {
 
 
         public void OnDestroy() {
+            uiView.OnOptionClicked -= OnOptionClicked;
             uiView.OnPopRequested -= PopState;
+        }
+
+        private void OnOptionClicked() {
+            PopState();
+            stateArgs.OnOptionClicked?.Invoke();
         }
 
         public void OnSendToBack() {

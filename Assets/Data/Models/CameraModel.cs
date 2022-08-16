@@ -1,5 +1,5 @@
 ﻿
-using Assets.Catalogs.Scripts;
+using Assets.Catalogs;
 using Assets.Configs;
 using UnityEngine;
 

@@ -1,6 +1,4 @@
-﻿
-
-using Assets.Catalogs.Scripts;
+﻿using Assets.Catalogs;
 using System;
 
 namespace Assets.Data {

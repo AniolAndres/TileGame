@@ -1,4 +1,4 @@
-using Assets.Catalogs.Scripts;
+using Assets.Catalogs;
 using Assets.ScreenMachine;
 using System;
 using System.Collections.Generic;
@@ -96,8 +96,8 @@ namespace Assets.Controllers {
 
             state.CacheStateAssets(stateAssetsList);
 
-            var uiView = UnityEngine.Object.Instantiate(uiViewAsset);
             var worldView = UnityEngine.Object.Instantiate(worldViewAsset);
+            var uiView = UnityEngine.Object.Instantiate(uiViewAsset);
 
             state.LinkViews(uiView, worldView);
 

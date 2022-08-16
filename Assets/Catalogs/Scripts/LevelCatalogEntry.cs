@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-namespace Assets.Catalogs.Scripts {
+namespace Assets.Catalogs {
 
     [CreateAssetMenu(fileName = "LevelCatalogEntry", menuName = "ScriptableObjects/Catalogs/Create level Catalog Entry", order = 1)]
     public class LevelCatalogEntry : CatalogEntry {

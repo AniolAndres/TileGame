@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Assets.Catalogs.Scripts;
+using Assets.Catalogs;
 using System.Linq;
 using Assets.Views;
 using Assets.Data.Levels;

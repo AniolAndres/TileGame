@@ -4,7 +4,6 @@ using System;
 using Assets.Data.Models;
 using Assets.Views;
 using Assets.Data.Level;
-using Assets.Catalogs.Scripts;
 
 namespace Assets.Controllers {
     public class TileControllerFactory {
@@ -21,7 +20,7 @@ namespace Assets.Controllers {
                     return new TerrainTileController(view, genericTileModel);
             }
 
-            throw new NotSupportedException($"Couldn't find any controller for type {entry.TileType.ToString()}, check it's added to the factory");
+            throw new NotSupportedException($"Couldn't find any controller for type {entry.TileType}, check it's added to the factory");
         }
     }
 }

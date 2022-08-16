@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Assets.Controllers {
     public class WarController {
@@ -11,10 +12,21 @@ namespace Assets.Controllers {
             players.Add(player);
         }
 
+        public void SetInitialPlayer() {
+
+            foreach(var player in players) {
+                player.Hide(true);
+            }
+
+            currentPlayer = players.First();
+            currentPlayer.Show(true);
+        }
+
         public void SetNextPlayer() {
             currentPlayer.OnTurnEnd();
             var index = players.IndexOf(currentPlayer);
-            index = index == players.Count - 1 ? 0 : index;
+            ++index;
+            index = index > players.Count - 1 ? 0 : index;
             currentPlayer = players[index];
             currentPlayer.OnTurnStart();
         }

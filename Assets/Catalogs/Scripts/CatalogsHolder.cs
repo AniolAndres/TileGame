@@ -1,4 +1,4 @@
-﻿using Assets.Catalogs.Scripts;
+﻿
 using UnityEngine;
 
 
@@ -19,6 +19,9 @@ namespace Assets.Catalogs {
         [SerializeField]
         private UnitsCatalog unitsCatalog;
 
+        [SerializeField]
+        private CommandersCatalog commandersCatalog;
+
         public StatesCatalog StatesCatalog => statesCatalog;
 
         public LevelsCatalog LevelsCatalog => levelsCatalog;
@@ -26,5 +29,7 @@ namespace Assets.Catalogs {
         public TilesCatalog TilesCatalog => tilesCatalog;
 
         public UnitsCatalog UnitsCatalog => unitsCatalog;
+
+        public CommandersCatalog CommandersCatalog => commandersCatalog;
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System;
 using System.Linq;
 
-namespace Assets.Catalogs.Scripts {
+namespace Assets.Catalogs {
     public class Catalog<T> : ScriptableObject  where T : CatalogEntry {
 
         [SerializeField]

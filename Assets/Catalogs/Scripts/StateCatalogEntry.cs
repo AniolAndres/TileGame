@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using Assets.Configs;
 using UnityEngine.AddressableAssets;
 
-namespace Assets.Catalogs.Scripts {
+namespace Assets.Catalogs {
 
     [CreateAssetMenu(fileName = "States Catalog", menuName = "ScriptableObjects/Catalogs/Create States Catalog Entry", order = 1)]
     public class StateCatalogEntry : CatalogEntry{

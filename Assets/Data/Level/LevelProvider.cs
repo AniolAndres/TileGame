@@ -1,5 +1,5 @@
 
-using Assets.Catalogs.Scripts;
+using Assets.Catalogs;
 using Assets.Data.Level;
 using Assets.Extensions;
 using System;

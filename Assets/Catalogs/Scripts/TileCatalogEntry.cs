@@ -2,7 +2,7 @@
 using Assets.Views;
 using System.Collections.Generic;
 
-namespace Assets.Catalogs.Scripts {
+namespace Assets.Catalogs {
 
     [CreateAssetMenu(fileName = "Tiles Catalog", menuName = "ScriptableObjects/Catalogs/Create Tile Catalog Entry", order = 1)]
     public class TileCatalogEntry : CatalogEntry {

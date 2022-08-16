@@ -1,6 +1,6 @@
 ﻿
 using Assets.Catalogs;
-using Assets.Catalogs.Scripts;
+using Assets.Catalogs;
 using Assets.Data;
 using Assets.Data.Models;
 using Assets.ScreenMachine;

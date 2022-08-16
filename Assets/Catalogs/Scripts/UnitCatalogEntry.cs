@@ -3,7 +3,7 @@ using System.Collections;
 using Assets.Views;
 using Assets.Configs;
 
-namespace Assets.Catalogs.Scripts {
+namespace Assets.Catalogs {
 
     [CreateAssetMenu(fileName = "UnitCatalogEntry", menuName = "ScriptableObjects/Catalogs/Create Unit Catalog Entry", order = 1)]
     public class UnitCatalogEntry : CatalogEntry {

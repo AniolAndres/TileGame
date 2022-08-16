@@ -1,8 +1,5 @@
 ﻿using UnityEngine;
-using System.Collections;
-using Assets.Catalogs.Scripts;
-using System;
-using Assets.Data.Level;
+using Assets.Catalogs;
 
 namespace Assets.Data.Models {
     public class BuildingTileModel : TileModel {

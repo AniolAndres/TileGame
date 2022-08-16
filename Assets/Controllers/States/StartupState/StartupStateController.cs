@@ -1,6 +1,8 @@
 using Assets.Data;
 using Assets.ScreenMachine;
 using Assets.Views;
+using System;
+using System.Collections.Generic;
 
 namespace Assets.Controllers {
     public class StartupStateController : BaseStateController<StartupStateUiView, StartupStateWorldView>, IStateBase {
@@ -24,14 +26,20 @@ namespace Assets.Controllers {
 
         private void PushNewState() {
             var gameStateArgs = new GameStateArgs {
-                LevelId = "first"
+                LevelId = "first",
+                CommanderIds = GetCommanderIds()
             };
             PushState(new GameStateController(context, gameStateArgs));
         }
 
+        private List<string> GetCommanderIds() {
+            return new List<string> { "andy", "colin" };
+        }
+
         private void PresentNewState() {
             var gameStateArgs = new GameStateArgs {
-                LevelId = "first"
+                LevelId = "first",
+                CommanderIds = GetCommanderIds()
             };
             PresentState(new GameStateController(context, gameStateArgs));
         }

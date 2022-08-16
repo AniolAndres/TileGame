@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Assets.Catalogs.Scripts;
+using Assets.Catalogs;
 using Assets.Data.Level;
 
 namespace Assets.Data.Models {
