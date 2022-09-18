@@ -12,8 +12,5 @@ namespace Assets.ScreenMachine {
 
         void AddReference(AssetReference reference);
 
-        void DisposeStateLoadedAssets(List<AssetReference> viewsReferences);
-
-
     }
 }

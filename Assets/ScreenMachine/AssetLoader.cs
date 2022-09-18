@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
-
 using Object = UnityEngine.Object;
 
 namespace Assets.ScreenMachine {
@@ -13,8 +12,6 @@ namespace Assets.ScreenMachine {
         private readonly List<AssetReference> assetsToLoad = new List<AssetReference>();
 
         private readonly Dictionary<AssetReference, AsyncOperationHandle<Object>> assetsLoaded = new Dictionary<AssetReference, AsyncOperationHandle<Object>>();
-
-        public event Action<AssetLoader> OnDispose;
 
         public void AddReference(AssetReference reference) {
             if (assetsToLoad.Contains(reference) || assetsLoaded.ContainsKey(reference)) {
@@ -46,25 +43,6 @@ namespace Assets.ScreenMachine {
             return Task.WhenAll(taskList);
         }
 
-        public void DisposeStateLoadedAssets(List<AssetReference> viewsAssetReferences) {
-            assetsToLoad.Clear();
-
-            foreach(var asset in viewsAssetReferences) {
-                ReleasePrefabReference(asset);
-            }
-
-            OnDispose?.Invoke(this);
-        }
-
-
-        private void ReleasePrefabReference(AssetReference assetReference) {
-            if (assetsLoaded[assetReference].IsValid()) {
-                Addressables.Release(assetsLoaded[assetReference]);
-            }
-
-            assetsLoaded.Remove(assetReference);
-        }
-
         private void LoadAssets(List<Task> taskList) {
             foreach (var asset in assetsToLoad) {
 
@@ -79,6 +57,24 @@ namespace Assets.ScreenMachine {
             }
 
             assetsToLoad.Clear();
+        }
+
+        public void Destroy() {
+
+            if(assetsToLoad.Count > 0) {
+                throw new NotSupportedException("There are still some assets to load in the loader that weren't loaded yet, " +
+                    "are you adding unneeded references after loading maybe?");
+            }
+
+            foreach (var asset in assetsLoaded) {
+                var assetHandle = asset.Value;
+
+                if (assetHandle.IsValid()) {
+                    Addressables.Release(assetHandle);
+                }
+            }
+
+            assetsLoaded.Clear();
         }
     }
 }

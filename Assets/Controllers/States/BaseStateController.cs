@@ -15,9 +15,9 @@ namespace Assets.Controllers {
 
         protected Context context;
 
-        protected AssetLoaderFactory assetLoaderFactory => context.AssetLoaderFactory;
+        protected IAssetLoaderFactory assetLoaderFactory => context.AssetLoaderFactory;
 
-        private List<ScriptableObject> stateAssets = new List<ScriptableObject>(); 
+        private List<ScriptableObject> stateAssets = new List<ScriptableObject>();
 
         private IScreenMachine screenMachine => context.ScreenMachine;
 
@@ -75,5 +75,10 @@ namespace Assets.Controllers {
             GameObject.Destroy(uiView.gameObject);
             GameObject.Destroy(worldView.gameObject);
         }
+
+        public void ReleaseAssets(string stateId) {
+            context.AssetLoaderFactory.ReleaseStateLoadedAssets(stateId);
+        }
+
     }
 }

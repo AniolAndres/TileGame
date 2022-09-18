@@ -23,6 +23,7 @@ namespace Assets.ScreenMachine {
         void DisableRaycasts();
 
         void CacheStateAssets(List<ScriptableObject> stateAssets);
+        void ReleaseAssets(string stateId);
     }
 
 }

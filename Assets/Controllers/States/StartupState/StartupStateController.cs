@@ -55,12 +55,12 @@ namespace Assets.Controllers {
         }
 
         public void OnSendToBack() {
-
+            
         }
 
         public Task Preload() {
 
-            assetLoader = assetLoaderFactory.CreateLoader();
+            assetLoader = assetLoaderFactory.CreateLoader(this);
 
             Debug.Log("preloading state");
 

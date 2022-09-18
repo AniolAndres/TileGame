@@ -1,22 +1,40 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.ScreenMachine {
-    public class AssetLoaderFactory {
+    public class AssetLoaderFactory : IAssetLoaderFactory {
 
-        private readonly List<AssetLoader> activeLoaders = new List<AssetLoader>();
+        private Dictionary<string, List<AssetLoader>> stateAssetLoaders = new Dictionary<string, List<AssetLoader>>();
 
-        public IAssetLoader CreateLoader() {
+        public IAssetLoader CreateLoader(IStateBase originState) {
+            var id = originState.GetId();
+            return CreateLoader(id);
+        }
+
+        public IAssetLoader CreateLoader(string id) {
             var loader = new AssetLoader();
-            loader.OnDispose += Dispose;
-            activeLoaders.Add(loader);
-            Debug.Log($"Current loader count = {activeLoaders.Count}");
+
+            if (!stateAssetLoaders.ContainsKey(id)) {
+                stateAssetLoaders[id] = new List<AssetLoader>();
+            }
+            stateAssetLoaders[id].Add(loader);
+
             return loader;
         }
 
-        private void Dispose(AssetLoader loader) {
-            loader.OnDispose -= Dispose;
-            activeLoaders.Remove(loader);
+        public void ReleaseStateLoadedAssets(string stateId) {
+            if (!stateAssetLoaders.ContainsKey(stateId)) {
+                return;
+            }
+
+            var loaderList = stateAssetLoaders[stateId];
+
+            foreach(var loader in loaderList) {
+                loader.Destroy();
+            }
+
+            stateAssetLoaders.Remove(stateId);
         }
     }
 }

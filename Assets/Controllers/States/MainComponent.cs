@@ -13,13 +13,15 @@ namespace Assets.Controllers {
 
         void Start() {
 
-            screenMachine = new GameScreenMachine(catalogs.StatesCatalog);
+            var assetLoaderFactory = new AssetLoaderFactory();
+
+            screenMachine = new GameScreenMachine(catalogs.StatesCatalog, assetLoaderFactory);
             screenMachine.Init();
 
             var context = new Context {
                 Catalogs = catalogs,
                 UserData = new UserData(),
-                AssetLoaderFactory = new AssetLoaderFactory(),
+                AssetLoaderFactory = assetLoaderFactory,
                 ScreenMachine = screenMachine
             };
 

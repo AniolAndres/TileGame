@@ -14,12 +14,13 @@ namespace Assets.Controllers {
 
         private InputLocker inputLocker;
 
-        private IAssetLoader screenMachineAssetLoader = new AssetLoader();
+        private readonly AssetLoaderFactory assetLoaderFactory = new AssetLoaderFactory();
 
         private bool isLoading;
 
-        public GameScreenMachine(StatesCatalog statesCatalog) {
+        public GameScreenMachine(StatesCatalog statesCatalog, AssetLoaderFactory assetLoaderFactory) {
             this.statesCatalog = statesCatalog;
+            this.assetLoaderFactory = assetLoaderFactory;
         }
 
         public void Init() {
@@ -76,22 +77,25 @@ namespace Assets.Controllers {
         }
 
         private async void InstantiateViews(StateCatalogEntry stateEntry, IStateBase state) {
-            screenMachineAssetLoader.AddReference(stateEntry.WorldView);
-            screenMachineAssetLoader.AddReference(stateEntry.UiView);
+
+            var stateAssetLoader = assetLoaderFactory.CreateLoader(stateEntry.Id);
+
+            stateAssetLoader.AddReference(stateEntry.WorldView);
+            stateAssetLoader.AddReference(stateEntry.UiView);
 
             foreach(var stateAsset in stateEntry.StateAssets) {
-                screenMachineAssetLoader.AddReference(stateAsset);
+                stateAssetLoader.AddReference(stateAsset);
             }
 
-            await screenMachineAssetLoader.LoadAsync();
+            await stateAssetLoader.LoadAsync();
 
-            var uiViewAsset = screenMachineAssetLoader.GetAsset<UiView>(stateEntry.UiView);
-            var worldViewAsset = screenMachineAssetLoader.GetAsset<WorldView>(stateEntry.WorldView);
+            var uiViewAsset = stateAssetLoader.GetAsset<UiView>(stateEntry.UiView);
+            var worldViewAsset = stateAssetLoader.GetAsset<WorldView>(stateEntry.WorldView);
 
             var stateAssetsList = new List<ScriptableObject>();
 
             foreach(var stateAsset in stateEntry.StateAssets) {
-                stateAssetsList.Add(screenMachineAssetLoader.GetAsset<ScriptableObject>(stateAsset));
+                stateAssetsList.Add(stateAssetLoader.GetAsset<ScriptableObject>(stateAsset));
             }
 
             state.CacheStateAssets(stateAssetsList);
@@ -112,8 +116,7 @@ namespace Assets.Controllers {
 
         private void PopStateLocally() {
             var state = screenStack.Peek();
-            var stateEntry = statesCatalog.GetEntry(state.GetId());
-            screenMachineAssetLoader.DisposeStateLoadedAssets(stateEntry.GetAllAssetReferences());
+            state.ReleaseAssets(state.GetId());
             state.OnDestroy();
             state.DestroyViews();
             screenStack.Pop();

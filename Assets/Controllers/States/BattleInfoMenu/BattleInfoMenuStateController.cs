@@ -52,13 +52,6 @@ namespace Assets.Controllers {
         public void OnSendToBack() {
 
         }
-
-        public Task OnPreload() {
-            var loader = assetLoaderFactory.CreateLoader();
-            loader.AddReference(new UnityEngine.AddressableAssets.AssetReference());
-           
-            return loader.LoadAsync();
-        }
     }
 
 }

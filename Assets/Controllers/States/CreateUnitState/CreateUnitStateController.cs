@@ -1,6 +1,5 @@
 ﻿
 using Assets.Catalogs;
-using Assets.Catalogs;
 using Assets.Data;
 using Assets.Data.Models;
 using Assets.ScreenMachine;
@@ -32,7 +31,7 @@ namespace Assets.Controllers {
 
         public void OnCreate() {
             uiView.OnPopRequested += PopState;
-
+            var loader = assetLoaderFactory.CreateLoader(this);
             var popupStateConfig = GetStateAsset<CreateUnitStateConfig>();
             model = new CreateUnitStateModel(context.Catalogs.UnitsCatalog, context.Catalogs.TilesCatalog, popupStateConfig);
 
