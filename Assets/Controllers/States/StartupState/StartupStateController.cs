@@ -3,13 +3,17 @@ using Assets.ScreenMachine;
 using Assets.Views;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using UnityEngine;
 
 namespace Assets.Controllers {
-    public class StartupStateController : BaseStateController<StartupStateUiView, StartupStateWorldView>, IStateBase {
+    public class StartupStateController : BaseStateController<StartupStateUiView, StartupStateWorldView>, IStateBase, IPreloadable {
 
         private const string Id = "StartUpState";
 
         public StartupStateController(Context context) : base(context) { }
+
+        private IAssetLoader assetLoader;
 
         public string GetId() {
             return Id;
@@ -20,6 +24,7 @@ namespace Assets.Controllers {
         }
 
         public void OnCreate() {
+
             uiView.OnPresentRequested += PresentNewState;
             uiView.OnPushRequested += PushNewState;
         }
@@ -53,7 +58,14 @@ namespace Assets.Controllers {
 
         }
 
+        public Task Preload() {
 
+            assetLoader = assetLoaderFactory.CreateLoader();
+
+            Debug.Log("preloading state");
+
+            return assetLoader.LoadAsync();
+        }
     }
 
 }

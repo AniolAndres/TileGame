@@ -4,6 +4,7 @@ using Assets.Data.Models;
 using Assets.ScreenMachine;
 using Assets.Views;
 using System;
+using System.Threading.Tasks;
 
 namespace Assets.Controllers {
     public class BattleInfoMenuStateController : BaseStateController<BattleInfoMenuStateUiView, BattleInfoMenuStateWorldView>, IStateBase {
@@ -52,6 +53,12 @@ namespace Assets.Controllers {
 
         }
 
+        public Task OnPreload() {
+            var loader = assetLoaderFactory.CreateLoader();
+            loader.AddReference(new UnityEngine.AddressableAssets.AssetReference());
+           
+            return loader.LoadAsync();
+        }
     }
 
 }

@@ -58,7 +58,7 @@ namespace Assets.ScreenMachine {
 
 
         private void ReleasePrefabReference(AssetReference assetReference) {
-            if (assetReference.RuntimeKeyIsValid()) {
+            if (assetsLoaded[assetReference].IsValid()) {
                 Addressables.Release(assetsLoaded[assetReference]);
             }
 

@@ -101,6 +101,10 @@ namespace Assets.Controllers {
 
             state.LinkViews(uiView, worldView);
 
+            if(state is IPreloadable preloadableState) {
+                await preloadableState.Preload();
+            }
+
             state.OnCreate();
 
             isLoading = false;
