@@ -17,6 +17,8 @@ namespace Assets.Controllers {
 
         protected IAssetLoaderFactory assetLoaderFactory => context.AssetLoaderFactory;
 
+        protected ITimerFactory timerFactory => context.TimerFactory;
+
         private List<ScriptableObject> stateAssets = new List<ScriptableObject>();
 
         private IScreenMachine screenMachine => context.ScreenMachine;

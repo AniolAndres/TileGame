@@ -13,5 +13,7 @@ namespace Assets.Data {
 
         public AssetLoaderFactory AssetLoaderFactory { get; set; }
 
+        public TimerFactory TimerFactory { get; set; }
+
     }
 }

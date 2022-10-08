@@ -14,13 +14,16 @@ namespace Assets.Controllers {
 
         private InputLocker inputLocker;
 
-        private readonly AssetLoaderFactory assetLoaderFactory = new AssetLoaderFactory();
+        private readonly AssetLoaderFactory assetLoaderFactory;
+
+        private readonly TimerFactory timerFactory;
 
         private bool isLoading;
 
-        public GameScreenMachine(StatesCatalog statesCatalog, AssetLoaderFactory assetLoaderFactory) {
+        public GameScreenMachine(StatesCatalog statesCatalog, AssetLoaderFactory assetLoaderFactory, TimerFactory timerFactory) {
             this.statesCatalog = statesCatalog;
             this.assetLoaderFactory = assetLoaderFactory;
+            this.timerFactory = timerFactory;
         }
 
         public void Init() {
@@ -52,10 +55,12 @@ namespace Assets.Controllers {
             PushStateLocally(state);
         }
 
-        public void OnUpdate() {
+        public void OnUpdate(float deltaTime) {
             if(screenStack.Count == 0) {
                 throw new NotSupportedException("Trying to call OnUpdate on the screenstack but it's empty!");
             }
+
+            timerFactory.UpdateTimers(deltaTime);
 
             if (inputLocker.IsInputLocked || isLoading) {
                 return;
@@ -115,11 +120,12 @@ namespace Assets.Controllers {
         }
 
         private void PopStateLocally() {
-            var state = screenStack.Peek();
+            var state = screenStack.Pop();
             state.ReleaseAssets(state.GetId());
             state.OnDestroy();
             state.DestroyViews();
-            screenStack.Pop();
+
+            timerFactory.DestroyAllTimersFromState(state);
 
             if(screenStack.Count != 0) {
                 var nextState = screenStack.Peek();

@@ -14,14 +14,16 @@ namespace Assets.Controllers {
         void Start() {
 
             var assetLoaderFactory = new AssetLoaderFactory();
+            var timerFactory = new TimerFactory();
 
-            screenMachine = new GameScreenMachine(catalogs.StatesCatalog, assetLoaderFactory);
+            screenMachine = new GameScreenMachine(catalogs.StatesCatalog, assetLoaderFactory, timerFactory); //starting to get crowded, not a fan
             screenMachine.Init();
 
             var context = new Context {
                 Catalogs = catalogs,
                 UserData = new UserData(),
                 AssetLoaderFactory = assetLoaderFactory,
+                TimerFactory = timerFactory,
                 ScreenMachine = screenMachine
             };
 
@@ -29,7 +31,7 @@ namespace Assets.Controllers {
         }
 
         private void Update() {
-            screenMachine.OnUpdate();
+            screenMachine.OnUpdate(Time.smoothDeltaTime);
         }
 
     }

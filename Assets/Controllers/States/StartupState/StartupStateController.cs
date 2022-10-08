@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Assets.Controllers {
-    public class StartupStateController : BaseStateController<StartupStateUiView, StartupStateWorldView>, IStateBase, IPreloadable {
+    public class StartupStateController : BaseStateController<StartupStateUiView, StartupStateWorldView>, IStateBase {
 
         private const string Id = "StartUpState";
 
@@ -27,6 +27,11 @@ namespace Assets.Controllers {
 
             uiView.OnPresentRequested += PresentNewState;
             uiView.OnPushRequested += PushNewState;
+
+            var timer = timerFactory.CreateTimer(this, 5.0f);
+            timer.AddCallback(() => Debug.Log("5 seconds have passed! pushing next state"));
+            timer.AddCallback(PushNewState);
+            timer.Fire();
         }
 
         private void PushNewState() {
@@ -56,15 +61,6 @@ namespace Assets.Controllers {
 
         public void OnSendToBack() {
             
-        }
-
-        public Task Preload() {
-
-            assetLoader = assetLoaderFactory.CreateLoader(this);
-
-            Debug.Log("preloading state");
-
-            return assetLoader.LoadAsync();
         }
     }
 
