@@ -27,11 +27,6 @@ namespace Assets.Controllers {
 
             uiView.OnPresentRequested += PresentNewState;
             uiView.OnPushRequested += PushNewState;
-
-            var timer = timerFactory.CreateTimer(this, 5.0f);
-            timer.AddCallback(() => Debug.Log("5 seconds have passed! pushing next state"));
-            timer.AddCallback(PushNewState);
-            timer.Fire();
         }
 
         private void PushNewState() {

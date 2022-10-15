@@ -9,8 +9,11 @@ namespace Assets.ScreenMachine {
 
         private GraphicRaycaster graphicRaycaster;
 
+        private Canvas worldViewCanvas;
+
         private void Awake() {
             graphicRaycaster = GetComponent<GraphicRaycaster>();
+            worldViewCanvas = GetComponent<Canvas>();
         }
 
         public virtual void OnUpdate() { }
@@ -21,6 +24,10 @@ namespace Assets.ScreenMachine {
 
         public void EnableRaycast() {
             graphicRaycaster.enabled = true;
+        }
+
+        public void SetCanvasOrder(int v) {
+            worldViewCanvas.sortingOrder = v;
         }
     }
 

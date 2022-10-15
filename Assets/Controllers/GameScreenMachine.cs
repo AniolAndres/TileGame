@@ -20,6 +20,8 @@ namespace Assets.Controllers {
 
         private bool isLoading;
 
+        const int CanvasOffset = 15;
+
         public GameScreenMachine(StatesCatalog statesCatalog, AssetLoaderFactory assetLoaderFactory, TimerFactory timerFactory) {
             this.statesCatalog = statesCatalog;
             this.assetLoaderFactory = assetLoaderFactory;
@@ -107,6 +109,9 @@ namespace Assets.Controllers {
 
             var worldView = UnityEngine.Object.Instantiate(worldViewAsset);
             var uiView = UnityEngine.Object.Instantiate(uiViewAsset);
+
+            worldView.SetCanvasOrder((screenStack.Count - 1) * CanvasOffset);
+            uiView.SetCanvasOrder((screenStack.Count - 1) * CanvasOffset + 5);
 
             state.LinkViews(uiView, worldView);
 
