@@ -50,18 +50,18 @@ namespace Assets.Controllers {
         }
 
         public void OnUpdate() {
-            uiView.OnUpdate();
-            worldView.OnUpdate();
+            uiView?.OnUpdate();
+            worldView?.OnUpdate();
         }
 
         public void DisableRaycasts() {
-            uiView.DisableRaycast();
-            worldView.DisableRaycast();
+            uiView?.DisableRaycast();
+            worldView?.DisableRaycast();
         }
 
         public void EnableRaycasts() {
-            uiView.EnableRaycast();
-            worldView.EnableRaycast();
+            uiView?.EnableRaycast();
+            worldView?.EnableRaycast();
         }
 
         public void CacheStateAssets(List<ScriptableObject> stateAssets) {
@@ -74,8 +74,13 @@ namespace Assets.Controllers {
         }
 
         public void DestroyViews() {
-            GameObject.Destroy(uiView.gameObject);
-            GameObject.Destroy(worldView.gameObject);
+            if(uiView != null) {
+                GameObject.Destroy(uiView.gameObject);
+            }
+
+            if(worldView != null) {
+                GameObject.Destroy(worldView.gameObject);
+            }
         }
 
         public void ReleaseAssets(string stateId) {

@@ -97,7 +97,7 @@ namespace Assets.Controllers {
 
             inputLock = inputLocker.LockInput();
 
-            var controller = unitControllerDictionary[selectedUnitKey.Value];
+            var controller = unitControllerDictionary[newPosition];
             controller.OnMove(realNewPosition);
             controller.OnDeselect();
 

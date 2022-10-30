@@ -20,7 +20,7 @@ namespace Assets.Controllers {
 
         private bool isLoading;
 
-        const int CanvasOffset = 15;
+        const int CanvasOffset = 30;
 
         public GameScreenMachine(StatesCatalog statesCatalog, AssetLoaderFactory assetLoaderFactory, TimerFactory timerFactory) {
             this.statesCatalog = statesCatalog;
@@ -87,8 +87,13 @@ namespace Assets.Controllers {
 
             var stateAssetLoader = assetLoaderFactory.CreateLoader(stateEntry.Id);
 
-            stateAssetLoader.AddReference(stateEntry.WorldView);
-            stateAssetLoader.AddReference(stateEntry.UiView);
+            if (stateEntry.WorldView.RuntimeKeyIsValid()) {
+                stateAssetLoader.AddReference(stateEntry.WorldView);
+            }
+
+            if (stateEntry.UiView.RuntimeKeyIsValid()) {
+                stateAssetLoader.AddReference(stateEntry.UiView);
+            }
 
             foreach(var stateAsset in stateEntry.StateAssets) {
                 stateAssetLoader.AddReference(stateAsset);
@@ -96,8 +101,8 @@ namespace Assets.Controllers {
 
             await stateAssetLoader.LoadAsync();
 
-            var uiViewAsset = stateAssetLoader.GetAsset<UiView>(stateEntry.UiView);
-            var worldViewAsset = stateAssetLoader.GetAsset<WorldView>(stateEntry.WorldView);
+            var uiViewAsset = stateEntry.UiView.RuntimeKeyIsValid() ? stateAssetLoader.GetAsset<UiView>(stateEntry.UiView) : null;
+            var worldViewAsset = stateEntry.WorldView.RuntimeKeyIsValid() ? stateAssetLoader.GetAsset<WorldView>(stateEntry.WorldView) : null;
 
             var stateAssetsList = new List<ScriptableObject>();
 
@@ -107,11 +112,15 @@ namespace Assets.Controllers {
 
             state.CacheStateAssets(stateAssetsList);
 
-            var worldView = UnityEngine.Object.Instantiate(worldViewAsset);
-            var uiView = UnityEngine.Object.Instantiate(uiViewAsset);
+            var worldView = worldViewAsset != null ? UnityEngine.Object.Instantiate(worldViewAsset) : null;
+            var uiView = uiViewAsset != null ? UnityEngine.Object.Instantiate(uiViewAsset) : null;
 
-            worldView.SetCanvasOrder((screenStack.Count - 1) * CanvasOffset);
-            uiView.SetCanvasOrder((screenStack.Count - 1) * CanvasOffset + 5);
+            if(worldView == null && uiView == null) {
+                throw new NotSupportedException($"Both views of state {stateEntry.Id} are null! Did you forget to reference them?");
+            }
+
+            worldView?.SetCanvasOrder((screenStack.Count - 1) * CanvasOffset);
+            uiView?.SetCanvasOrder((screenStack.Count - 1) * CanvasOffset + Mathf.RoundToInt(CanvasOffset/2));
 
             state.LinkViews(uiView, worldView);
 

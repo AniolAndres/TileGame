@@ -15,4 +15,4 @@ MonoBehaviour:
   id: first
   playersCount: 2
   size: {x: 24, y: 20}
-  tileSideLength: 64
+  tileSideLength: 128

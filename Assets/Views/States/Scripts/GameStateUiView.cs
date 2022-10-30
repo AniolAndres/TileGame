@@ -18,7 +18,7 @@ namespace Assets.Views {
         public override void OnUpdate() {
             base.OnUpdate();
 
-            if (Input.GetKeyDown(KeyCode.P)) {
+            if (Input.GetMouseButtonDown(1)) {
                 OnBattleInfoMenuRequested?.Invoke();
             }
         }

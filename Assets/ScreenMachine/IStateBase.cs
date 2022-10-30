@@ -19,10 +19,13 @@ namespace Assets.ScreenMachine {
         void OnDestroy();
 
         void OnUpdate();
+
         void EnableRaycasts();
+        
         void DisableRaycasts();
 
         void CacheStateAssets(List<ScriptableObject> stateAssets);
+        
         void ReleaseAssets(string stateId);
     }
 

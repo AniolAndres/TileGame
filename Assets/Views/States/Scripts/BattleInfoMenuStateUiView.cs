@@ -11,8 +11,6 @@ namespace Assets.Views {
         [SerializeField]
         private Transform optionsParent;
 
-        public event Action OnPresentRequested;
-
         public event Action OnPopRequested;
 
         public event Action OnPushRequested;
@@ -21,8 +19,6 @@ namespace Assets.Views {
 
 
         public override void OnUpdate() {
-            base.OnUpdate();
-
             if (Input.GetMouseButtonDown(1)) {
                 OnPopRequested?.Invoke();
             }
@@ -30,16 +26,14 @@ namespace Assets.Views {
 
         public void InstantiateOptions() {
 
-            for(int i = 0; i < 3; ++i) {
+            for(int i = 0; i < 1; ++i) {
                 var optionView = Instantiate(optionPrefab, optionsParent);
                 optionView.OnClicked += OnAnyOptionClicked; //Move to controllers etc etc
             }
         }
 
-        public void OnAnyOptionClicked() {
+        private void OnAnyOptionClicked() {
             OnOptionClicked?.Invoke();
         }
-
     }
-
 }
