@@ -22,6 +22,9 @@ namespace Assets.Controllers {
 
         const int CanvasOffset = 30;
 
+        private readonly Queue<IStateBase> statesToCleanUp = new Queue<IStateBase>();
+
+
         public GameScreenMachine(StatesCatalog statesCatalog, AssetLoaderFactory assetLoaderFactory, TimerFactory timerFactory) {
             this.statesCatalog = statesCatalog;
             this.assetLoaderFactory = assetLoaderFactory;
@@ -35,6 +38,14 @@ namespace Assets.Controllers {
 
         public void PopState() {
             PopStateLocally();
+            CleanStatesViews();
+        }
+
+        private void CleanStatesViews() {
+            while(statesToCleanUp.Count > 0) {
+                var state = statesToCleanUp.Dequeue();
+                state.DestroyViews();
+            }
         }
 
         public void PresentState(IStateBase state) {
@@ -131,13 +142,15 @@ namespace Assets.Controllers {
             state.OnCreate();
 
             isLoading = false;
+
+            CleanStatesViews();
         }
 
         private void PopStateLocally() {
             var state = screenStack.Pop();
             state.ReleaseAssets(state.GetId());
             state.OnDestroy();
-            state.DestroyViews();
+            statesToCleanUp.Enqueue(state);
 
             timerFactory.DestroyAllTimersFromState(state);
 
