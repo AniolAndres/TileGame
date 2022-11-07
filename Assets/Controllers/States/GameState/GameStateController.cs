@@ -6,6 +6,7 @@ using Assets.Data.Models;
 using Assets.ScreenMachine;
 using Assets.Views;
 using System.Linq;
+using UnityEngine;
 
 namespace Assets.Controllers {
     public class GameStateController : BaseStateController<GameStateUiView, GameStateWorldView>, IStateBase {
@@ -15,6 +16,10 @@ namespace Assets.Controllers {
         private GameStateModel model;
 
         private MapController mapController;
+
+        private UnitHandler unitHandler;
+
+        private GameplayInputLocker inputLocker;
 
         private CameraController cameraController;
 
@@ -38,7 +43,9 @@ namespace Assets.Controllers {
 
             uiView.OnBattleInfoMenuRequested += PushBattleInfoMenu;
 
-            model = new GameStateModel(context.Catalogs.LevelsCatalog, context.Catalogs.CommandersCatalog, gameStateArgs.LevelId);
+            model = new GameStateModel(context.Catalogs.LevelsCatalog, context.Catalogs.UnitsCatalog, context.Catalogs.TilesCatalog, context.Catalogs.CommandersCatalog, gameStateArgs.LevelId);
+            inputLocker = new GameplayInputLocker(context.ScreenMachine);
+            unitHandler = new UnitHandler(inputLocker);
 
             CreatePlayers();
             CreateMapController();
@@ -66,11 +73,42 @@ namespace Assets.Controllers {
             var levelProvider = new LevelProvider(context.Catalogs.LevelsCatalog);
             var tileMapModel = new TileMapModel(context.Catalogs.LevelsCatalog, context.Catalogs.TilesCatalog, context.Catalogs.UnitsCatalog, 
                 levelProvider, gameStateArgs.LevelId);
-            var inputLocker = new GameplayInputLocker(context.ScreenMachine);
-            var unitHandler = new UnitHandler(inputLocker);
-            mapController = new MapController(worldView.TileMapView, tileMapModel, unitHandler);
-            mapController.OnBuildingClicked += PushPopupState;            
+            mapController = new MapController(worldView.TileMapView, tileMapModel);
+            mapController.OnTileClicked += OnTileClicked;
             mapController.CreateMap();
+        }
+
+        private void OnTileClicked(TileData tileData)
+        {
+            //Almost all of this could be inside unit handler
+            if (unitHandler.HasUnitSelected) {
+                var realNewPosition = mapController.GetRealTilePosition(tileData.Position);
+                unitHandler.MoveSelectedUnit(tileData.Position, realNewPosition);
+                return;
+            }
+
+            if (!unitHandler.IsSpaceEmpty(tileData.Position)) {
+                unitHandler.SetUnitSelected(tileData.Position);
+                return;
+            }
+
+            var isBuilding = model.IsBuilding(tileData.TypeId);
+            if (!isBuilding) {
+                return;
+            }
+            
+            OnBuildingClicked(tileData);
+        }
+
+        private void OnBuildingClicked(TileData tileData)
+        {
+            var isFromPlayer = model.DoesBuildingBelongToPlayer(tileData);
+            if (!isFromPlayer)
+            {
+                return;
+            }
+            
+            PushPopupState(tileData);
         }
 
         private void PushPopupState(TileData tileData) {
@@ -91,9 +129,8 @@ namespace Assets.Controllers {
         }
 
         public void OnDestroy() {
-            cameraController?.Destroy();
-            mapController?.OnDestroy();
-            mapController.OnBuildingClicked -= PushPopupState;
+            cameraController.Destroy();
+            mapController.OnDestroy();
             uiView.OnBattleInfoMenuRequested -= PushBattleInfoMenu;
         }
 
@@ -101,8 +138,21 @@ namespace Assets.Controllers {
 
         }
 
-        private void CreateUnit(BuyUnitData unitData) {
-            mapController.CreateUnit(unitData);
+        private void RemoveUnit(Vector2Int position) {
+            var removedController = unitHandler.GetUnitControllerAtPosition(position);
+            removedController.OnDestroy();
+            unitHandler.RemoveUnitAtPosition(position);
+        }
+        
+        private void CreateUnit(BuyUnitData unitData)
+        {
+            //var realWorldPosition = mapController.GetRealTilePosition(unitData.Position);
+            var unitEntry = model.GetUnitCatalogEntry(unitData.UnitId);
+            var unitModel = new UnitModel(unitEntry);
+            var unitMapView = mapController.CreateUnit(unitEntry, unitData);
+            unitMapView.OnMovementEnd += unitHandler.TryUnlockInput;
+            var unitController = new UnitController(unitMapView, unitModel);
+            unitHandler.AddUnit(unitController, unitData.Position);
         }
 
 

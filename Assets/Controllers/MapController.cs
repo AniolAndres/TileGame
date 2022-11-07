@@ -2,6 +2,7 @@
 using Assets.Views;
 using Assets.Data.Models;
 using System;
+using Assets.Catalogs;
 using Assets.Data.Level;
 using Assets.Data;
 
@@ -11,16 +12,14 @@ namespace Assets.Controllers {
         private ITileController[,] map; //Maybe a dictionary would be better?
         private TileMapView tileMapView;
         private TileMapModel model;
-        private readonly UnitHandler unitHandler;
 
         private readonly TileControllerFactory tileControllerFactory = new TileControllerFactory();
 
-        public event Action<TileData> OnBuildingClicked;
+        public event Action<TileData> OnTileClicked;
 
-        public MapController(TileMapView tileMapView, TileMapModel model, UnitHandler unitHandler) {
+        public MapController(TileMapView tileMapView, TileMapModel model) {
             this.tileMapView = tileMapView;
             this.model = model;
-            this.unitHandler = unitHandler;
         }
 
         public void CreateMap() {
@@ -62,28 +61,11 @@ namespace Assets.Controllers {
         }
 
         private void FireTileClickedEvent(TileData data) {
-            if (unitHandler.HasUnitSelected) {
-                MoveSelectedUnit(data);
-                return;
-            }
-
-
-            if (!unitHandler.IsSpaceEmpty(data.Position)) {
-                unitHandler.SetUnitSelected(data.Position);
-                return;
-            }
-
-            var isBuilding = model.IsBuilding(data.TypeId);
-            if (!isBuilding) {
-                return;
-            }
-
-            OnBuildingClicked?.Invoke(data);
+            OnTileClicked?.Invoke(data);
         }
 
-        private void MoveSelectedUnit(TileData data) {
-            var realNewPosition = model.GetRealTileWorldPosition(data.Position);
-            unitHandler.MoveSelectedUnit(data.Position, realNewPosition);
+        public Vector2 GetRealTilePosition(Vector2Int tilePosition) {
+            return model.GetRealTileWorldPosition(tilePosition);
         }
 
         private void CreateTile(TileData tileData, float sideLength) {
@@ -102,21 +84,10 @@ namespace Assets.Controllers {
             return map[x, y];
         }
 
-        public void CreateUnit(BuyUnitData buyUnitData) {
-            var unitEntry = model.GetUnitCatalogEntry(buyUnitData.UnitId);
-            var unitModel = new UnitModel(unitEntry);
+        public UnitMapView CreateUnit(UnitCatalogEntry unitEntry, BuyUnitData buyUnitData) {
             var tilePosition = model.GetRealTileWorldPosition(buyUnitData.Position);
             var sideLength = model.GetSideLength();
-            var unitView = tileMapView.CreateUnitView(unitEntry.UnitView, unitEntry.UnitPurchaseViewConfig.UnitSprite, tilePosition, sideLength);
-            unitView.OnMovementEnd += unitHandler.TryUnlockInput;
-            var unitController = new UnitController(unitView, unitModel);
-            unitHandler.AddUnit(unitController, buyUnitData.Position);
-        }
-
-        public void RemoveUnit(Vector2Int position) {
-            var removedController = unitHandler.GetUnitControllerAtPosition(position);
-            removedController.OnDestroy();
-            unitHandler.RemoveUnitAtPosition(position);
+            return tileMapView.CreateUnitView(unitEntry.UnitView, unitEntry.UnitPurchaseViewConfig.UnitSprite, tilePosition, sideLength);
         }
 
     }
