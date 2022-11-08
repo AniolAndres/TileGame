@@ -56,10 +56,13 @@ namespace Assets.Controllers {
         private void CreatePlayers() {
             warController = new WarController();
 
-            foreach(var commanderId in gameStateArgs.CommanderIds) {
+            for (var i = 0; i < gameStateArgs.CommanderIds.Count; i++)
+            {
+                var commanderId = gameStateArgs.CommanderIds[i];
                 var commanderEntry = model.GetCommanderEntry(commanderId);
                 var fundsController = new FundsController();
-                var playerModel = new PlayerModel(commanderEntry);
+                var armyId = $"ArmyId{i}";
+                var playerModel = new PlayerModel(commanderEntry, armyId);
                 var playerView = uiView.InstantiatePlayerView();
                 var playerController = new PlayerController(playerView, playerModel, fundsController);
                 playerController.OnCreate();
@@ -87,7 +90,8 @@ namespace Assets.Controllers {
                 return;
             }
 
-            if (!unitHandler.IsSpaceEmpty(tileData.Position)) {
+            var currentArmyId = warController.GetCurrentTurnArmyId();
+            if (!unitHandler.IsSpaceEmpty(tileData.Position) && unitHandler.IsFromArmy(tileData.Position,currentArmyId)) {
                 unitHandler.SetUnitSelected(tileData.Position);
                 return;
             }
@@ -146,9 +150,9 @@ namespace Assets.Controllers {
         
         private void CreateUnit(BuyUnitData unitData)
         {
-            //var realWorldPosition = mapController.GetRealTilePosition(unitData.Position);
+            var currentArmyId = warController.GetCurrentTurnArmyId();
             var unitEntry = model.GetUnitCatalogEntry(unitData.UnitId);
-            var unitModel = new UnitModel(unitEntry);
+            var unitModel = new UnitModel(unitEntry, currentArmyId);
             var unitMapView = mapController.CreateUnit(unitEntry, unitData);
             unitMapView.OnMovementEnd += unitHandler.TryUnlockInput;
             var unitController = new UnitController(unitMapView, unitModel);
@@ -167,6 +171,7 @@ namespace Assets.Controllers {
 
         private void EndTurn() {
             warController.SetNextPlayer();
+            unitHandler.DeselectSelectedUnit();
         }
     }
 

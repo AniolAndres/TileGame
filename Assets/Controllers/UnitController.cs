@@ -20,6 +20,11 @@ namespace Assets.Controllers {
             return unitModel.GetId();
         }
 
+        public string GetUnitArmyId()
+        {
+            return unitModel.GetArmyId();
+        }
+
         public void OnSelect() {
             unitView.SetSelectStatus(true);
         }
@@ -33,7 +38,6 @@ namespace Assets.Controllers {
         }
 
         public void OnDestroy() {
-            throw new NotImplementedException();
         }
     }
 }

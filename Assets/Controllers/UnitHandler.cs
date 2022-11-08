@@ -111,5 +111,20 @@ namespace Assets.Controllers {
 
             inputLock?.Unlock();
         }
+
+        public bool IsFromArmy(Vector2Int position, string currentArmyId)
+        {
+            if (!unitControllerDictionary.ContainsKey(position)) {
+                throw new NotSupportedException($"Trying to check if unit in ({position.x},{position.y}) belongs to army {currentArmyId} but it doesn't exist!");
+            }
+
+            var unitController = unitControllerDictionary[position];
+            return unitController.GetUnitArmyId() == currentArmyId;
+        }
+
+        public void DeselectSelectedUnit()
+        {
+            selectedUnitKey = null;
+        }
     }
 }

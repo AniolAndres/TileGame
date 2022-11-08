@@ -8,12 +8,19 @@ namespace Assets.Data {
 
         private readonly UnitCatalogEntry unitCatalogEntry;
 
-        public UnitModel(UnitCatalogEntry unitCatalogEntry) {
+        private readonly string armyId;
+
+        public UnitModel(UnitCatalogEntry unitCatalogEntry, string armyId) {
             this.unitCatalogEntry = unitCatalogEntry;
+            this.armyId = armyId;
         }
 
         public string GetId() {
             return unitCatalogEntry.Id;
+        }
+
+        public string GetArmyId() {
+            return armyId;
         }
 
     }

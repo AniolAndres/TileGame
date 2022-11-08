@@ -18,7 +18,7 @@ namespace Assets.Views {
 
         public event Action OnMovementEnd;
 
-        private const float duration = 2f;
+        private const float duration = 0.5f;
 
         public void SetViewData(Sprite unitSprite){
             image.sprite = unitSprite;
@@ -36,7 +36,7 @@ namespace Assets.Views {
         private IEnumerator MoveUnitAsyncTo(Vector2 newPosition) { //Maybe a coroutine would be better
 
             var timer = 0f;
-            var rectTransform = transform as RectTransform;
+            var rectTransform = transform.AsRectTransform();
             var initialPosition = rectTransform.anchoredPosition;
 
             while (timer < duration) {
@@ -50,6 +50,8 @@ namespace Assets.Views {
 
                 yield return null;
             }
+            
+            rectTransform.anchoredPosition = newPosition;
 
             OnMovementEnd?.Invoke();
         }

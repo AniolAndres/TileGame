@@ -30,5 +30,10 @@ namespace Assets.Controllers {
             currentPlayer = players[index];
             currentPlayer.OnTurnStart();
         }
+
+        public string GetCurrentTurnArmyId()
+        {
+            return currentPlayer.GetArmyId();
+        }
     }
 }

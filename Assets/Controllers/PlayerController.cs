@@ -56,5 +56,10 @@ namespace Assets.Controllers {
         public void OnDestroy() {
             
         }
+
+        public string GetArmyId()
+        {
+            return playerModel.GetArmyId();
+        }
     }
 }

@@ -9,8 +9,11 @@ namespace Assets.Data {
 
         private readonly CommanderCatalogEntry commanderEntry;
 
-        public PlayerModel(CommanderCatalogEntry commanderCatalogEntry) {
+        private readonly string armyId;
+
+        public PlayerModel(CommanderCatalogEntry commanderCatalogEntry, string armyId) {
             this.commanderEntry = commanderCatalogEntry;
+            this.armyId = armyId;
         }
 
         public CommanderViewData GetCommanderViewData() {
@@ -18,6 +21,11 @@ namespace Assets.Data {
                 Color = commanderEntry.Color,
                 FullName = commanderEntry.FullName
             };
+        }
+
+        public string GetArmyId()
+        {
+            return armyId;
         }
     }
 }
