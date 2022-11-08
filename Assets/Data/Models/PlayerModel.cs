@@ -9,11 +9,11 @@ namespace Assets.Data {
 
         private readonly CommanderCatalogEntry commanderEntry;
 
-        private readonly string armyId;
+        private readonly int armyIndex;
 
-        public PlayerModel(CommanderCatalogEntry commanderCatalogEntry, string armyId) {
+        public PlayerModel(CommanderCatalogEntry commanderCatalogEntry, int armyIndex) {
             this.commanderEntry = commanderCatalogEntry;
-            this.armyId = armyId;
+            this.armyIndex = armyIndex;
         }
 
         public CommanderViewData GetCommanderViewData() {
@@ -23,9 +23,9 @@ namespace Assets.Data {
             };
         }
 
-        public string GetArmyId()
+        public int GetArmyId()
         {
-            return armyId;
+            return armyIndex;
         }
     }
 }

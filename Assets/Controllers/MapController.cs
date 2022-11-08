@@ -42,9 +42,9 @@ namespace Assets.Controllers {
 
             var timeAfterLoad = DateTime.Now;
 
-            var timeloading = timeAfterLoad - time;
+            var loadingTime = timeAfterLoad - time;
 
-            Debug.Log($"Created level, took {timeloading.TotalMilliseconds} ms");
+            Debug.Log($"Created level, took {loadingTime.TotalMilliseconds} ms");
         }
 
         public void OnDestroy() {

@@ -13,9 +13,6 @@ namespace Assets.Views {
         [SerializeField]
         private Image image;
 
-        [SerializeField]
-        private float speed;
-
         public event Action OnMovementEnd;
 
         private const float duration = 0.5f;

@@ -40,8 +40,10 @@ namespace Assets.Controllers {
         }
 
         public void OnTurnStart() {
-            fundsController.GainFunds(controlledBuildings.Count * 1000);
+            //fundsController.GainFunds(controlledBuildings.Count * 1000);
+            fundsController.GainFunds(2 * 1000);
             playerView.Show(false);
+            playerView.UpdateCount(fundsController.CurrentFunds);
         }
 
         public void OnTurnEnd() {
@@ -57,9 +59,20 @@ namespace Assets.Controllers {
             
         }
 
-        public string GetArmyId()
+        public int GetArmyId()
         {
             return playerModel.GetArmyId();
+        }
+
+        public int GetCurrentFunds()
+        {
+            return fundsController.CurrentFunds;
+        }
+
+        public void TakeFundsFromPlayer(int cost)
+        {
+            fundsController.SpendFunds(cost);
+            playerView.UpdateCount(fundsController.CurrentFunds);
         }
     }
 }

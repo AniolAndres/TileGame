@@ -8,20 +8,33 @@ namespace Assets.Data {
 
         private readonly UnitCatalogEntry unitCatalogEntry;
 
-        private readonly string armyId;
+        private readonly int armyIndex;
 
-        public UnitModel(UnitCatalogEntry unitCatalogEntry, string armyId) {
+        private bool canMove;
+
+        public bool CanMove => canMove;
+
+        public UnitModel(UnitCatalogEntry unitCatalogEntry, int armyIndex) {
             this.unitCatalogEntry = unitCatalogEntry;
-            this.armyId = armyId;
+            this.armyIndex = armyIndex;
+        }
+
+        public void RefreshUnit()
+        {
+            canMove = true;
         }
 
         public string GetId() {
             return unitCatalogEntry.Id;
         }
 
-        public string GetArmyId() {
-            return armyId;
+        public int GetArmyIndex() {
+            return armyIndex;
         }
 
+        public void SetToAlreadyMoved()
+        {
+            canMove = false;
+        }
     }
 }

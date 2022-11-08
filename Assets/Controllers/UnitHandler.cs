@@ -2,6 +2,7 @@
 using Assets.ScreenMachine;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Controllers {
@@ -112,19 +113,42 @@ namespace Assets.Controllers {
             inputLock?.Unlock();
         }
 
-        public bool IsFromArmy(Vector2Int position, string currentArmyId)
+        public bool IsFromArmy(Vector2Int position, int currentArmyIndex)
         {
             if (!unitControllerDictionary.ContainsKey(position)) {
-                throw new NotSupportedException($"Trying to check if unit in ({position.x},{position.y}) belongs to army {currentArmyId} but it doesn't exist!");
+                throw new NotSupportedException($"Trying to check if unit in ({position.x},{position.y}) belongs to army {currentArmyIndex} but it doesn't exist!");
             }
 
             var unitController = unitControllerDictionary[position];
-            return unitController.GetUnitArmyId() == currentArmyId;
+            return unitController.GetUnitArmyId() == currentArmyIndex;
         }
 
         public void DeselectSelectedUnit()
         {
+            if (selectedUnitKey.HasValue)
+            {
+                unitControllerDictionary[selectedUnitKey.Value].OnDeselect();
+            }
             selectedUnitKey = null;
+        }
+
+        public void RefreshAllUnitsFromArmy(int armyIndex)
+        {
+            var units = unitControllerDictionary.Where(x => IsFromArmy(x.Key, armyIndex)).ToList();
+            foreach (var unit in units)
+            {
+                unit.Value.Refresh();
+            }
+        }
+
+        public bool CanUnitMove(Vector2Int position)
+        {
+            if (!unitControllerDictionary.ContainsKey(position))
+            {
+                throw new NotSupportedException($"Trying to check if a unit in ({position.x},{position.y}) can move but unit does not exist!");
+            }
+
+            return unitControllerDictionary[position].CanMove();
         }
     }
 }

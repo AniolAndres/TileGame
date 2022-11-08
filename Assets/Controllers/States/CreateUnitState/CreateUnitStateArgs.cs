@@ -7,6 +7,8 @@ namespace Assets.Controllers {
 
         public Action<BuyUnitData> OnUnitCreated;
 
+        public int CurrentFunds { get; set; }
+
         public string TileTypeId { get; set; }
 
         public Vector2Int Position { get; set; }

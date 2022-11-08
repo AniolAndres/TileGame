@@ -10,6 +10,8 @@ namespace Assets.Views {
 
         public string Cost { get; set; }
 
+        public bool HasEnoughFunds { get; set; }
+
         public string Movement { get; set; }
 
         public string Attack { get; set; }

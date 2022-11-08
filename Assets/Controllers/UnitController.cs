@@ -20,9 +20,9 @@ namespace Assets.Controllers {
             return unitModel.GetId();
         }
 
-        public string GetUnitArmyId()
+        public int GetUnitArmyId()
         {
-            return unitModel.GetArmyId();
+            return unitModel.GetArmyIndex();
         }
 
         public void OnSelect() {
@@ -35,9 +35,20 @@ namespace Assets.Controllers {
 
         public void OnMove(Vector2 newPosition) {
             unitView.MoveUnitViewTo(newPosition);
+            unitModel.SetToAlreadyMoved();
         }
 
         public void OnDestroy() {
+        }
+
+        public void Refresh()
+        {
+            unitModel.RefreshUnit();
+        }
+
+        public bool CanMove()
+        {
+            return unitModel.CanMove;
         }
     }
 }

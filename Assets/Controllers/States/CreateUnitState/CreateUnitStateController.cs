@@ -31,7 +31,6 @@ namespace Assets.Controllers {
 
         public void OnCreate() {
             uiView.OnPopRequested += PopState;
-            var loader = assetLoaderFactory.CreateLoader(this);
             var popupStateConfig = GetStateAsset<CreateUnitStateConfig>();
             model = new CreateUnitStateModel(context.Catalogs.UnitsCatalog, context.Catalogs.TilesCatalog, popupStateConfig);
 
@@ -45,12 +44,14 @@ namespace Assets.Controllers {
         private void CreatePurchaseControllers() {
 
             var units = model.GetUnits(stateArgs.TileTypeId);
+            var currentFunds = stateArgs.CurrentFunds;
             var unitPrefab = model.GetUnitPrefab();
 
             foreach(var unit in units) {
-                var unitPurchaseViewData = GetUnitPurchaseViewData(unit);
-                var unitPurchaseView = uiView.InstantiatePurchaseView(unitPrefab, ref unitPurchaseViewData);               
-                var unitPurchaseModel = new UnitPurchaseModel(unit);
+                var hasEnoughFunds = currentFunds >= unit.UnitSpecificationConfig.Cost;
+                var unitPurchaseViewData = GetUnitPurchaseViewData(unit, hasEnoughFunds);
+                var unitPurchaseView = uiView.InstantiatePurchaseView(unitPrefab, ref unitPurchaseViewData);
+                var unitPurchaseModel = new UnitPurchaseModel(unit, hasEnoughFunds);
                 var unitController = new PurchaseTileController(unitPurchaseView, unitPurchaseModel);
                 unitController.OnCreate();
                 unitController.OnUnitHovered += ChangeDisplayedInfo;
@@ -60,11 +61,12 @@ namespace Assets.Controllers {
 
             //----------------------
 
-            UnitPurchaseViewData GetUnitPurchaseViewData(UnitCatalogEntry unit) {
+            UnitPurchaseViewData GetUnitPurchaseViewData(UnitCatalogEntry unit, bool hasEnoughFunds) {
                 return new UnitPurchaseViewData {
                     Name = unit.UnitPurchaseViewConfig.NameKey,
                     Cost = unit.UnitSpecificationConfig.Cost.ToString(),
-                    UnitIcon = unit.UnitPurchaseViewConfig.UnitSprite
+                    UnitIcon = unit.UnitPurchaseViewConfig.UnitSprite,
+                    HasEnoughFunds = hasEnoughFunds
                 };
             }
         }

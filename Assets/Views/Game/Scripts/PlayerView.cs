@@ -33,5 +33,10 @@ namespace Assets.Views {
         public void Hide(bool instant) {
             root.SetActive(false);
         }
+
+        public void UpdateCount(int newBalance)
+        {
+            fundsText.text = newBalance.ToString();
+        }
     }
 }

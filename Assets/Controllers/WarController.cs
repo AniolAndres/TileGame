@@ -19,7 +19,7 @@ namespace Assets.Controllers {
             }
 
             currentPlayer = players.First();
-            currentPlayer.Show(true);
+            currentPlayer.OnTurnStart();
         }
 
         public void SetNextPlayer() {
@@ -31,9 +31,19 @@ namespace Assets.Controllers {
             currentPlayer.OnTurnStart();
         }
 
-        public string GetCurrentTurnArmyId()
+        public int GetCurrentTurnArmyIndex()
         {
             return currentPlayer.GetArmyId();
+        }
+
+        public int GetFundsFromCurrentPlayer()
+        {
+            return currentPlayer.GetCurrentFunds();
+        }
+
+        public void TakeFundsFromCurrentPlayer(int cost)
+        {
+            currentPlayer.TakeFundsFromPlayer(cost);
         }
     }
 }

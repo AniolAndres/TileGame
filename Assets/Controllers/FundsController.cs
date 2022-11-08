@@ -5,6 +5,8 @@ namespace Assets.Controllers {
 
         private int currentFunds;
 
+        public int CurrentFunds => currentFunds;
+
         public bool HasEnoughFunds(int cost) {
             return currentFunds >= cost;
         }
@@ -20,6 +22,5 @@ namespace Assets.Controllers {
         public void GainFunds(int income) {
             currentFunds += income;
         }
-
     }
 }

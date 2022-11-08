@@ -6,12 +6,15 @@ namespace Assets.Data {
 
         private readonly UnitCatalogEntry unitCatalogEntry;
 
-        public UnitPurchaseModel(UnitCatalogEntry unitCatalogEntry) {
+        private readonly bool hasEnoughFunds;
+
+        public UnitPurchaseModel(UnitCatalogEntry unitCatalogEntry, bool hasEnoughFunds) {
             this.unitCatalogEntry = unitCatalogEntry;
+            this.hasEnoughFunds = hasEnoughFunds;
         }
 
         public bool CanPay() {
-            return true;
+            return hasEnoughFunds;
         }
 
         public string GetUnitId() {

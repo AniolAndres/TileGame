@@ -19,6 +19,9 @@ namespace Assets.Views {
         [SerializeField]
         private Button purchaseButton;
 
+        [SerializeField] 
+        private GameObject notEnoughFundsFade;
+
         public event Action OnClickView;
 
         public event Action OnHover;
@@ -27,6 +30,7 @@ namespace Assets.Views {
             nameText.text = unitPurchaseViewData.Name;
             costText.text = unitPurchaseViewData.Cost;
             unitIcon.sprite = unitPurchaseViewData.UnitIcon;
+            notEnoughFundsFade.SetActive(!unitPurchaseViewData.HasEnoughFunds);
         }
 
         private void OnEnable() {
