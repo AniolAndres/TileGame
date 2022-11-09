@@ -24,7 +24,6 @@ namespace Assets.Controllers {
         }
 
         public void OnCreate() {
-
             uiView.OnPresentRequested += PresentNewState;
             uiView.OnPushRequested += PushNewState;
         }

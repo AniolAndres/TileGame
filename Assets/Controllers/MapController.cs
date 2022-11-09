@@ -9,11 +9,9 @@ using Assets.Data;
 namespace Assets.Controllers {
     public class MapController {
 
-        private ITileController[,] map; //Maybe a dictionary would be better?
+        private TileController[,] map;
         private TileMapView tileMapView;
         private TileMapModel model;
-
-        private readonly TileControllerFactory tileControllerFactory = new TileControllerFactory();
 
         public event Action<TileData> OnTileClicked;
 
@@ -25,7 +23,7 @@ namespace Assets.Controllers {
         public void CreateMap() {
 
             var levelData = model.GetLevelData();
-            map = new ITileController[levelData.Width, levelData.Height];
+            map = new TileController[levelData.Width, levelData.Height];
 
             SetUp(levelData);
         }
@@ -74,14 +72,11 @@ namespace Assets.Controllers {
             var tilePosition = model.GetRealTileWorldPosition(tileData.Position);
             var tileViewPrefab = tileEntry.TilePrefab;
             var tileView = tileMapView.InstantiateTileView(tileViewPrefab, tilePosition.x, tilePosition.y, sideLength);
-            var tileController = tileControllerFactory.GetTileController(tileEntry, tileData, tileView);
+            var tileModel = new TileModel(tileEntry, tileData.Position);
+            var tileController = new TileController(tileView, tileModel);
             tileController.OnTileClicked += FireTileClickedEvent;
             tileController.OnCreate();
             map[tileData.Position.x, tileData.Position.y] = tileController;    
-        }
-
-        public ITileController GetTileAtPosition(int x, int y) {
-            return map[x, y];
         }
 
         public UnitMapView CreateUnit(UnitCatalogEntry unitEntry, BuyUnitData buyUnitData) {

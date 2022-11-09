@@ -13,12 +13,17 @@ namespace Assets.Data.Levels {
 
         private readonly LevelsCatalog levelsCatalog;
 
-        public LevelProvider(LevelsCatalog levelsCatalog) {
+        private readonly TilesCatalog tilesCatalog;
+
+        public LevelProvider(LevelsCatalog levelsCatalog, TilesCatalog tilesCatalog) {
             this.levelsCatalog = levelsCatalog;
+            this.tilesCatalog = tilesCatalog;
         }
 
-        public LevelData GetLevel(string levelId) {
+        public LevelData GetLevel(string levelId)
+        {
 
+            var allTileEntries = tilesCatalog.GetAllEntries();
             var tileDataList = new List<TileData>();
 
             var entry = levelsCatalog.GetEntry(levelId);
@@ -41,18 +46,9 @@ namespace Assets.Data.Levels {
                 Height = entry.Size.y};
 
 
-            string GetRandomType() {
-                var random = Random.Range(0, 3);
-                switch (random) {
-                    case 0:
-                        return "building";
-                    case 1:
-                        return "grass";
-                    case 2:
-                        return "water";
-                }
-
-                throw new NotSupportedException();
+            string GetRandomType()
+            {
+                return allTileEntries[Random.Range(0, allTileEntries.Count)].Id;
             }
         }
     }

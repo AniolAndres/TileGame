@@ -1,17 +1,21 @@
-﻿
-using Assets.Views;
-using Assets.Data.Models;
-using System;
+﻿using System;
 using Assets.Data.Level;
+using Assets.Data.Models;
+using Assets.Views;
 
 namespace Assets.Controllers {
-    public class TerrainTileController : BaseTileController<TileView, TileModel>, ITileController {
-
+    public class TileController{
         public event Action<TileData> OnTileClicked; 
+        
+        private readonly TileView view;
 
-        public TerrainTileController(TileView view, TileModel model) : base(view, model) {
+        private readonly TileModel model;
+
+        public TileController(TileView view, TileModel model) {
+            this.view = view;
+            this.model = model;
         }
-
+        
         public void OnCreate() {
             view.OnTilePressed += FireTerrainClickedEvent;
         }

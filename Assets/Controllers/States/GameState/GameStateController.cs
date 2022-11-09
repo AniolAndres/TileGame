@@ -72,7 +72,7 @@ namespace Assets.Controllers {
         }
 
         private void CreateMapController() {
-            var levelProvider = new LevelProvider(context.Catalogs.LevelsCatalog);
+            var levelProvider = new LevelProvider(context.Catalogs.LevelsCatalog, context.Catalogs.TilesCatalog);
             var tileMapModel = new TileMapModel(context.Catalogs.LevelsCatalog, context.Catalogs.TilesCatalog, context.Catalogs.UnitsCatalog, 
                 levelProvider, gameStateArgs.LevelId);
             mapController = new MapController(worldView.TileMapView, tileMapModel);
@@ -97,7 +97,6 @@ namespace Assets.Controllers {
                 if (unitHandler.IsFromArmy(tileData.Position, currentArmyId) && unitHandler.CanUnitMove(tileData.Position)) {
                     unitHandler.SetUnitSelected(tileData.Position);
                 }
-
                 return;
             }
 

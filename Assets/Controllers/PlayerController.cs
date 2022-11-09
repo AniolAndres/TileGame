@@ -13,8 +13,6 @@ namespace Assets.Controllers {
 
         private readonly List<UnitController> controlledUnits = new List<UnitController>();
 
-        private readonly List<BuildingTileController> controlledBuildings = new List<BuildingTileController>();
-
         private readonly FundsController fundsController;
 
         public void Hide(bool instant) {
