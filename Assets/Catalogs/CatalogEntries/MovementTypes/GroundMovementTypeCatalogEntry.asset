@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83c6955c96204a81bfbbe1c2aac6a009, type: 3}
+  m_Name: GroundMovementTypeCatalogEntry
+  m_EditorClassIdentifier: 
+  id: ground
+  typeIcon: {fileID: 0}
+  movementCostPair:
+  - tileEntry: {fileID: 11400000, guid: 16065e3cf0edba547b0e7d16575240eb, type: 2}
+    cost: 2
+  - tileEntry: {fileID: 11400000, guid: 03cb56c1beffc4879b5fd9904dd340b2, type: 2}
+    cost: 4
+  - tileEntry: {fileID: 11400000, guid: bd24f9393f67b3640b7bd9c8cbaf14f2, type: 2}
+    cost: 1

@@ -96,6 +96,7 @@ namespace Assets.Controllers {
             {
                 if (unitHandler.IsFromArmy(tileData.Position, currentArmyId) && unitHandler.CanUnitMove(tileData.Position)) {
                     unitHandler.SetUnitSelected(tileData.Position);
+                    mapController.HighlightAvailableTiles(tileData.Position, unitHandler.GetSelectedUnitId());
                 }
                 return;
             }

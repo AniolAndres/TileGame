@@ -150,5 +150,14 @@ namespace Assets.Controllers {
 
             return unitControllerDictionary[position].CanMove();
         }
+
+        public string GetSelectedUnitId()
+        {
+            if(selectedUnitKey == null) {
+                throw new NotSupportedException("Trying to get id from selected unit without having anything selected!");
+            }
+
+            return unitControllerDictionary[selectedUnitKey.Value].GetUnitId();
+        }
     }
 }

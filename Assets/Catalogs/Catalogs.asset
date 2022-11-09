@@ -17,3 +17,4 @@ MonoBehaviour:
   tilesCatalog: {fileID: 11400000, guid: 18ed51f40a899494eb1c849fbb0c16f7, type: 2}
   unitsCatalog: {fileID: 11400000, guid: 8fea3a997ed29bb48a621f347cf1c9ea, type: 2}
   commandersCatalog: {fileID: 11400000, guid: 6a326d03e73868d4188ae57d8c41620b, type: 2}
+  movementTypesCatalog: {fileID: 11400000, guid: 9909f8cfabf904e36af3841deb63e0b4, type: 2}

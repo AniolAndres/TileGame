@@ -11,14 +11,9 @@ namespace Assets.Catalogs {
         private TileView tilePrefab;
 
         [SerializeField]
-        private TileType tileType;
-
-        [SerializeField]
         private List<UnitCatalogEntry> spawnableUnits = new List<UnitCatalogEntry>();
 
         public TileView TilePrefab => tilePrefab;
-
-        public TileType TileType => tileType;
 
         public List<UnitCatalogEntry> SpawnableUnits => spawnableUnits;
 

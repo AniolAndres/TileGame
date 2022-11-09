@@ -17,10 +17,15 @@ namespace Assets.Catalogs {
         [SerializeField]
         private UnitSpecificationConfig unitSpecificationConfig;
 
+        [SerializeField] 
+        private MovementTypeCatalogEntry movementTypeCatalogEntry;
+
         public UnitMapView UnitView => unitView;
 
         public UnitPurchaseViewConfig UnitPurchaseViewConfig => unitPurchaseViewConfig;
 
         public UnitSpecificationConfig UnitSpecificationConfig => unitSpecificationConfig;
+
+        public MovementTypeCatalogEntry MovementTypeCatalogEntry => movementTypeCatalogEntry;
     }
 }

@@ -85,5 +85,10 @@ namespace Assets.Controllers {
             return tileMapView.CreateUnitView(unitEntry.UnitView, unitEntry.UnitPurchaseViewConfig.UnitSprite, tilePosition, sideLength);
         }
 
+        public void HighlightAvailableTiles(Vector2Int tileDataPosition, string unitId)
+        {
+            var unitEntry = model.GetUnitCatalogEntry(unitId);
+            
+        }
     }
 }
