@@ -23,5 +23,9 @@ namespace Assets.Data.Models {
             };
         }
 
+        public string GetTileType()
+        {
+            return TypeId;
+        }
     }
 }

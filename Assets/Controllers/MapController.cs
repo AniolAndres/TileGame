@@ -88,6 +88,7 @@ namespace Assets.Controllers {
         public void HighlightAvailableTiles(Vector2Int tileDataPosition, string unitId)
         {
             var unitEntry = model.GetUnitCatalogEntry(unitId);
+            var movementTypeEntry = unitEntry.MovementTypeCatalogEntry;
             
         }
     }

@@ -25,6 +25,10 @@ namespace Assets.Controllers {
             OnTileClicked?.Invoke(tileData);
         }
 
+        public string GetTileType() {
+            return model.GetTileType();
+        }
+
         public void OnDestroy() {
             view.OnTilePressed -= FireTerrainClickedEvent;
         }
