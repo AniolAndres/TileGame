@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: BasicUnitSpecificationConfig
   m_EditorClassIdentifier: 
   cost: 1200
-  movement: 4
+  movement: 20
   vision: 3
   attack: 6

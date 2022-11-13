@@ -14,6 +14,6 @@ namespace Assets.Catalogs
 
         public Sprite TypeIcon => typeIcon;
 
-        public List<MovementCostPair> MovementCostPair => movementCostPair;
+        public List<MovementCostPair> MovementCostPairList => movementCostPair;
     }
 }

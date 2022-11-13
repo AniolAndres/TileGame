@@ -32,5 +32,9 @@ namespace Assets.Controllers {
         public void OnDestroy() {
             view.OnTilePressed -= FireTerrainClickedEvent;
         }
+
+        public void HighLight(int cost) {
+            view.Highlight(cost);
+        }
     }
 }

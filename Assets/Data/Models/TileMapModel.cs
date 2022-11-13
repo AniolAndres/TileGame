@@ -17,11 +17,16 @@ namespace Assets.Data.Models {
 
         private readonly ILevelProvider levelProvider;
 
+        private readonly MovementTypesCatalog movementTypesCatalog;
+
+        public MovementTypesCatalog MovementTypesCatalog => movementTypesCatalog;
+
         private readonly string levelId;
 
-        public TileMapModel(LevelsCatalog levelsCatalog, TilesCatalog tilesCatalog, UnitsCatalog unitsCatalog,ILevelProvider levelProvider, string levelId) {           
+        public TileMapModel(LevelsCatalog levelsCatalog, MovementTypesCatalog movementTypesCatalog, TilesCatalog tilesCatalog, UnitsCatalog unitsCatalog,ILevelProvider levelProvider, string levelId) {           
             this.currentLevelEntry = levelsCatalog.GetAllEntries().First();
             this.tilesCatalog = tilesCatalog;
+            this.movementTypesCatalog = movementTypesCatalog;
             this.unitsCatalog = unitsCatalog;
             this.levelProvider = levelProvider;
             this.levelId = levelId;

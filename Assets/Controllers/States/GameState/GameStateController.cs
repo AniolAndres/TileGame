@@ -73,7 +73,7 @@ namespace Assets.Controllers {
 
         private void CreateMapController() {
             var levelProvider = new LevelProvider(context.Catalogs.LevelsCatalog, context.Catalogs.TilesCatalog);
-            var tileMapModel = new TileMapModel(context.Catalogs.LevelsCatalog, context.Catalogs.TilesCatalog, context.Catalogs.UnitsCatalog, 
+            var tileMapModel = new TileMapModel(context.Catalogs.LevelsCatalog, context.Catalogs.MovementTypesCatalog, context.Catalogs.TilesCatalog, context.Catalogs.UnitsCatalog, 
                 levelProvider, gameStateArgs.LevelId);
             mapController = new MapController(worldView.TileMapView, tileMapModel);
             mapController.OnTileClicked += OnTileClicked;

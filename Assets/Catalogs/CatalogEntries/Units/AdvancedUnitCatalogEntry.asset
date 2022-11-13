@@ -16,3 +16,4 @@ MonoBehaviour:
   unitView: {fileID: 2777231680361676402, guid: 2bdc38fe55e5af641aa0b1669f873d55, type: 3}
   unitPurchaseViewConfig: {fileID: 11400000, guid: 831c4574eb9bce14a941511cd2e962ba, type: 2}
   unitSpecificationConfig: {fileID: 11400000, guid: 117663b9c294ae341956903d3210e735, type: 2}
+  movementTypeCatalogEntry: {fileID: 11400000, guid: f6fddd8b9cf1447768e563e81a2b52ce, type: 2}

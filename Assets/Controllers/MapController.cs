@@ -5,6 +5,7 @@ using System;
 using Assets.Catalogs;
 using Assets.Data.Level;
 using Assets.Data;
+using Assets.Extensions;
 
 namespace Assets.Controllers {
     public class MapController {
@@ -12,6 +13,8 @@ namespace Assets.Controllers {
         private TileController[,] map;
         private TileMapView tileMapView;
         private TileMapModel model;
+
+        private MapPathFinder pathFinder;
 
         public event Action<TileData> OnTileClicked;
 
@@ -26,6 +29,9 @@ namespace Assets.Controllers {
             map = new TileController[levelData.Width, levelData.Height];
 
             SetUp(levelData);
+
+            pathFinder = new MapPathFinder(map, model.MovementTypesCatalog);
+            pathFinder.Init();
         }
 
         private void SetUp(LevelData levelData) {
@@ -88,8 +94,12 @@ namespace Assets.Controllers {
         public void HighlightAvailableTiles(Vector2Int tileDataPosition, string unitId)
         {
             var unitEntry = model.GetUnitCatalogEntry(unitId);
-            var movementTypeEntry = unitEntry.MovementTypeCatalogEntry;
+            var availableTiles = pathFinder.GetAvailableTiles(unitEntry, tileDataPosition);
             
+            foreach(var tile in availableTiles) {
+                var tileController = map.GetElement(tile.position);
+                tileController.HighLight(tile.accumulatedCost);
+            }
         }
     }
 }
