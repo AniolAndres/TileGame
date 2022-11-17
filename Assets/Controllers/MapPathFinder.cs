@@ -12,16 +12,19 @@ namespace Assets.Controllers {
     {
         private readonly TileController[,] tileMap;
 
-        private readonly MovementTypesCatalog movementTypeCatalog; 
+        private readonly MovementTypesCatalog movementTypeCatalog;
+        
+        private readonly UnitHandler unitHandler;
 
         private readonly Dictionary<string, Dictionary<string, int>> costDictionary = new Dictionary<string, Dictionary<string, int>>();
 
-        public MapPathFinder(TileController[,] tileMap, MovementTypesCatalog movementTypesCatalog)
+        public MapPathFinder(TileController[,] tileMap, UnitHandler unitHandler, MovementTypesCatalog movementTypesCatalog)
         {
+            this.unitHandler = unitHandler;
             this.tileMap = tileMap;
             this.movementTypeCatalog = movementTypesCatalog;
         }
-
+        
         public void Init() {
 
             //Build dictionary of dictionaries for fast access to data
@@ -37,7 +40,17 @@ namespace Assets.Controllers {
             }
         }
 
-        public List<Node> GetAvailableTiles(UnitCatalogEntry unitCatalogEntry, Vector2Int origin)
+        public List<Vector2Int> GetPath(UnitCatalogEntry unitCatalogEntry, int currentArmyId, Vector2Int origin, Vector2Int destination)
+        {
+            var movementTypeId = unitCatalogEntry.MovementTypeCatalogEntry.Id;
+            var unitMaxMovement = unitCatalogEntry.UnitSpecificationConfig.Movemement;
+
+            var path = new List<Vector2Int>();
+
+            var nodesToCheck = new List<Node>();
+        }
+
+        public List<Node> GetAvailableTiles(UnitCatalogEntry unitCatalogEntry, int currentArmyId, Vector2Int origin)
         {
             var availableTiles = new List<Node>();
 
@@ -67,7 +80,7 @@ namespace Assets.Controllers {
                     var tileController = tileMap.GetElement(neighbourPosition);
                     var type = tileController.GetTileType();
 
-                    if (!costDictionary[movementTypeId].ContainsKey(type)) {
+                    if (!costDictionary[movementTypeId].ContainsKey(type) || HasEnemyUnit(neighbourPosition)) {
                         continue;
                     }
 
@@ -134,7 +147,11 @@ namespace Assets.Controllers {
 
                 return null;
             }
+            
+            bool HasEnemyUnit(Vector2Int position)
+            {
+                return !unitHandler.IsSpaceEmpty(position) && !unitHandler.IsFromArmy(position, currentArmyId);
+            }
         }
-
     }
 }

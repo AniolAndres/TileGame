@@ -13,24 +13,26 @@ namespace Assets.Controllers {
         private TileController[,] map;
         private TileMapView tileMapView;
         private TileMapModel model;
+        private readonly UnitHandler unitHandler;
 
         private MapPathFinder pathFinder;
 
         public event Action<TileData> OnTileClicked;
 
-        public MapController(TileMapView tileMapView, TileMapModel model) {
+        public MapController(TileMapView tileMapView, TileMapModel model, UnitHandler unitHandler) {
             this.tileMapView = tileMapView;
             this.model = model;
+            this.unitHandler = unitHandler;
         }
 
-        public void CreateMap() {
+        public void OnCreate() {
 
             var levelData = model.GetLevelData();
             map = new TileController[levelData.Width, levelData.Height];
 
             SetUp(levelData);
 
-            pathFinder = new MapPathFinder(map, model.MovementTypesCatalog);
+            pathFinder = new MapPathFinder(map, unitHandler, model.MovementTypesCatalog);
             pathFinder.Init();
         }
 
@@ -91,10 +93,10 @@ namespace Assets.Controllers {
             return tileMapView.CreateUnitView(unitEntry.UnitView, unitEntry.UnitPurchaseViewConfig.UnitSprite, tilePosition, sideLength);
         }
 
-        public void HighlightAvailableTiles(Vector2Int tileDataPosition, string unitId)
+        public void HighlightAvailableTiles(Vector2Int tileDataPosition, int currentArmyId, string unitId)
         {
             var unitEntry = model.GetUnitCatalogEntry(unitId);
-            var availableTiles = pathFinder.GetAvailableTiles(unitEntry, tileDataPosition);
+            var availableTiles = pathFinder.GetAvailableTiles(unitEntry, currentArmyId, tileDataPosition);
             
             foreach(var tile in availableTiles) {
                 var tileController = map.GetElement(tile.position);

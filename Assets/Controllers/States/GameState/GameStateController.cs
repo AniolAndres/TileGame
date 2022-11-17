@@ -50,7 +50,6 @@ namespace Assets.Controllers {
             CreatePlayers();
             CreateMapController();
             CreateCameraController();
-
         }
 
         private void CreatePlayers() {
@@ -75,9 +74,9 @@ namespace Assets.Controllers {
             var levelProvider = new LevelProvider(context.Catalogs.LevelsCatalog, context.Catalogs.TilesCatalog);
             var tileMapModel = new TileMapModel(context.Catalogs.LevelsCatalog, context.Catalogs.MovementTypesCatalog, context.Catalogs.TilesCatalog, context.Catalogs.UnitsCatalog, 
                 levelProvider, gameStateArgs.LevelId);
-            mapController = new MapController(worldView.TileMapView, tileMapModel);
+            mapController = new MapController(worldView.TileMapView, tileMapModel, unitHandler);
             mapController.OnTileClicked += OnTileClicked;
-            mapController.CreateMap();
+            mapController.OnCreate();
         }
 
         private void OnTileClicked(TileData tileData)
@@ -96,7 +95,7 @@ namespace Assets.Controllers {
             {
                 if (unitHandler.IsFromArmy(tileData.Position, currentArmyId) && unitHandler.CanUnitMove(tileData.Position)) {
                     unitHandler.SetUnitSelected(tileData.Position);
-                    mapController.HighlightAvailableTiles(tileData.Position, unitHandler.GetSelectedUnitId());
+                    mapController.HighlightAvailableTiles(tileData.Position, currentArmyId, unitHandler.GetSelectedUnitId());
                 }
                 return;
             }
