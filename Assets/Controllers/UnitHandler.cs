@@ -83,6 +83,27 @@ namespace Assets.Controllers {
             
             selectedUnitKey = newSelectedPosition;
         }
+        public void MoveSelectedUnit(Vector2Int newPosition, List<Vector2> realPositions) {
+            if (selectedUnitKey == null) {
+                throw new NotSupportedException("Moving selected unit without having anything selected!");
+            }
+
+            var empty = IsSpaceEmpty(newPosition);
+            if (!empty) {
+                return;
+            }
+
+            MoveUnitFromTo(selectedUnitKey.Value, newPosition);
+
+            inputLock = inputLocker.LockInput();
+
+            var controller = unitControllerDictionary[newPosition];
+            controller.OnMove(realPositions);
+            controller.OnDeselect();
+
+            selectedUnitKey = null;
+        }
+
 
         public void MoveSelectedUnit(Vector2Int newPosition, Vector2 realNewPosition) {
             if(selectedUnitKey == null) {

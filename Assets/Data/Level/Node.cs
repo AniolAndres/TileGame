@@ -6,6 +6,8 @@ namespace Assets.Data {
         public Vector2Int position;
 
         public int accumulatedCost;
+
+        public Node previousNode;
     }
 
 }

@@ -17,6 +17,12 @@ namespace Assets.Views {
         [SerializeField]
         private Button tileButton;
 
+        [SerializeField]
+        private Image tileImage;
+
+        [SerializeField]
+        private Transform arrowTransform;
+
         private void OnEnable() {
             tileButton.onClick.AddListener(FireTileClicked);
         }
@@ -29,9 +35,14 @@ namespace Assets.Views {
             tileButton.onClick.RemoveListener(FireTileClicked);
         }
 
-        public void Highlight(int cost) {
+        public void Highlight(int cost, float arrowRotation) {
             highlightGameObject.SetActive(true);
             costText.text = cost.ToString();
+            arrowTransform.localEulerAngles = new Vector3(0,0,arrowRotation);
+        }
+
+        internal void SetColor(Color tileColor) {
+            tileImage.color = tileColor;
         }
     }
 }

@@ -13,6 +13,5 @@ MonoBehaviour:
   m_Name: MountainTileCatalogEntry
   m_EditorClassIdentifier: 
   id: mountain
-  tilePrefab: {fileID: 6923678520292207823, guid: 062b15b58255f4ad18fc01742bfa9472, type: 3}
-  tileType: 3
+  tileColor: {r: 0.31132078, g: 0.08076719, b: 0.09339406, a: 1}
   spawnableUnits: []

@@ -1,4 +1,5 @@
 ﻿using System;
+using Assets.Data;
 using Assets.Data.Level;
 using Assets.Data.Models;
 using Assets.Views;
@@ -33,8 +34,8 @@ namespace Assets.Controllers {
             view.OnTilePressed -= FireTerrainClickedEvent;
         }
 
-        public void HighLight(int cost) {
-            view.Highlight(cost);
+        public void HighLight(int cost, float orientation) {
+            view.Highlight(cost, orientation);
         }
     }
 }

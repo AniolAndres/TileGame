@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: GrassTileCatalogEntry
   m_EditorClassIdentifier: 
   id: grass
-  tilePrefab: {fileID: 9160469664313777102, guid: f7bba6e8b1a231649a06eb117acff885, type: 3}
-  tileType: 2
+  tileColor: {r: 0.036671314, g: 0.5943396, b: 0, a: 1}
+  spawnableUnits: []

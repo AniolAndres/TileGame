@@ -6,6 +6,7 @@ using Assets.Catalogs;
 using Assets.Data.Level;
 using Assets.Data;
 using Assets.Extensions;
+using System.Collections.Generic;
 
 namespace Assets.Controllers {
     public class MapController {
@@ -78,8 +79,8 @@ namespace Assets.Controllers {
 
             var tileEntry = model.GetTileEntry(tileData.TypeId);
             var tilePosition = model.GetRealTileWorldPosition(tileData.Position);
-            var tileViewPrefab = tileEntry.TilePrefab;
-            var tileView = tileMapView.InstantiateTileView(tileViewPrefab, tilePosition.x, tilePosition.y, sideLength);
+            var tileViewColor = tileEntry.TileColor;
+            var tileView = tileMapView.InstantiateTileView(tileViewColor, tilePosition.x, tilePosition.y, sideLength);
             var tileModel = new TileModel(tileEntry, tileData.Position);
             var tileController = new TileController(tileView, tileModel);
             tileController.OnTileClicked += FireTileClickedEvent;
@@ -93,6 +94,10 @@ namespace Assets.Controllers {
             return tileMapView.CreateUnitView(unitEntry.UnitView, unitEntry.UnitPurchaseViewConfig.UnitSprite, tilePosition, sideLength);
         }
 
+        public List<Vector2Int> GetPath(Vector2Int destination) {
+            return pathFinder.GetPath(destination);
+        }
+
         public void HighlightAvailableTiles(Vector2Int tileDataPosition, int currentArmyId, string unitId)
         {
             var unitEntry = model.GetUnitCatalogEntry(unitId);
@@ -100,8 +105,35 @@ namespace Assets.Controllers {
             
             foreach(var tile in availableTiles) {
                 var tileController = map.GetElement(tile.position);
-                tileController.HighLight(tile.accumulatedCost);
+                var orientation = GetArrowOrientation(tile);
+                tileController.HighLight(tile.accumulatedCost, orientation);
             }
+
+            //------------------------------------
+
+            float GetArrowOrientation(Node tile) {
+
+                if(tile.previousNode == null) {
+                    return 0;
+                }
+
+                var firstPosition = tile.position;
+                var secondPosition = tile.previousNode.position;
+
+                var vector = (secondPosition - firstPosition).ToVector2();
+                var angle = Vector2.SignedAngle(Vector2.up, vector);             
+                return angle;
+            }
+        }
+
+        public List<Vector2> GetListOfRealPositions(List<Vector2Int> path) {
+            var realPositions = new List<Vector2>(path.Count);
+
+            foreach(var point in path) {
+                realPositions.Add(GetRealTilePosition(point));
+            }
+
+            return realPositions;
         }
     }
 }

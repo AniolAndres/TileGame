@@ -2,6 +2,7 @@
 using Assets.Data;
 using Assets.Views;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Controllers {
@@ -33,8 +34,8 @@ namespace Assets.Controllers {
             unitView.SetSelectStatus(false);
         }
 
-        public void OnMove(Vector2 newPosition) {
-            unitView.MoveUnitViewTo(newPosition);
+        public void OnMove(List<Vector2> pathPositions) {
+            unitView.MoveUnitViewTo(pathPositions);
             unitModel.SetToAlreadyMoved();
         }
 

@@ -4,8 +4,12 @@ using UnityEngine;
 namespace Assets.Views {
     public class TileMapView : MonoBehaviour {
 
-        public TileView InstantiateTileView(TileView prefab, float x, float y, float sideLength) {
-            var tileView = Instantiate(prefab,  this.transform);
+        [SerializeField]
+        private TileView tileViewPrefab;
+
+        public TileView InstantiateTileView(Color tileColor, float x, float y, float sideLength) {
+            var tileView = Instantiate(tileViewPrefab,  this.transform);
+            tileView.SetColor(tileColor);
             tileView.transform.AsRectTransform().sizeDelta = new Vector2(sideLength, sideLength);
             tileView.transform.AsRectTransform().anchoredPosition = new Vector2(x, y);          
             return tileView;

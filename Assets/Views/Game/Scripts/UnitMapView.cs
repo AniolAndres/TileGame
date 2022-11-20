@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,7 +15,7 @@ namespace Assets.Views {
 
         public event Action OnMovementEnd;
 
-        private const float duration = 0.5f;
+        private const float duration = 3f;
 
         public void SetViewData(Sprite unitSprite){
             image.sprite = unitSprite;
@@ -24,16 +25,25 @@ namespace Assets.Views {
             selectedDirector.SetActive(selected);
         }
 
-        public void MoveUnitViewTo(Vector2 newPosition) {
+        public void MoveUnitViewTo(List<Vector2> pathPositions) {
 
-            StartCoroutine(MoveUnitAsyncTo(newPosition));
+            StartCoroutine(MoveUnitAsyncTo(pathPositions));
         }
 
-        private IEnumerator MoveUnitAsyncTo(Vector2 newPosition) { //Maybe a coroutine would be better
+        private IEnumerator MoveUnitAsyncTo(List<Vector2> pathPositions) { //Maybe a coroutine would be better
 
             var timer = 0f;
             var rectTransform = transform.AsRectTransform();
             var initialPosition = rectTransform.anchoredPosition;
+
+            for (int i = 0; i < pathPositions.Count; i++) {
+                Vector2 nextPosition = pathPositions[i];
+                
+                while(timer > duration) {
+
+                }
+
+            }
 
             while (timer < duration) {
 

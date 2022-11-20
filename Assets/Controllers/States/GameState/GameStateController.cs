@@ -83,8 +83,15 @@ namespace Assets.Controllers {
         {
             //Almost all of this could be inside unit handler
             if (unitHandler.HasUnitSelected) {
-                var realNewPosition = mapController.GetRealTilePosition(tileData.Position);
-                unitHandler.MoveSelectedUnit(tileData.Position, realNewPosition);
+                var path = mapController.GetPath(tileData.Position);
+
+                if (path != null) { 
+                    return; 
+                }
+
+                var listOfRealPositions = mapController.GetListOfRealPositions(path);
+
+                unitHandler.MoveSelectedUnit(tileData.Position, listOfRealPositions);
                 return;
             }
 

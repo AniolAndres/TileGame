@@ -8,14 +8,14 @@ namespace Assets.Catalogs {
     public class TileCatalogEntry : CatalogEntry {
 
         [SerializeField]
-        private TileView tilePrefab;
+        private Color tileColor;
 
         [SerializeField]
         private List<UnitCatalogEntry> spawnableUnits = new List<UnitCatalogEntry>();
 
-        public TileView TilePrefab => tilePrefab;
-
         public List<UnitCatalogEntry> SpawnableUnits => spawnableUnits;
+
+        public Color TileColor => tileColor;
 
         public bool CanCreate => spawnableUnits.Count != 0;
     }

@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: WaterTileCatalogEntry
   m_EditorClassIdentifier: 
   id: water
-  tilePrefab: {fileID: 6923678520292207823, guid: 8947937b28758ab42b31572fab71e596, type: 3}
-  tileType: 1
+  tileColor: {r: 0.12304199, g: 0.5370764, b: 0.745283, a: 1}
+  spawnableUnits: []

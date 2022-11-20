@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Assets.Catalogs;
 using Assets.Data;
 using Assets.Extensions;
@@ -10,6 +11,8 @@ namespace Assets.Controllers {
  
     public class MapPathFinder
     {
+        private List<Node> mappedNodes = new List<Node>(100);
+
         private readonly TileController[,] tileMap;
 
         private readonly MovementTypesCatalog movementTypeCatalog;
@@ -40,19 +43,28 @@ namespace Assets.Controllers {
             }
         }
 
-        public List<Vector2Int> GetPath(UnitCatalogEntry unitCatalogEntry, int currentArmyId, Vector2Int origin, Vector2Int destination)
-        {
-            var movementTypeId = unitCatalogEntry.MovementTypeCatalogEntry.Id;
-            var unitMaxMovement = unitCatalogEntry.UnitSpecificationConfig.Movemement;
+        public List<Vector2Int> GetPath(Vector2Int destination) {
+
+            var node = mappedNodes.FirstOrDefault(x => x.position == destination);
+            if (node == null) {
+                return null;
+            }
 
             var path = new List<Vector2Int>();
 
-            var nodesToCheck = new List<Node>();
+            while(node != null) {
+                path.Add(node.position);
+                node = node.previousNode;               
+            }
+
+            path.Reverse();
+
+            return path;
         }
 
         public List<Node> GetAvailableTiles(UnitCatalogEntry unitCatalogEntry, int currentArmyId, Vector2Int origin)
         {
-            var availableTiles = new List<Node>();
+            mappedNodes.Clear();
 
             var movementTypeId = unitCatalogEntry.MovementTypeCatalogEntry.Id;
             var unitMaxMovement = unitCatalogEntry.UnitSpecificationConfig.Movemement;
@@ -86,13 +98,13 @@ namespace Assets.Controllers {
 
                     var cost = costDictionary[movementTypeId][type] + currentExaminedNode.accumulatedCost;
 
-                    var newNode = new Node { position = neighbourPosition, accumulatedCost = cost };
+                    var newNode = new Node { position = neighbourPosition, accumulatedCost = cost, previousNode = currentExaminedNode };
 
                     if (cost <= unitMaxMovement) {
 
                         var exists = GetElementWithPositionInAvailableNodes(neighbourPosition) != null;
                         if (!exists) {
-                            availableTiles.Add(newNode);
+                            mappedNodes.Add(newNode);
                         }
                     }
 
@@ -102,6 +114,8 @@ namespace Assets.Controllers {
 
                         if(element != null && element.accumulatedCost > cost) {
                             element.accumulatedCost = cost;
+                            element.previousNode = currentExaminedNode;
+                            //
                         } else {
                             nodesToCheck.Add(newNode);
                         }
@@ -109,7 +123,7 @@ namespace Assets.Controllers {
                 }
             }
 
-            return availableTiles;
+            return mappedNodes;
 
             //------------------------------------------
 
@@ -139,7 +153,7 @@ namespace Assets.Controllers {
             }
 
             Node GetElementWithPositionInAvailableNodes(Vector2Int position) {
-                foreach (var node in availableTiles) {
+                foreach (var node in mappedNodes) {
                     if (position == node.position) {
                         return node;
                     }
