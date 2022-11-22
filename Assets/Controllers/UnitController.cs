@@ -34,8 +34,8 @@ namespace Assets.Controllers {
             unitView.SetSelectStatus(false);
         }
 
-        public void OnMove(List<Vector2> pathPositions) {
-            unitView.MoveUnitViewTo(pathPositions);
+        public void OnMove(Vector2Int firstGridPosition, List<Vector2Int> gridPositions, List<Vector2> pathPositions) {
+            unitView.MoveUnitViewTo(firstGridPosition, gridPositions, pathPositions);
             unitModel.SetToAlreadyMoved();
         }
 

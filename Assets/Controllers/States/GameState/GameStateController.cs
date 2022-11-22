@@ -5,6 +5,7 @@ using Assets.Data.Levels;
 using Assets.Data.Models;
 using Assets.ScreenMachine;
 using Assets.Views;
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -83,15 +84,15 @@ namespace Assets.Controllers {
         {
             //Almost all of this could be inside unit handler
             if (unitHandler.HasUnitSelected) {
-                var path = mapController.GetPath(tileData.Position);
+                var gridPath = mapController.GetPath(tileData.Position);
 
-                if (path != null) { 
+                if (gridPath == null) { 
                     return; 
                 }
 
-                var listOfRealPositions = mapController.GetListOfRealPositions(path);
+                var listOfRealPositions = mapController.GetListOfRealPositions(gridPath);
+                unitHandler.MoveSelectedUnit(gridPath, listOfRealPositions);
 
-                unitHandler.MoveSelectedUnit(tileData.Position, listOfRealPositions);
                 return;
             }
 
@@ -169,8 +170,13 @@ namespace Assets.Controllers {
             var unitModel = new UnitModel(unitEntry, currentArmyId);
             var unitMapView = mapController.CreateUnit(unitEntry, unitData);
             unitMapView.OnMovementEnd += unitHandler.TryUnlockInput;
+            unitMapView.OnMovementEnd += ClearPathFinding;
             var unitController = new UnitController(unitMapView, unitModel);
             unitHandler.AddUnit(unitController, unitData.Position);
+        }
+
+        private void ClearPathFinding() {
+            mapController.ClearCurrentPathfinding();
         }
 
 

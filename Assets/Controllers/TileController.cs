@@ -37,5 +37,9 @@ namespace Assets.Controllers {
         public void HighLight(int cost, float orientation) {
             view.Highlight(cost, orientation);
         }
+
+        public void RemoveHighlight() {
+            view.RemoveHighlight();
+        }
     }
 }

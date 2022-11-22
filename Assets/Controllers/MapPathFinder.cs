@@ -52,7 +52,7 @@ namespace Assets.Controllers {
 
             var path = new List<Vector2Int>();
 
-            while(node != null) {
+            while(node.previousNode != null) {
                 path.Add(node.position);
                 node = node.previousNode;               
             }
@@ -166,6 +166,10 @@ namespace Assets.Controllers {
             {
                 return !unitHandler.IsSpaceEmpty(position) && !unitHandler.IsFromArmy(position, currentArmyId);
             }
+        }
+
+        public List<Node> GetHighLightedTiles() {
+            return mappedNodes;
         }
     }
 }

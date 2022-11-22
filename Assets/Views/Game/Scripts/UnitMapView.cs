@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -15,7 +16,7 @@ namespace Assets.Views {
 
         public event Action OnMovementEnd;
 
-        private const float duration = 3f;
+        private const float durationPerSquare = 0.2f;
 
         public void SetViewData(Sprite unitSprite){
             image.sprite = unitSprite;
@@ -25,39 +26,47 @@ namespace Assets.Views {
             selectedDirector.SetActive(selected);
         }
 
-        public void MoveUnitViewTo(List<Vector2> pathPositions) {
+        public void MoveUnitViewTo(Vector2Int firstGridPosition, List<Vector2Int> gridPositions, List<Vector2> pathPositions) {
 
-            StartCoroutine(MoveUnitAsyncTo(pathPositions));
+            StartCoroutine(MoveUnitAsyncTo(firstGridPosition, gridPositions, pathPositions));
         }
 
-        private IEnumerator MoveUnitAsyncTo(List<Vector2> pathPositions) { //Maybe a coroutine would be better
+        private IEnumerator MoveUnitAsyncTo(Vector2Int firstGridPosition, List<Vector2Int> gridPositions, List<Vector2> pathPositions) { //Maybe a coroutine would be better
 
-            var timer = 0f;
+            if(pathPositions.Count != gridPositions.Count) {
+                throw new NotSupportedException($"Somehow there are gridPositions: {gridPositions.Count} and pathPositions: {pathPositions.Count}, they should be equal ");
+            }
+
             var rectTransform = transform.AsRectTransform();
             var initialPosition = rectTransform.anchoredPosition;
+            var initialGridPosition = firstGridPosition;
 
             for (int i = 0; i < pathPositions.Count; i++) {
-                Vector2 nextPosition = pathPositions[i];
+
+                var timer = 0f;
+
+                var nextPosition = pathPositions[i];
+                var nextGridPosition = gridPositions[i];
+
+                var duration = Vector2.Distance(initialGridPosition, nextGridPosition) * durationPerSquare;
                 
-                while(timer > duration) {
+                while(timer < duration) {
 
+                    timer += Time.smoothDeltaTime;
+                    if (timer > duration) {
+                        timer = duration;
+                    }
+
+                    var position = Vector2.Lerp(initialPosition, nextPosition, timer / duration);
+                    rectTransform.anchoredPosition = position;
+                    yield return null;
                 }
 
+                initialPosition = nextPosition;
+                initialGridPosition = nextGridPosition;
             }
 
-            while (timer < duration) {
-
-                timer += Time.smoothDeltaTime;
-                if(timer > duration) {
-                    timer = duration;
-                }
-                var position = Vector2.Lerp(initialPosition, newPosition, timer / duration);
-                rectTransform.anchoredPosition = position;
-
-                yield return null;
-            }
-            
-            rectTransform.anchoredPosition = newPosition;
+            rectTransform.anchoredPosition = pathPositions.Last();
 
             OnMovementEnd?.Invoke();
         }

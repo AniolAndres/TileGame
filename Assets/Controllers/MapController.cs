@@ -135,5 +135,13 @@ namespace Assets.Controllers {
 
             return realPositions;
         }
+
+        public void ClearCurrentPathfinding() {
+            var highlightedTiles = pathFinder.GetHighLightedTiles();
+            foreach(var tile in highlightedTiles) {
+                var tileController = map.GetElement(tile.position);
+                tileController.RemoveHighlight();
+            }
+        }
     }
 }

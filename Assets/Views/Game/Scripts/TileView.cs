@@ -44,5 +44,9 @@ namespace Assets.Views {
         internal void SetColor(Color tileColor) {
             tileImage.color = tileColor;
         }
+
+        public void RemoveHighlight() {
+            highlightGameObject.SetActive(false);
+        }
     }
 }
