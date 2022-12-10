@@ -13,9 +13,19 @@ namespace Assets.Catalogs {
         [SerializeField]
         private List<UnitCatalogEntry> spawnableUnits = new List<UnitCatalogEntry>();
 
+        [SerializeField]
+        private bool canBeControlled;
+
+        [SerializeField]
+        private float fundsMultiplier;
+
         public List<UnitCatalogEntry> SpawnableUnits => spawnableUnits;
 
         public Color TileColor => tileColor;
+
+        public bool CanBeControlled => canBeControlled;
+
+        public float FundsMultiplier => fundsMultiplier;
 
         public bool CanCreate => spawnableUnits.Count != 0;
     }

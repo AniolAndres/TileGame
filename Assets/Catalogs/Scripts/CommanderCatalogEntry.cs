@@ -7,11 +7,6 @@ namespace Assets.Catalogs {
         [SerializeField]
         private string fullName;
 
-        [SerializeField]
-        private Color color;
-
         public string FullName => fullName;
-
-        public Color Color => color;
     }
 }

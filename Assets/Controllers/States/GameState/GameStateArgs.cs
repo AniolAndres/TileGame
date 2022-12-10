@@ -1,5 +1,6 @@
 ﻿
 
+using Assets.Data;
 using System.Collections.Generic;
 
 namespace Assets.Controllers {
@@ -7,7 +8,7 @@ namespace Assets.Controllers {
 
         public string LevelId { get; set; }
 
-        public List<string> CommanderIds { get; set; }
+        public List<SetupArmyData> ArmyDatas { get; set; }
         
     }
 }

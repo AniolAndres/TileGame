@@ -1,6 +1,7 @@
 ﻿
 
 using Assets.Catalogs;
+using Assets.Catalogs.Scripts;
 using Assets.Views;
 using System;
 
@@ -9,23 +10,23 @@ namespace Assets.Data {
 
         private readonly CommanderCatalogEntry commanderEntry;
 
-        private readonly int armyIndex;
+        private readonly ArmyColorCatalogEntry armyColorEntry;
 
-        public PlayerModel(CommanderCatalogEntry commanderCatalogEntry, int armyIndex) {
+        public PlayerModel(CommanderCatalogEntry commanderCatalogEntry, ArmyColorCatalogEntry armyColorEntry) {
             this.commanderEntry = commanderCatalogEntry;
-            this.armyIndex = armyIndex;
+            this.armyColorEntry = armyColorEntry;
         }
 
         public CommanderViewData GetCommanderViewData() {
             return new CommanderViewData {
-                Color = commanderEntry.Color,
+                Color = armyColorEntry.ArmyColor,
                 FullName = commanderEntry.FullName
             };
         }
 
         public int GetArmyId()
         {
-            return armyIndex;
+            return armyColorEntry.ArmyId;
         }
     }
 }

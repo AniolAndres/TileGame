@@ -6,6 +6,7 @@ using Assets.Views;
 
 namespace Assets.Controllers {
     public class TileController{
+
         public event Action<TileData> OnTileClicked; 
         
         private readonly TileView view;
@@ -40,6 +41,10 @@ namespace Assets.Controllers {
 
         public void RemoveHighlight() {
             view.RemoveHighlight();
+        }
+
+        public int GetFunds() {
+            return model.GetFunds();
         }
     }
 }

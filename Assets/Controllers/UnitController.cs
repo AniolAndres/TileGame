@@ -12,6 +12,10 @@ namespace Assets.Controllers {
 
         private readonly UnitModel unitModel;
 
+        public event Action OnMovementStart;
+
+        public event Action OnMovementEnd;
+
         public UnitController(UnitMapView unitView, UnitModel unitModel) {
             this.unitView = unitView;
             this.unitModel = unitModel;
@@ -19,6 +23,14 @@ namespace Assets.Controllers {
 
         public string GetUnitId() {
             return unitModel.GetId();
+        }
+
+        public void FireMovementStartAction() {
+            OnMovementStart?.Invoke();  
+        }
+
+        public void FireMovementEndAction() {
+            OnMovementEnd?.Invoke();
         }
 
         public int GetUnitArmyId()
@@ -39,9 +51,6 @@ namespace Assets.Controllers {
             unitModel.SetToAlreadyMoved();
         }
 
-        public void OnDestroy() {
-        }
-
         public void Refresh()
         {
             unitModel.RefreshUnit();
@@ -50,6 +59,16 @@ namespace Assets.Controllers {
         public bool CanMove()
         {
             return unitModel.CanMove;
+        }
+
+        public void OnCreate() {
+            unitView.OnMovementEnd += FireMovementEndAction;
+            unitView.OnMovementStart += FireMovementStartAction;
+        }
+
+        public void OnDestroy() {
+            unitView.OnMovementEnd -= FireMovementEndAction;
+            unitView.OnMovementStart -= FireMovementStartAction;
         }
     }
 }

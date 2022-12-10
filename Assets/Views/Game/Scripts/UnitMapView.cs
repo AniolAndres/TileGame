@@ -16,6 +16,8 @@ namespace Assets.Views {
 
         public event Action OnMovementEnd;
 
+        public event Action OnMovementStart;
+
         private const float durationPerSquare = 0.2f;
 
         public void SetViewData(Sprite unitSprite){
@@ -36,6 +38,8 @@ namespace Assets.Views {
             if(pathPositions.Count != gridPositions.Count) {
                 throw new NotSupportedException($"Somehow there are gridPositions: {gridPositions.Count} and pathPositions: {pathPositions.Count}, they should be equal ");
             }
+
+            OnMovementStart?.Invoke();
 
             var rectTransform = transform.AsRectTransform();
             var initialPosition = rectTransform.anchoredPosition;

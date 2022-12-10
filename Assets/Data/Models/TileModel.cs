@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Assets.Catalogs;
 using Assets.Data.Level;
+using System;
 
 namespace Assets.Data.Models {
     public class TileModel {
@@ -26,6 +27,12 @@ namespace Assets.Data.Models {
         public string GetTileType()
         {
             return TypeId;
+        }
+
+        public int GetFunds() {
+            var fundsForBuilding = 1000;
+            var floatingFunds = tileEntry.FundsMultiplier * fundsForBuilding;
+            return Mathf.CeilToInt(floatingFunds);
         }
     }
 }

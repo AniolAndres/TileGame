@@ -44,7 +44,8 @@ namespace Assets.Controllers {
 
             uiView.OnBattleInfoMenuRequested += PushBattleInfoMenu;
 
-            model = new GameStateModel(context.Catalogs.LevelsCatalog, context.Catalogs.UnitsCatalog, context.Catalogs.TilesCatalog, context.Catalogs.CommandersCatalog, gameStateArgs.LevelId);
+            model = new GameStateModel(context.Catalogs.LevelsCatalog, context.Catalogs.UnitsCatalog, context.Catalogs.TilesCatalog, 
+                context.Catalogs.CommandersCatalog, context.Catalogs.ArmyColorsCatalog, gameStateArgs.LevelId);
             inputLocker = new GameplayInputLocker(context.ScreenMachine);
             unitHandler = new UnitHandler(inputLocker);
 
@@ -56,12 +57,13 @@ namespace Assets.Controllers {
         private void CreatePlayers() {
             warController = new WarController();
 
-            for (var armyIndex = 0; armyIndex < gameStateArgs.CommanderIds.Count; armyIndex++)
+            for (var armyIndex = 0; armyIndex < gameStateArgs.ArmyDatas.Count; armyIndex++)
             {
-                var commanderId = gameStateArgs.CommanderIds[armyIndex];
-                var commanderEntry = model.GetCommanderEntry(commanderId);
+                var armyData = gameStateArgs.ArmyDatas[armyIndex];
+                var commanderEntry = model.GetCommanderEntry(armyData);
+                var armyEntry = model.GetArmyEntry(armyData);
                 var fundsController = new FundsController();
-                var playerModel = new PlayerModel(commanderEntry, armyIndex);
+                var playerModel = new PlayerModel(commanderEntry, armyEntry);
                 var playerView = uiView.InstantiatePlayerView();
                 var playerController = new PlayerController(playerView, playerModel, fundsController);
                 playerController.OnCreate();
@@ -159,7 +161,13 @@ namespace Assets.Controllers {
         private void RemoveUnit(Vector2Int position) {
             var removedController = unitHandler.GetUnitControllerAtPosition(position);
             removedController.OnDestroy();
+            removedController.OnMovementStart -= ClearPathFinding;
+            removedController.OnMovementEnd -= TryUnlockInput;
             unitHandler.RemoveUnitAtPosition(position);
+        }
+
+        private void TryUnlockInput() {
+            unitHandler.TryUnlockInput();
         }
         
         private void CreateUnit(BuyUnitData unitData)
@@ -169,9 +177,10 @@ namespace Assets.Controllers {
             warController.TakeFundsFromCurrentPlayer(unitEntry.UnitSpecificationConfig.Cost);
             var unitModel = new UnitModel(unitEntry, currentArmyId);
             var unitMapView = mapController.CreateUnit(unitEntry, unitData);
-            unitMapView.OnMovementEnd += unitHandler.TryUnlockInput;
-            unitMapView.OnMovementEnd += ClearPathFinding;
             var unitController = new UnitController(unitMapView, unitModel);
+            unitController.OnMovementEnd += unitHandler.TryUnlockInput;
+            unitController.OnMovementStart += ClearPathFinding;
+            unitController.OnCreate();
             unitHandler.AddUnit(unitController, unitData.Position);
         }
 

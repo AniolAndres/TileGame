@@ -2,6 +2,7 @@
 using Assets.Catalogs;
 using System;
 using Assets.Data.Level;
+using Assets.Catalogs.Scripts;
 
 namespace Assets.Data.Models {
     public class GameStateModel {
@@ -14,19 +15,23 @@ namespace Assets.Data.Models {
 
         private readonly CommandersCatalog commandersCatalog;
 
-        public GameStateModel(LevelsCatalog levelsCatalog, UnitsCatalog unitsCatalog, TilesCatalog tilesCatalog, CommandersCatalog commandersCatalog, string levelId) {
+        private readonly ArmyColorsCatalog armyColorsCatalog;
+
+        public GameStateModel(LevelsCatalog levelsCatalog, UnitsCatalog unitsCatalog, TilesCatalog tilesCatalog, 
+            CommandersCatalog commandersCatalog, ArmyColorsCatalog armyColorsCatalog, string levelId) {
             this.currentLevel = levelsCatalog.GetEntry(levelId);
             this.commandersCatalog = commandersCatalog;
             this.unitsCatalog = unitsCatalog;
             this.tilesCatalog = tilesCatalog;
+            this.armyColorsCatalog = armyColorsCatalog;
         }
 
         public int GetTotalPlayers() {
             return currentLevel.PlayersCount;
         }
 
-        public CommanderCatalogEntry GetCommanderEntry(string commanderId) {
-            return commandersCatalog.GetEntry(commanderId);
+        public CommanderCatalogEntry GetCommanderEntry(SetupArmyData armyData) {
+            return commandersCatalog.GetEntry(armyData.CommanderId);
         }
 
         public bool DoesBuildingBelongToPlayer(TileData tileData)
@@ -42,6 +47,10 @@ namespace Assets.Data.Models {
         public bool IsBuilding(string tileDataTypeId)
         {
             return tilesCatalog.GetEntry(tileDataTypeId).CanCreate;
+        }
+
+        public ArmyColorCatalogEntry GetArmyEntry(SetupArmyData armyData) {
+            return armyColorsCatalog.GetEntry(armyData.ArmyColorId);
         }
     }
 }

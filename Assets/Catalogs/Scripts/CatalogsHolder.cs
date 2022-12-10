@@ -1,4 +1,5 @@
 ﻿
+using Assets.Catalogs.Scripts;
 using UnityEngine;
 
 
@@ -25,6 +26,9 @@ namespace Assets.Catalogs {
         [SerializeField] 
         private MovementTypesCatalog movementTypesCatalog;
 
+        [SerializeField]
+        private ArmyColorsCatalog armyColorsCatalog;
+
         public StatesCatalog StatesCatalog => statesCatalog;
 
         public LevelsCatalog LevelsCatalog => levelsCatalog;
@@ -36,5 +40,7 @@ namespace Assets.Catalogs {
         public CommandersCatalog CommandersCatalog => commandersCatalog;
 
         public MovementTypesCatalog MovementTypesCatalog => movementTypesCatalog;
+
+        public ArmyColorsCatalog ArmyColorsCatalog => armyColorsCatalog;
     }
 }
