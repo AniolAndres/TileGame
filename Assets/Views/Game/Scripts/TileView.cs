@@ -21,6 +21,9 @@ namespace Assets.Views {
         private Image tileImage;
 
         [SerializeField]
+        private Image ownerImage;
+
+        [SerializeField]
         private Transform arrowTransform;
 
         private void OnEnable() {
@@ -41,12 +44,17 @@ namespace Assets.Views {
             arrowTransform.localEulerAngles = new Vector3(0,0,arrowRotation);
         }
 
-        internal void SetColor(Color tileColor) {
+        public void Setup(Color tileColor) {
             tileImage.color = tileColor;
         }
 
         public void RemoveHighlight() {
             highlightGameObject.SetActive(false);
+        }
+
+        public void SetOwnerColor(Color armyColor) {
+            ownerImage.gameObject.SetActive(true);
+            ownerImage.color = armyColor;
         }
     }
 }

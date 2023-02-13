@@ -34,11 +34,6 @@ namespace Assets.Data.Models {
             return commandersCatalog.GetEntry(armyData.CommanderId);
         }
 
-        public bool DoesBuildingBelongToPlayer(TileData tileData)
-        {
-            return true;
-        }
-
         public UnitCatalogEntry GetUnitCatalogEntry(string unitId)
         {
             return unitsCatalog.GetEntry(unitId);

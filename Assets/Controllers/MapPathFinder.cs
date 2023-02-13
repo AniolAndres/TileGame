@@ -115,7 +115,6 @@ namespace Assets.Controllers {
                         if(element != null && element.accumulatedCost > cost) {
                             element.accumulatedCost = cost;
                             element.previousNode = currentExaminedNode;
-                            //
                         } else {
                             nodesToCheck.Add(newNode);
                         }

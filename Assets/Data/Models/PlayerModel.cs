@@ -24,9 +24,17 @@ namespace Assets.Data {
             };
         }
 
-        public int GetArmyId()
+        public int GetArmyIndex()
         {
             return armyColorEntry.ArmyId;
+        }
+
+        public string GetColorId() {
+            return armyColorEntry.Id;
+        }
+
+        public string GetArmyCommanderId() {
+            return commanderEntry.Id;
         }
     }
 }

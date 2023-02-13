@@ -5,6 +5,9 @@ using Assets.Views;
 using Assets.Data.Levels;
 using Assets.Data.Level;
 using System;
+using System.Collections.Generic;
+using Random = UnityEngine.Random;
+using Assets.Catalogs.Scripts;
 
 namespace Assets.Data.Models {
     public class TileMapModel {
@@ -15,21 +18,28 @@ namespace Assets.Data.Models {
 
         private readonly UnitsCatalog unitsCatalog;
 
+        private readonly ArmyColorsCatalog armyColorsCatalog;
+
         private readonly ILevelProvider levelProvider;
 
         private readonly MovementTypesCatalog movementTypesCatalog;
+
+        private List<ArmyInfoData> armyInfoData;
 
         public MovementTypesCatalog MovementTypesCatalog => movementTypesCatalog;
 
         private readonly string levelId;
 
-        public TileMapModel(LevelsCatalog levelsCatalog, MovementTypesCatalog movementTypesCatalog, TilesCatalog tilesCatalog, UnitsCatalog unitsCatalog,ILevelProvider levelProvider, string levelId) {           
+        public TileMapModel(LevelsCatalog levelsCatalog, MovementTypesCatalog movementTypesCatalog, TilesCatalog tilesCatalog, 
+            UnitsCatalog unitsCatalog,ILevelProvider levelProvider, ArmyColorsCatalog armyColorsCatalog, List<ArmyInfoData> armyInfoData, string levelId) {           
             this.currentLevelEntry = levelsCatalog.GetAllEntries().First();
             this.tilesCatalog = tilesCatalog;
             this.movementTypesCatalog = movementTypesCatalog;
             this.unitsCatalog = unitsCatalog;
             this.levelProvider = levelProvider;
             this.levelId = levelId;
+            this.armyColorsCatalog = armyColorsCatalog;
+            this.armyInfoData = armyInfoData;
         }
 
         public Vector2Int GetSize() {
@@ -60,6 +70,34 @@ namespace Assets.Data.Models {
         public bool IsBuilding(string tileType) {
             var tileEntry = tilesCatalog.GetEntry(tileType);
             return tileEntry.CanCreate;
+        }
+
+        public bool IsBuilding(TileCatalogEntry tileEntry) {
+            return tileEntry.CanCreate;
+        }
+
+        public ArmyInfoData GetRandomArmyInfo() {
+            var playerIndex =  Random.Range(0, armyInfoData.Count+1);
+            if (playerIndex <= 0) {
+                return new ArmyInfoData {
+                    playerIndex = 0,
+                    armyColorId = armyColorsCatalog.InactiveColorEntry.Id,
+                    armyCommanderId = null
+                };
+            }
+
+            foreach(var armyInfo in armyInfoData) {
+                if(armyInfo.playerIndex == playerIndex) {
+                    return armyInfo;
+                }
+            }
+
+            throw new NotSupportedException("Couldn't find any army data, check the algorithm");
+        }
+
+        public Color GetColor(string colorId) {
+            var colorEntry = armyColorsCatalog.GetEntry(colorId);
+            return colorEntry.ArmyColor;
         }
     }
 }

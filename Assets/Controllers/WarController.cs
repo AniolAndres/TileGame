@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Data;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Assets.Controllers {
@@ -33,7 +35,7 @@ namespace Assets.Controllers {
 
         public int GetCurrentTurnArmyIndex()
         {
-            return currentPlayer.GetArmyId();
+            return currentPlayer.GetArmyIndex();
         }
 
         public int GetFundsFromCurrentPlayer()
@@ -44,6 +46,18 @@ namespace Assets.Controllers {
         public void TakeFundsFromCurrentPlayer(int cost)
         {
             currentPlayer.TakeFundsFromPlayer(cost);
+        }
+
+        public List<ArmyInfoData> GetArmyInfos() {
+            var colorIdList = new List<ArmyInfoData>(players.Count);
+            foreach (var player in players) {
+                colorIdList.Add(new ArmyInfoData {
+                    armyColorId = player.GetArmyColorId(),
+                    playerIndex = player.GetArmyIndex(),
+                    armyCommanderId = player.GetArmyCommanderId()
+                }) ;
+            }
+            return colorIdList;
         }
     }
 }

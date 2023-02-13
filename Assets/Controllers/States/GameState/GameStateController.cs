@@ -20,6 +20,8 @@ namespace Assets.Controllers {
 
         private UnitHandler unitHandler;
 
+        private BuildingHandler buildingHandler;
+
         private GameplayInputLocker inputLocker;
 
         private CameraController cameraController;
@@ -48,6 +50,7 @@ namespace Assets.Controllers {
                 context.Catalogs.CommandersCatalog, context.Catalogs.ArmyColorsCatalog, gameStateArgs.LevelId);
             inputLocker = new GameplayInputLocker(context.ScreenMachine);
             unitHandler = new UnitHandler(inputLocker);
+            buildingHandler = new BuildingHandler();
 
             CreatePlayers();
             CreateMapController();
@@ -74,10 +77,13 @@ namespace Assets.Controllers {
         }
 
         private void CreateMapController() {
+
+            var armyInfos = warController.GetArmyInfos();
             var levelProvider = new LevelProvider(context.Catalogs.LevelsCatalog, context.Catalogs.TilesCatalog);
-            var tileMapModel = new TileMapModel(context.Catalogs.LevelsCatalog, context.Catalogs.MovementTypesCatalog, context.Catalogs.TilesCatalog, context.Catalogs.UnitsCatalog, 
-                levelProvider, gameStateArgs.LevelId);
-            mapController = new MapController(worldView.TileMapView, tileMapModel, unitHandler);
+            var tileMapModel = new TileMapModel(context.Catalogs.LevelsCatalog, context.Catalogs.MovementTypesCatalog, 
+                context.Catalogs.TilesCatalog, context.Catalogs.UnitsCatalog, levelProvider,
+                context.Catalogs.ArmyColorsCatalog, armyInfos, gameStateArgs.LevelId);
+            mapController = new MapController(worldView.TileMapView, tileMapModel, unitHandler, buildingHandler);
             mapController.OnTileClicked += OnTileClicked;
             mapController.OnCreate();
         }
@@ -121,7 +127,8 @@ namespace Assets.Controllers {
 
         private void OnBuildingClicked(TileData tileData)
         {
-            var isFromPlayer = model.DoesBuildingBelongToPlayer(tileData);
+            var currentPlayer = warController.GetCurrentTurnArmyIndex();
+            var isFromPlayer = buildingHandler.IsBuildingFromPlayer(currentPlayer,tileData.Position);
             if (!isFromPlayer)
             {
                 return;

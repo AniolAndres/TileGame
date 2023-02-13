@@ -22,7 +22,6 @@ namespace Assets.Data.Levels {
 
         public LevelData GetLevel(string levelId)
         {
-
             var allTileEntries = tilesCatalog.GetAllEntries();
             var tileDataList = new List<TileData>();
 
@@ -41,6 +40,7 @@ namespace Assets.Data.Levels {
             }
 
             return new LevelData { 
+                PlayersCount = entry.PlayersCount,
                 TileData = tileDataList,
                 Width = entry.Size.x,
                 Height = entry.Size.y};

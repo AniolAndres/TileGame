@@ -15,3 +15,5 @@ MonoBehaviour:
   entries:
   - {fileID: 11400000, guid: b4f9c9fd2adafb5498442b89e362ee3e, type: 2}
   - {fileID: 11400000, guid: 839b195d011e10a4e854301aaf8f1c1c, type: 2}
+  - {fileID: 11400000, guid: a0ad9a933371ae2478d6cecdb71c9ba0, type: 2}
+  inactiveColorEntry: {fileID: 11400000, guid: a0ad9a933371ae2478d6cecdb71c9ba0, type: 2}

@@ -7,11 +7,13 @@ using Assets.Data.Level;
 using Assets.Data;
 using Assets.Extensions;
 using System.Collections.Generic;
+using Random = UnityEngine.Random;
 
 namespace Assets.Controllers {
     public class MapController {
 
         private TileController[,] map;
+        private BuildingHandler buildingHandler;
         private TileMapView tileMapView;
         private TileMapModel model;
         private readonly UnitHandler unitHandler;
@@ -20,10 +22,11 @@ namespace Assets.Controllers {
 
         public event Action<TileData> OnTileClicked;
 
-        public MapController(TileMapView tileMapView, TileMapModel model, UnitHandler unitHandler) {
+        public MapController(TileMapView tileMapView, TileMapModel model, UnitHandler unitHandler, BuildingHandler buildingHandler) {
             this.tileMapView = tileMapView;
             this.model = model;
             this.unitHandler = unitHandler;
+            this.buildingHandler = buildingHandler;
         }
 
         public void OnCreate() {
@@ -44,7 +47,7 @@ namespace Assets.Controllers {
             var sideLength = model.GetSideLength();
 
             foreach (var tile in levelData.TileData) {
-                CreateTile(tile, sideLength);
+                CreateTile(tile);
             }
 
             var timeAfterLoad = DateTime.Now;
@@ -52,6 +55,29 @@ namespace Assets.Controllers {
             var loadingTime = timeAfterLoad - time;
 
             Debug.Log($"Created level, took {loadingTime.TotalMilliseconds} ms");
+
+            //-----------------------------------
+
+            void CreateTile(TileData tileData) {
+
+                var tileEntry = model.GetTileEntry(tileData.TypeId);
+                var tilePosition = model.GetRealTileWorldPosition(tileData.Position);
+                var tileViewColor = tileEntry.TileColor;
+                var tileView = tileMapView.InstantiateTileView(tileViewColor, tilePosition.x, tilePosition.y, sideLength);
+                var tileModel = new TileModel(tileEntry, tileData.Position);
+                var tileController = new TileController(tileView, tileModel);
+                tileController.OnTileClicked += FireTileClickedEvent;
+                tileController.OnCreate();
+                map[tileData.Position.x, tileData.Position.y] = tileController;
+
+                var isBuilding = model.IsBuilding(tileEntry);
+                if (isBuilding) {
+                    var player = model.GetRandomArmyInfo(); 
+                    buildingHandler.AddBuilding(player.playerIndex, tileData.Position, tileController);
+                    var color = model.GetColor(player.armyColorId);
+                    tileView.SetOwnerColor(color); // need colors from players
+                }              
+            }
         }
 
         public void OnDestroy() {
@@ -73,19 +99,6 @@ namespace Assets.Controllers {
 
         public Vector2 GetRealTilePosition(Vector2Int tilePosition) {
             return model.GetRealTileWorldPosition(tilePosition);
-        }
-
-        private void CreateTile(TileData tileData, float sideLength) {
-
-            var tileEntry = model.GetTileEntry(tileData.TypeId);
-            var tilePosition = model.GetRealTileWorldPosition(tileData.Position);
-            var tileViewColor = tileEntry.TileColor;
-            var tileView = tileMapView.InstantiateTileView(tileViewColor, tilePosition.x, tilePosition.y, sideLength);
-            var tileModel = new TileModel(tileEntry, tileData.Position);
-            var tileController = new TileController(tileView, tileModel);
-            tileController.OnTileClicked += FireTileClickedEvent;
-            tileController.OnCreate();
-            map[tileData.Position.x, tileData.Position.y] = tileController;    
         }
 
         public UnitMapView CreateUnit(UnitCatalogEntry unitEntry, BuyUnitData buyUnitData) {

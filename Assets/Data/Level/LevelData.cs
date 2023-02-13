@@ -10,5 +10,6 @@ namespace Assets.Data.Level {
 
         public int Height { get; set; }
 
+        public int PlayersCount { get; set; }
     }
 }

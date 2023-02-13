@@ -9,9 +9,9 @@ namespace Assets.Views {
 
         public TileView InstantiateTileView(Color tileColor, float x, float y, float sideLength) {
             var tileView = Instantiate(tileViewPrefab,  this.transform);
-            tileView.SetColor(tileColor);
             tileView.transform.AsRectTransform().sizeDelta = new Vector2(sideLength, sideLength);
-            tileView.transform.AsRectTransform().anchoredPosition = new Vector2(x, y);          
+            tileView.transform.AsRectTransform().anchoredPosition = new Vector2(x, y);
+            tileView.Setup(tileColor);
             return tileView;
         }
 

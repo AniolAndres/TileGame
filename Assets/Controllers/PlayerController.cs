@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Assets.Views;
 using Assets.Data;
 using System;
+using Assets.Catalogs.Scripts;
 
 namespace Assets.Controllers {
     public class PlayerController {
@@ -57,9 +58,9 @@ namespace Assets.Controllers {
             
         }
 
-        public int GetArmyId()
+        public int GetArmyIndex()
         {
-            return playerModel.GetArmyId();
+            return playerModel.GetArmyIndex();
         }
 
         public int GetCurrentFunds()
@@ -67,10 +68,18 @@ namespace Assets.Controllers {
             return fundsController.CurrentFunds;
         }
 
+        public string GetArmyColorId() {
+            return playerModel.GetColorId();
+        }
+
         public void TakeFundsFromPlayer(int cost)
         {
             fundsController.SpendFunds(cost);
             playerView.UpdateCount(fundsController.CurrentFunds);
+        }
+
+        public string GetArmyCommanderId() {
+            return playerModel.GetArmyCommanderId();
         }
     }
 }
