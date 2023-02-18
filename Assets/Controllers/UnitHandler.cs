@@ -165,5 +165,14 @@ namespace Assets.Controllers {
 
             return unitControllerDictionary[selectedUnitKey.Value].GetUnitId();
         }
-    }
+
+		public Vector2Int GetSelectedUnitPosition() {
+
+            if (!selectedUnitKey.HasValue) {
+                throw new NotSupportedException("Trying to get selected unit but there's none, check first");
+            }
+
+            return selectedUnitKey.Value;
+		}
+	}
 }

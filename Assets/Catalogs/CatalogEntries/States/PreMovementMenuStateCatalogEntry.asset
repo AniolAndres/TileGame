@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1f904888582774544b9cedb9ef77eabb, type: 3}
-  m_Name: PostMovementMenuStateCatalogEntry
+  m_Name: PreMovementMenuStateCatalogEntry
   m_EditorClassIdentifier: 
-  id: PostMovementMenuState
+  id: PreMovementMenu
   uiView:
     m_AssetGUID: fe014f351472b334ba91cf8cca68a05e
     m_SubObjectName: 

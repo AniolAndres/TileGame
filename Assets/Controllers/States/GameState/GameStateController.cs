@@ -1,4 +1,5 @@
 using Assets.Configs;
+using Assets.Controllers.States;
 using Assets.Data;
 using Assets.Data.Level;
 using Assets.Data.Levels;
@@ -6,6 +7,7 @@ using Assets.Data.Models;
 using Assets.ScreenMachine;
 using Assets.Views;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -92,14 +94,8 @@ namespace Assets.Controllers {
         {
             //Almost all of this could be inside unit handler
             if (unitHandler.HasUnitSelected) {
-                var gridPath = mapController.GetPath(tileData.Position);
 
-                if (gridPath == null) { 
-                    return; 
-                }
-
-                var listOfRealPositions = mapController.GetListOfRealPositions(gridPath);
-                unitHandler.MoveSelectedUnit(gridPath, listOfRealPositions);
+                TryMoveSelectedUnit(tileData);
 
                 return;
             }
@@ -123,6 +119,37 @@ namespace Assets.Controllers {
             }
             
             OnBuildingClicked(tileData);
+        }
+
+        private void TryMoveSelectedUnit(TileData tileData) {
+
+			var gridPath = mapController.GetPath(tileData.Position);
+
+			if (gridPath == null) {
+				return;
+			}
+
+            var preMovementArgs = new PreMovementMenuStateArgs {
+                CanAttack = true,
+                OnAttack = SimulateAttack,
+                OnMovementConfirmed = () => MoveSelectedUnit(gridPath)
+            };
+
+            var preMovementState = new PreMovementMenuStateController(context, preMovementArgs);
+            PushState(preMovementState);
+		}
+
+        private void MoveSelectedUnit(List<Vector2Int> gridPath) {
+			var listOfRealPositions = mapController.GetListOfRealPositions(gridPath);
+            unitHandler.MoveSelectedUnit(gridPath, listOfRealPositions);
+		}
+
+		private void SimulateAttack() {
+            Debug.Log("Attacking");
+        }
+
+        private void PushPreMovementState() {
+            throw new NotImplementedException();
         }
 
         private void OnBuildingClicked(TileData tileData)
