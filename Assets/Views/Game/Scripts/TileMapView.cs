@@ -22,5 +22,9 @@ namespace Assets.Views {
             unitView.SetViewData(unitSprite);
             return unitView;
         }
-    }
+
+		public Vector2 GetMapPosition() {
+            return transform.AsRectTransform().anchoredPosition;
+		}
+	}
 }

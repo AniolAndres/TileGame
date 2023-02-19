@@ -14,7 +14,7 @@ namespace Assets.Controllers {
 
         private TileController[,] map;
         private BuildingHandler buildingHandler;
-        private TileMapView tileMapView;
+        private TileMapView view;
         private TileMapModel model;
         private readonly UnitHandler unitHandler;
 
@@ -22,8 +22,10 @@ namespace Assets.Controllers {
 
         public event Action<TileData> OnTileClicked;
 
+        public event Action OnMapClicked;
+
         public MapController(TileMapView tileMapView, TileMapModel model, UnitHandler unitHandler, BuildingHandler buildingHandler) {
-            this.tileMapView = tileMapView;
+            this.view = tileMapView;
             this.model = model;
             this.unitHandler = unitHandler;
             this.buildingHandler = buildingHandler;
@@ -63,7 +65,7 @@ namespace Assets.Controllers {
                 var tileEntry = model.GetTileEntry(tileData.TypeId);
                 var tilePosition = model.GetRealTileWorldPosition(tileData.Position);
                 var tileViewColor = tileEntry.TileColor;
-                var tileView = tileMapView.InstantiateTileView(tileViewColor, tilePosition.x, tilePosition.y, sideLength);
+                var tileView = view.InstantiateTileView(tileViewColor, tilePosition.x, tilePosition.y, sideLength);
                 var tileModel = new TileModel(tileEntry, tileData.Position);
                 var tileController = new TileController(tileView, tileModel);
                 tileController.OnTileClicked += FireTileClickedEvent;
@@ -104,7 +106,7 @@ namespace Assets.Controllers {
         public UnitMapView CreateUnit(UnitCatalogEntry unitEntry, BuyUnitData buyUnitData) {
             var tilePosition = model.GetRealTileWorldPosition(buyUnitData.Position);
             var sideLength = model.GetSideLength();
-            return tileMapView.CreateUnitView(unitEntry.UnitView, unitEntry.UnitPurchaseViewConfig.UnitSprite, tilePosition, sideLength);
+            return view.CreateUnitView(unitEntry.UnitView, unitEntry.UnitPurchaseViewConfig.UnitSprite, tilePosition, sideLength);
         }
 
         public List<Vector2Int> GetPath(Vector2Int destination) {
@@ -155,6 +157,18 @@ namespace Assets.Controllers {
                 var tileController = map.GetElement(tile.position);
                 tileController.RemoveHighlight();
             }
+        }
+
+        public float GetTileSize() {
+            return model.GetSideLength();
+        }
+
+        public Vector2Int GetMapSize() {
+            return model.GetSize();
+        }
+
+        public Vector2 GetMapCenterCurrentPosition() {
+            return view.GetMapPosition();
         }
     }
 }

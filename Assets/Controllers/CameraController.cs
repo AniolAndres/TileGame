@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using Assets.Views.Game;
 using Assets.Data.Models;
+using System;
 
 namespace Assets.Controllers {
     public class CameraController {
@@ -43,5 +44,9 @@ namespace Assets.Controllers {
         public void Destroy() {
             cameraView.OnCameraMoved -= MoveCamera;
         }
-    }
+
+		public Vector2 GetCameraPosition() {
+            return cameraView.Position;
+		}
+	}
 }

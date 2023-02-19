@@ -30,6 +30,8 @@ namespace Assets.Controllers {
 
         private WarController warController;
 
+        private InputCalculatorHelper inputCalculatorHelper;
+
         private readonly GameStateArgs gameStateArgs;
 
         public GameStateController(Context context, GameStateArgs stateArgs) : base(context) {
@@ -52,12 +54,15 @@ namespace Assets.Controllers {
                 context.Catalogs.CommandersCatalog, context.Catalogs.ArmyColorsCatalog, gameStateArgs.LevelId);
             inputLocker = new GameplayInputLocker(context.ScreenMachine);
             unitHandler = new UnitHandler(inputLocker);
-            buildingHandler = new BuildingHandler();
+			buildingHandler = new BuildingHandler();
 
             CreatePlayers();
             CreateMapController();
             CreateCameraController();
-        }
+
+			inputCalculatorHelper = new InputCalculatorHelper(mapController);
+            inputCalculatorHelper.Init();
+		}
 
         private void CreatePlayers() {
             warController = new WarController();
@@ -87,7 +92,12 @@ namespace Assets.Controllers {
                 context.Catalogs.ArmyColorsCatalog, armyInfos, gameStateArgs.LevelId);
             mapController = new MapController(worldView.TileMapView, tileMapModel, unitHandler, buildingHandler);
             mapController.OnTileClicked += OnTileClicked;
+            mapController.OnTileClicked += (data) => OnMapClicked();
             mapController.OnCreate();
+        }
+
+        private void OnMapClicked() {
+            var tileClicked = inputCalculatorHelper.GetTileClicked();
         }
 
         private void OnTileClicked(TileData tileData)
@@ -184,8 +194,10 @@ namespace Assets.Controllers {
 
         public void OnDestroy() {
             cameraController.Destroy();
-            mapController.OnDestroy();
-            uiView.OnBattleInfoMenuRequested -= PushBattleInfoMenu;
+			mapController.OnTileClicked -= OnTileClicked;
+			mapController.OnMapClicked -= OnMapClicked;
+			mapController.OnDestroy();
+			uiView.OnBattleInfoMenuRequested -= PushBattleInfoMenu;
         }
 
         public void OnSendToBack() {
