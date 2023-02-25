@@ -7,7 +7,6 @@ using Assets.Data.Level;
 using Assets.Data;
 using Assets.Extensions;
 using System.Collections.Generic;
-using Random = UnityEngine.Random;
 
 namespace Assets.Controllers {
     public class MapController {
@@ -20,8 +19,6 @@ namespace Assets.Controllers {
 
         private MapPathFinder pathFinder;
 
-        public event Action<TileData> OnTileClicked;
-
         public event Action OnMapClicked;
 
         public MapController(TileMapView tileMapView, TileMapModel model, UnitHandler unitHandler, BuildingHandler buildingHandler) {
@@ -33,6 +30,8 @@ namespace Assets.Controllers {
 
         public void OnCreate() {
 
+            view.OnMapClicked += FireMapClickedEvent;
+
             var levelData = model.GetLevelData();
             map = new TileController[levelData.Width, levelData.Height];
 
@@ -40,6 +39,10 @@ namespace Assets.Controllers {
 
             pathFinder = new MapPathFinder(map, unitHandler, model.MovementTypesCatalog);
             pathFinder.Init();
+        }
+
+        private void FireMapClickedEvent() {
+            OnMapClicked?.Invoke();
         }
 
         private void SetUp(LevelData levelData) {
@@ -68,8 +71,7 @@ namespace Assets.Controllers {
                 var tileView = view.InstantiateTileView(tileViewColor, tilePosition.x, tilePosition.y, sideLength);
                 var tileModel = new TileModel(tileEntry, tileData.Position);
                 var tileController = new TileController(tileView, tileModel);
-                tileController.OnTileClicked += FireTileClickedEvent;
-                tileController.OnCreate();
+
                 map[tileData.Position.x, tileData.Position.y] = tileController;
 
                 var isBuilding = model.IsBuilding(tileEntry);
@@ -83,20 +85,7 @@ namespace Assets.Controllers {
         }
 
         public void OnDestroy() {
-
-            var mapWidth = map.GetLength(0);
-            var mapHeight = map.GetLength(1);
-
-            for (int i = 0; i < mapWidth; ++i) {
-                for (int j = 0; j < mapHeight; ++j) {
-                    map[i,j].OnDestroy();
-                    map[i,j].OnTileClicked -= FireTileClickedEvent;
-                }
-            }
-        }
-
-        private void FireTileClickedEvent(TileData data) {
-            OnTileClicked?.Invoke(data);
+			view.OnMapClicked -= FireMapClickedEvent;
         }
 
         public Vector2 GetRealTilePosition(Vector2Int tilePosition) {
@@ -169,6 +158,11 @@ namespace Assets.Controllers {
 
         public Vector2 GetMapCenterCurrentPosition() {
             return view.GetMapPosition();
+        }
+
+        public string GetTypeFromTile(Vector2Int position) {
+            var tile = map[position.x,position.y];
+            return tile.GetTileType();
         }
     }
 }

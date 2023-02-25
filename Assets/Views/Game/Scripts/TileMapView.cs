@@ -1,11 +1,29 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Assets.Views {
     public class TileMapView : MonoBehaviour {
 
         [SerializeField]
         private TileView tileViewPrefab;
+
+        [SerializeField]
+        private Button mapButton;
+
+        public event Action OnMapClicked;
+
+        private void OnEnable() {
+            mapButton.onClick.AddListener(FireMapClickEvent);
+        }
+
+        private void OnDisable() {
+			mapButton.onClick.RemoveListener(FireMapClickEvent);
+		}
+
+        private void FireMapClickEvent() {
+            OnMapClicked?.Invoke();
+        }
 
         public TileView InstantiateTileView(Color tileColor, float x, float y, float sideLength) {
             var tileView = Instantiate(tileViewPrefab,  this.transform);

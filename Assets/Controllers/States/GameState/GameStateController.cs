@@ -91,13 +91,19 @@ namespace Assets.Controllers {
                 context.Catalogs.TilesCatalog, context.Catalogs.UnitsCatalog, levelProvider,
                 context.Catalogs.ArmyColorsCatalog, armyInfos, gameStateArgs.LevelId);
             mapController = new MapController(worldView.TileMapView, tileMapModel, unitHandler, buildingHandler);
-            mapController.OnTileClicked += OnTileClicked;
-            mapController.OnTileClicked += (data) => OnMapClicked();
+            //mapController.OnTileClicked += OnTileClicked;
+            mapController.OnMapClicked += OnMapClicked;
             mapController.OnCreate();
         }
 
         private void OnMapClicked() {
-            var tileClicked = inputCalculatorHelper.GetTileClicked();
+            var tileClickedPosition = inputCalculatorHelper.GetTileClicked();
+            var type = mapController.GetTypeFromTile(tileClickedPosition);
+            var tileData = new TileData {
+                Position = tileClickedPosition,
+                TypeId = type
+            };
+            OnTileClicked(tileData);
         }
 
         private void OnTileClicked(TileData tileData)
@@ -194,7 +200,7 @@ namespace Assets.Controllers {
 
         public void OnDestroy() {
             cameraController.Destroy();
-			mapController.OnTileClicked -= OnTileClicked;
+			//mapController.OnTileClicked -= OnTileClicked;
 			mapController.OnMapClicked -= OnMapClicked;
 			mapController.OnDestroy();
 			uiView.OnBattleInfoMenuRequested -= PushBattleInfoMenu;
