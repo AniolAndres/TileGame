@@ -13,13 +13,13 @@ namespace Assets.Views {
         [SerializeField]
         private Transform playersParent;
 
-        public event Action OnBattleInfoMenuRequested;
+        public event Action OnSecondaryButtonClick;
 
         public override void OnUpdate() {
             base.OnUpdate();
 
             if (Input.GetMouseButtonDown(1)) {
-                OnBattleInfoMenuRequested?.Invoke();
+                OnSecondaryButtonClick?.Invoke();
             }
         }
 

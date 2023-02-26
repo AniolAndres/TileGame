@@ -3,6 +3,7 @@ using Assets.Data;
 using Assets.Data.Level;
 using Assets.Data.Models;
 using Assets.Views;
+using Assets.Views.ViewData;
 
 namespace Assets.Controllers {
     public class TileController{
@@ -31,5 +32,9 @@ namespace Assets.Controllers {
         public int GetFunds() {
             return model.GetFunds();
         }
-    }
+
+		public void SetState(TileState state) {
+            view.SetState(state);
+		}
+	}
 }

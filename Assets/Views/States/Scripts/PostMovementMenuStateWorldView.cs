@@ -2,7 +2,7 @@
 
 
 namespace Assets.Views {
-    public class PreMovementMenuStateWorldView : WorldView {
+    public class PostMovementMenuStateWorldView : WorldView {
 
 
     }

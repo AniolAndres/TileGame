@@ -74,5 +74,11 @@ namespace Assets.Views {
 
             OnMovementEnd?.Invoke();
         }
+
+        public void MoveOnCancelTo(Vector2 realEndPosition) {
+			var rectTransform = transform.AsRectTransform();
+			rectTransform.anchoredPosition = realEndPosition;
+
+		}
     }
 }

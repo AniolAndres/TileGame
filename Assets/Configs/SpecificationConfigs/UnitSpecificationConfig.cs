@@ -17,6 +17,12 @@ namespace Assets.Configs {
         [SerializeField]
         private int attack;
 
+        [SerializeField]
+        private int minRange;
+
+        [SerializeField]
+        private int maxRange;
+
         public int Cost => cost;
 
         public int Movemement => movement;
@@ -24,5 +30,9 @@ namespace Assets.Configs {
         public int Vision => vision;
 
         public int Attack => attack;
+
+        public int MinRange => minRange;
+
+        public int MaxRange => maxRange;
     }
 }

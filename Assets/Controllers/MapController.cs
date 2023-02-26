@@ -7,6 +7,8 @@ using Assets.Data.Level;
 using Assets.Data;
 using Assets.Extensions;
 using System.Collections.Generic;
+using Assets.Configs;
+using Assets.Views.ViewData;
 
 namespace Assets.Controllers {
     public class MapController {
@@ -163,6 +165,54 @@ namespace Assets.Controllers {
         public string GetTypeFromTile(Vector2Int position) {
             var tile = map[position.x,position.y];
             return tile.GetTileType();
+        }
+
+		public List<Vector2Int> GetTilesInRange(Vector2Int origin, UnitSpecificationConfig unitSpecConfig) {
+			var tilesInRange = new List<Vector2Int>();
+
+            var minRange = unitSpecConfig.MinRange;
+            var maxRange = unitSpecConfig.MaxRange;
+
+            var maxX = map.GetLength(0);
+            var maxY = map.GetLength(1);
+
+            var originX = origin.x;
+            var originY = origin.y;
+
+            for (int x = -maxRange; x <= maxRange; x++) {
+                var currentX = originX + x;
+
+                if(currentX < 0 || currentX > maxX) {
+                    continue; //Out of bounds on X axis
+                }
+
+                for (int y =  -maxRange; y <= maxRange; y++) {
+                    var currentY = originY + y;
+					if (currentY < 0 || currentY > maxY) {
+						continue; //Out of bounds on Y axis
+					}
+
+                    var absoluteDistance = Mathf.Abs(x) + Mathf.Abs(y);
+
+                    if (absoluteDistance < minRange || absoluteDistance > maxRange) {
+                        continue; //Out of range, either min or max
+                    }
+
+                    tilesInRange.Add(new Vector2Int(currentX, currentY));
+
+				}
+            }
+            
+            
+            return tilesInRange;
+		}
+
+        public void HighlightTilesInRange(List<Vector2Int> tilesInRange) {
+
+            foreach (var tile in tilesInRange) {
+                var controller = map[tile.x, tile.y];
+                controller.SetState(TileState.InRangeForAttack);
+            }
         }
     }
 }

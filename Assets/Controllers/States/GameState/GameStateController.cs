@@ -48,7 +48,7 @@ namespace Assets.Controllers {
 
         public void OnCreate() {
 
-            uiView.OnBattleInfoMenuRequested += PushBattleInfoMenu;
+            uiView.OnSecondaryButtonClick += OnSecondaryButtonClicked;
 
             model = new GameStateModel(context.Catalogs.LevelsCatalog, context.Catalogs.UnitsCatalog, context.Catalogs.TilesCatalog, 
                 context.Catalogs.CommandersCatalog, context.Catalogs.ArmyColorsCatalog, gameStateArgs.LevelId);
@@ -145,14 +145,7 @@ namespace Assets.Controllers {
 				return;
 			}
 
-            var preMovementArgs = new PreMovementMenuStateArgs {
-                CanAttack = true,
-                OnAttack = SimulateAttack,
-                OnMovementConfirmed = () => MoveSelectedUnit(gridPath)
-            };
-
-            var preMovementState = new PreMovementMenuStateController(context, preMovementArgs);
-            PushState(preMovementState);
+            MoveSelectedUnit(gridPath);
 		}
 
         private void MoveSelectedUnit(List<Vector2Int> gridPath) {
@@ -160,13 +153,51 @@ namespace Assets.Controllers {
             unitHandler.MoveSelectedUnit(gridPath, listOfRealPositions);
 		}
 
-		private void SimulateAttack() {
-            Debug.Log("Attacking");
+		private void OnAttackSelected() {
+            HighlightAttackableTiles();
         }
 
-        private void PushPreMovementState() {
-            throw new NotImplementedException();
+        private void HighlightAttackableTiles() {
+            var unit = unitHandler.GetSelectedUnitId();
+            var position = unitHandler.GetSelectedUnitPosition();
+            var unitEntry = model.GetUnitCatalogEntry(unit);
+            var tilesInRange = mapController.GetTilesInRange(position, unitEntry.UnitSpecificationConfig);
+            mapController.HighlightTilesInRange(tilesInRange);
         }
+
+        private void PushPostMovementState() {
+
+			unitHandler.TryUnlockInput();
+
+			var postMovementArgs = new PostMovementMenuStateArgs {
+                CanAttack = true,
+                OnAttack = OnAttackSelected,
+                OnMovementConfirmed = OnMovementConfirmed,
+                OnUndoMove = OnCancelMovement
+            };
+
+            var postMovementState = new PostMovementMenuStateController(context, postMovementArgs);
+            PushState(postMovementState);
+        }
+
+        private void OnMovementConfirmed() {           
+            unitHandler.ExhaustCurrentUnit();
+            unitHandler.CleanLastMove();
+            unitHandler.DeselectSelectedUnit();
+        }
+
+        private void OnCancelMovement() {
+            var lastMoveData = unitHandler.GetLastMoveData();
+            var realOriginPosition = mapController.GetRealTilePosition(lastMoveData.Origin);
+            unitHandler.UndoLastMove(realOriginPosition);
+            unitHandler.CleanLastMove();
+            unitHandler.DeselectSelectedUnit();
+            var type = mapController.GetTypeFromTile(lastMoveData.Origin);
+            OnTileClicked(new TileData { //simulate selecting the unit again
+                TypeId = type,
+                Position = lastMoveData.Origin
+            });
+		}
 
         private void OnBuildingClicked(TileData tileData)
         {
@@ -200,10 +231,9 @@ namespace Assets.Controllers {
 
         public void OnDestroy() {
             cameraController.Destroy();
-			//mapController.OnTileClicked -= OnTileClicked;
 			mapController.OnMapClicked -= OnMapClicked;
 			mapController.OnDestroy();
-			uiView.OnBattleInfoMenuRequested -= PushBattleInfoMenu;
+			uiView.OnSecondaryButtonClick -= OnSecondaryButtonClicked;
         }
 
         public void OnSendToBack() {
@@ -230,7 +260,8 @@ namespace Assets.Controllers {
             var unitModel = new UnitModel(unitEntry, currentArmyId);
             var unitMapView = mapController.CreateUnit(unitEntry, unitData);
             var unitController = new UnitController(unitMapView, unitModel);
-            unitController.OnMovementEnd += unitHandler.TryUnlockInput;
+            unitController.OnMovementEnd += PushPostMovementState;
+            //unitController.OnMovementEnd += unitHandler.TryUnlockInput;
             unitController.OnMovementStart += ClearPathFinding;
             unitController.OnCreate();
             unitHandler.AddUnit(unitController, unitData.Position);
@@ -241,7 +272,16 @@ namespace Assets.Controllers {
         }
 
 
-        private void PushBattleInfoMenu() {
+        private void OnSecondaryButtonClicked() {
+
+            if (unitHandler.HasUnitSelected) {
+
+                unitHandler.DeselectSelectedUnit();
+                mapController.ClearCurrentPathfinding();
+                return;
+            }
+
+
             var battleInfoMenuStateArgs = new BattleInfoMenuStateArgs {
                 OnOptionClicked = EndTurn,
             };

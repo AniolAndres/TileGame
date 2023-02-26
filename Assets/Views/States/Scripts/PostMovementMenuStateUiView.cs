@@ -5,7 +5,7 @@ using UnityEngine.UI;
 using Assets.Extensions;
 
 namespace Assets.Views {
-    public class PreMovementMenuStateUiView : UiView {
+    public class PostMovementMenuStateUiView : UiView {
 
         [SerializeField]
         private Button attackButton;
@@ -21,9 +21,11 @@ namespace Assets.Views {
 
         public event Action OnCancel;
 
-        public event Action OnMove;
+        public event Action OnWait;
 
         public event Action OnAttack;
+
+        public event Action OnUndoMove;
 
         public override void OnUpdate() {
             if (Input.GetMouseButtonDown(1)) {
@@ -44,11 +46,11 @@ namespace Assets.Views {
         }
 
         private void FireCancelEvent() {
-            OnCancel?.Invoke();
+			OnUndoMove?.Invoke();
         }
 
         private void FireMoveEvent() {
-            OnMove?.Invoke();
+            OnWait?.Invoke();
         }
 
         private void FireAttackEvent() {

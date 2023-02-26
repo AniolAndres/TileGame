@@ -48,7 +48,6 @@ namespace Assets.Controllers {
 
         public void OnMove(Vector2Int firstGridPosition, List<Vector2Int> gridPositions, List<Vector2> pathPositions) {
             unitView.MoveUnitViewTo(firstGridPosition, gridPositions, pathPositions);
-            unitModel.SetToAlreadyMoved();
         }
 
         public void Refresh()
@@ -69,6 +68,14 @@ namespace Assets.Controllers {
         public void OnDestroy() {
             unitView.OnMovementEnd -= FireMovementEndAction;
             unitView.OnMovementStart -= FireMovementStartAction;
+        }
+
+		public void Exhaust() {
+            unitModel.SetToAlreadyMoved();
+		}
+
+        public void MoveToInstant(Vector2 realEndPosition) {
+            unitView.MoveOnCancelTo(realEndPosition);
         }
     }
 }

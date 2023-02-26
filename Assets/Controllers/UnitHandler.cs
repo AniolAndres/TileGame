@@ -1,4 +1,5 @@
 ﻿
+using Assets.Data;
 using Assets.ScreenMachine;
 using System;
 using System.Collections.Generic;
@@ -15,6 +16,8 @@ namespace Assets.Controllers {
         private Vector2Int? selectedUnitKey = null;
 
         private LockHandle inputLock;
+
+        private MovementData lastMovementData; //could make this readonly, don't want to bother with checks inside the class for now
 
         public UnitHandler(GameplayInputLocker inputLocker) {
             this.inputLocker = inputLocker;
@@ -105,9 +108,13 @@ namespace Assets.Controllers {
 
             var controller = unitControllerDictionary[newPosition];
             controller.OnMove(previousPosition, gridPositions, realPositions);
-            controller.OnDeselect();
 
-            selectedUnitKey = null;
+            lastMovementData = new MovementData {
+                Destination = newPosition,
+                Origin = previousPosition,
+            };
+
+            selectedUnitKey = newPosition;
         }
 
 
@@ -174,5 +181,31 @@ namespace Assets.Controllers {
 
             return selectedUnitKey.Value;
 		}
-	}
+
+        public void UndoLastMove(Vector2 realOriginPosition) {
+			if (!selectedUnitKey.HasValue) {
+				throw new NotSupportedException("Trying to get selected while undoing the movement but there's none, should not ever happen");
+			}
+
+			MoveUnitFromTo(lastMovementData.Destination, lastMovementData.Origin); //Undo the move
+            selectedUnitKey = lastMovementData.Origin;
+            unitControllerDictionary[selectedUnitKey.Value].MoveToInstant(realOriginPosition);
+        }
+
+		public void ExhaustCurrentUnit() {
+			if (!selectedUnitKey.HasValue) {
+				throw new NotSupportedException("Trying to get selected unit but there's none, check first");
+			}
+
+            unitControllerDictionary[selectedUnitKey.Value].Exhaust() ;
+		}
+
+        internal void CleanLastMove() {
+            lastMovementData = null;
+        }
+
+        public MovementData GetLastMoveData() {
+            return lastMovementData;
+        }
+    }
 }

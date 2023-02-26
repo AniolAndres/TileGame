@@ -16,3 +16,5 @@ MonoBehaviour:
   movement: 5
   vision: 2
   attack: 10
+  minRange: 2
+  maxRange: 3
