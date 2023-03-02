@@ -58,5 +58,5 @@ namespace Assets.Controllers {
 
             totalBuildings[playerIndex][position] = tileController;
         }
-    }
+	}
 }

@@ -19,6 +19,10 @@ namespace Assets.Controllers {
 
         private MovementData lastMovementData; //could make this readonly, don't want to bother with checks inside the class for now
 
+        public event Action OnMovementStop;
+
+        public event Action OnMovementStart;
+
         public UnitHandler(GameplayInputLocker inputLocker) {
             this.inputLocker = inputLocker;
         }
@@ -31,13 +35,37 @@ namespace Assets.Controllers {
                     $"but it's already occupied by {unitControllerDictionary[position]}");
             }
 
+            unitController.OnMovementStart += FireMovementStartAction;
+            unitController.OnMovementEnd += FireMovementEndAction;
+
             unitControllerDictionary[position] = unitController;
         }
+
+        private void FireMovementEndAction() {
+			if (inputLock == null) {
+				throw new NotSupportedException("There should always be an active inputLock when ending a movement");
+			}
+
+			inputLock.Unlock();
+            inputLock = null;
+		}
+
+        private void FireMovementStartAction() {
+			if (inputLock != null) {
+				throw new NotSupportedException("There should never be an active inputLock when starting a movement");
+			}
+
+			inputLock = inputLocker.LockInput();
+		}
 
         public void RemoveUnitAtPosition(Vector2Int position) {
             if (!unitControllerDictionary.ContainsKey(position)) {
                 throw new NotSupportedException($"Trying to remove unit in ({position.x},{position.y}), but there's none!");
             }
+
+            var controller = unitControllerDictionary[position];
+            controller.OnMovementEnd -= FireMovementEndAction;
+            controller.OnMovementStart -= FireMovementStartAction;
 
             unitControllerDictionary.Remove(position);
         }
@@ -104,8 +132,6 @@ namespace Assets.Controllers {
 
             MoveUnitFromTo(selectedUnitKey.Value, newPosition);
 
-            inputLock = inputLocker.LockInput();
-
             var controller = unitControllerDictionary[newPosition];
             controller.OnMove(previousPosition, gridPositions, realPositions);
 
@@ -115,15 +141,6 @@ namespace Assets.Controllers {
             };
 
             selectedUnitKey = newPosition;
-        }
-
-
-        public void TryUnlockInput() {
-            if(inputLock == null) {
-                throw new NotSupportedException("You're tyring to unlock input after movement, but it was never locked in the first place");
-            }
-
-            inputLock?.Unlock();
         }
 
         public bool IsFromArmy(Vector2Int position, int currentArmyIndex)
@@ -200,7 +217,7 @@ namespace Assets.Controllers {
             unitControllerDictionary[selectedUnitKey.Value].Exhaust() ;
 		}
 
-        internal void CleanLastMove() {
+        public void CleanLastMove() {
             lastMovementData = null;
         }
 

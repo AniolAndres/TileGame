@@ -34,6 +34,8 @@ namespace Assets.Controllers {
 
         private readonly GameStateArgs gameStateArgs;
 
+        private GameStateStateMachine gameStateStateMachine;
+
         public GameStateController(Context context, GameStateArgs stateArgs) : base(context) {
             this.gameStateArgs = stateArgs;
         }
@@ -54,14 +56,37 @@ namespace Assets.Controllers {
                 context.Catalogs.CommandersCatalog, context.Catalogs.ArmyColorsCatalog, gameStateArgs.LevelId);
             inputLocker = new GameplayInputLocker(context.ScreenMachine);
             unitHandler = new UnitHandler(inputLocker);
+            unitHandler.OnMovementStop += PushPostMovementState;
 			buildingHandler = new BuildingHandler();
 
             CreatePlayers();
             CreateMapController();
             CreateCameraController();
 
+            CreateGameplayStateMachine();
+
 			inputCalculatorHelper = new InputCalculatorHelper(mapController);
             inputCalculatorHelper.Init();
+		}
+
+        private void CreateGameplayStateMachine() {
+
+            var gameplayContext = new GameplayContext(warController, mapController, unitHandler, buildingHandler, context.Catalogs);
+            gameStateStateMachine = new GameStateStateMachine(gameplayContext);
+            gameStateStateMachine.OnCreateUnitPushRequested += PushCreateUnitMenuState;
+			gameStateStateMachine.OnPostMovementRequested += PushPostMovementState;
+            gameStateStateMachine.Initialize();
+		}
+
+        private void PushCreateUnitMenuState(TileData tileData) {
+			var popupStateArgs = new CreateUnitStateArgs {
+				OnUnitCreated = CreateUnit,
+				CurrentFunds = warController.GetFundsFromCurrentPlayer(),
+				TileTypeId = tileData.TypeId,
+				Position = tileData.Position
+			};
+
+			PushState(new CreateUnitStateController(context, popupStateArgs));
 		}
 
         private void CreatePlayers() {
@@ -108,50 +133,37 @@ namespace Assets.Controllers {
 
         private void OnTileClicked(TileData tileData)
         {
-            //Almost all of this could be inside unit handler
-            if (unitHandler.HasUnitSelected) {
-
-                TryMoveSelectedUnit(tileData);
-
-                return;
-            }
-
-            var currentArmyId = warController.GetCurrentTurnArmyIndex();
-            var isTileEmpty = unitHandler.IsSpaceEmpty(tileData.Position);
-
-            if (!isTileEmpty)
-            {
-                if (unitHandler.IsFromArmy(tileData.Position, currentArmyId) && unitHandler.CanUnitMove(tileData.Position)) {
-                    unitHandler.SetUnitSelected(tileData.Position);
-                    mapController.HighlightAvailableTiles(tileData.Position, currentArmyId, unitHandler.GetSelectedUnitId());
-                }
-                return;
-            }
+            gameStateStateMachine.OnTileClicked(tileData);
 
 
-            var isBuilding = model.IsBuilding(tileData.TypeId);
-            if (!isBuilding) {
-                return;
-            }
+            ////Almost all of this could be inside unit handler
+            //if (unitHandler.HasUnitSelected) {
+
+            //    TryMoveSelectedUnit(tileData);
+
+            //    return;
+            //}
+
+            //var currentArmyId = warController.GetCurrentTurnArmyIndex();
+            //var isTileEmpty = unitHandler.IsSpaceEmpty(tileData.Position);
+
+            //if (!isTileEmpty)
+            //{
+            //    if (unitHandler.IsFromArmy(tileData.Position, currentArmyId) && unitHandler.CanUnitMove(tileData.Position)) {
+            //        unitHandler.SetUnitSelected(tileData.Position);
+            //        mapController.HighlightAvailableTiles(tileData.Position, currentArmyId, unitHandler.GetSelectedUnitId());
+            //    }
+            //    return;
+            //}
+
+
+            //var isBuilding = model.IsBuilding(tileData.TypeId);
+            //if (!isBuilding) {
+            //    return;
+            //}
             
-            OnBuildingClicked(tileData);
+            //OnBuildingClicked(tileData);
         }
-
-        private void TryMoveSelectedUnit(TileData tileData) {
-
-			var gridPath = mapController.GetPath(tileData.Position);
-
-			if (gridPath == null) {
-				return;
-			}
-
-            MoveSelectedUnit(gridPath);
-		}
-
-        private void MoveSelectedUnit(List<Vector2Int> gridPath) {
-			var listOfRealPositions = mapController.GetListOfRealPositions(gridPath);
-            unitHandler.MoveSelectedUnit(gridPath, listOfRealPositions);
-		}
 
 		private void OnAttackSelected() {
             HighlightAttackableTiles();
@@ -166,8 +178,6 @@ namespace Assets.Controllers {
         }
 
         private void PushPostMovementState() {
-
-			unitHandler.TryUnlockInput();
 
 			var postMovementArgs = new PostMovementMenuStateArgs {
                 CanAttack = true,
@@ -234,6 +244,9 @@ namespace Assets.Controllers {
 			mapController.OnMapClicked -= OnMapClicked;
 			mapController.OnDestroy();
 			uiView.OnSecondaryButtonClick -= OnSecondaryButtonClicked;
+            gameStateStateMachine.OnCreateUnitPushRequested -= PushCreateUnitMenuState;
+            gameStateStateMachine.OnPostMovementRequested -= PushPostMovementState;
+            gameStateStateMachine.OnDestroy();
         }
 
         public void OnSendToBack() {
@@ -243,15 +256,9 @@ namespace Assets.Controllers {
         private void RemoveUnit(Vector2Int position) {
             var removedController = unitHandler.GetUnitControllerAtPosition(position);
             removedController.OnDestroy();
-            removedController.OnMovementStart -= ClearPathFinding;
-            removedController.OnMovementEnd -= TryUnlockInput;
             unitHandler.RemoveUnitAtPosition(position);
         }
 
-        private void TryUnlockInput() {
-            unitHandler.TryUnlockInput();
-        }
-        
         private void CreateUnit(BuyUnitData unitData)
         {
             var currentArmyId = warController.GetCurrentTurnArmyIndex();
@@ -259,10 +266,7 @@ namespace Assets.Controllers {
             warController.TakeFundsFromCurrentPlayer(unitEntry.UnitSpecificationConfig.Cost);
             var unitModel = new UnitModel(unitEntry, currentArmyId);
             var unitMapView = mapController.CreateUnit(unitEntry, unitData);
-            var unitController = new UnitController(unitMapView, unitModel);
-            unitController.OnMovementEnd += PushPostMovementState;
-            //unitController.OnMovementEnd += unitHandler.TryUnlockInput;
-            unitController.OnMovementStart += ClearPathFinding;
+            var unitController = new UnitController(unitMapView, unitModel); //This is wrong, state shouldn't be dealing with all units, this should be delegated to unitHandler
             unitController.OnCreate();
             unitHandler.AddUnit(unitController, unitData.Position);
         }
@@ -294,7 +298,6 @@ namespace Assets.Controllers {
             warController.SetNextPlayer();
             var nextPlayerIndex = warController.GetCurrentTurnArmyIndex();
             unitHandler.RefreshAllUnitsFromArmy(nextPlayerIndex);
-            unitHandler.DeselectSelectedUnit();
         }
     }
 
