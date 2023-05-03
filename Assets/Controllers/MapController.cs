@@ -18,6 +18,7 @@ namespace Assets.Controllers {
         private TileMapView view;
         private TileMapModel model;
         private readonly UnitHandler unitHandler;
+        private TileCursorController cursorController;
 
         private MapPathFinder pathFinder;
 
@@ -41,6 +42,8 @@ namespace Assets.Controllers {
 
             pathFinder = new MapPathFinder(map, unitHandler, model.MovementTypesCatalog);
             pathFinder.Init();
+
+            cursorController = new TileCursorController(view.TileCursorView);
         }
 
         private void FireMapClickedEvent() {
@@ -214,5 +217,10 @@ namespace Assets.Controllers {
                 controller.SetState(TileState.InRangeForAttack);
             }
         }
-    }
+
+		public void MoveTileCursorTo(Vector2Int tile) {
+            var realPosition = GetRealTilePosition(tile);
+            cursorController.SetPosition(realPosition);
+        }
+	}
 }

@@ -24,7 +24,7 @@ namespace Assets.Controllers {
 		}
 
 
-		public Vector2Int GetTileClicked() {
+		public Vector2Int GetTileFromMousePosition() {
 			var mapPosition = mapController.GetMapCenterCurrentPosition();
 			var realMapPosition = new Vector2(-mapPosition.x, -mapPosition.y); //Camera doesn't move, is that map that does so I need to negate
 			var screenSize = ScreenHelper.GetScreenSize();

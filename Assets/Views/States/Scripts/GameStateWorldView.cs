@@ -1,5 +1,6 @@
 using Assets.ScreenMachine;
 using Assets.Views.Game;
+using System;
 using UnityEngine;
 
 namespace Assets.Views {
@@ -15,11 +16,21 @@ namespace Assets.Views {
 
         public CameraView CameraView => cameraView;
 
-        public override void OnUpdate() {
+		public event Action OnSecondaryButtonClick;
+
+		public event Action OnMouseUpdate;
+
+		public override void OnUpdate() {
             base.OnUpdate();
 
             cameraView.OnUpdate();
-        }
+
+			OnMouseUpdate?.Invoke();
+
+			if (Input.GetMouseButtonDown(1)) {
+				OnSecondaryButtonClick?.Invoke();
+			}
+		}
     }
 
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Views.Game;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -9,7 +10,15 @@ namespace Assets.Views {
         private TileView tileViewPrefab;
 
         [SerializeField]
+        private Transform tilesParent;
+
+        [SerializeField]
         private Button mapButton;
+
+        [SerializeField]
+        private TileCursorView tileCursorView;
+
+        public TileCursorView TileCursorView => tileCursorView;
 
         public event Action OnMapClicked;
 
@@ -26,7 +35,7 @@ namespace Assets.Views {
         }
 
         public TileView InstantiateTileView(Color tileColor, float x, float y, float sideLength) {
-            var tileView = Instantiate(tileViewPrefab,  this.transform);
+            var tileView = Instantiate(tileViewPrefab, tilesParent);
             tileView.transform.AsRectTransform().sizeDelta = new Vector2(sideLength, sideLength);
             tileView.transform.AsRectTransform().anchoredPosition = new Vector2(x, y);
             tileView.Setup(tileColor);

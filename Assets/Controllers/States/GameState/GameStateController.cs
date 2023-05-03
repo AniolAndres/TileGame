@@ -32,6 +32,8 @@ namespace Assets.Controllers {
 
         private InputCalculatorHelper inputCalculatorHelper;
 
+        private TileHoverHandler tileHoverHandler;
+
         private readonly GameStateArgs gameStateArgs;
 
         public GameStateController(Context context, GameStateArgs stateArgs) : base(context) {
@@ -48,7 +50,8 @@ namespace Assets.Controllers {
 
         public void OnCreate() {
 
-            uiView.OnSecondaryButtonClick += OnSecondaryButtonClicked;
+            worldView.OnSecondaryButtonClick += OnSecondaryButtonClicked;
+            worldView.OnMouseUpdate += OnTileHover;
 
             model = new GameStateModel(context.Catalogs.LevelsCatalog, context.Catalogs.UnitsCatalog, context.Catalogs.TilesCatalog, 
                 context.Catalogs.CommandersCatalog, context.Catalogs.ArmyColorsCatalog, gameStateArgs.LevelId);
@@ -62,7 +65,13 @@ namespace Assets.Controllers {
 
 			inputCalculatorHelper = new InputCalculatorHelper(mapController);
             inputCalculatorHelper.Init();
+
+            tileHoverHandler = new TileHoverHandler(inputCalculatorHelper, mapController);
 		}
+
+        private void OnTileHover() {
+            tileHoverHandler.OnHover();
+        }
 
         private void CreatePlayers() {
             warController = new WarController();
@@ -91,13 +100,12 @@ namespace Assets.Controllers {
                 context.Catalogs.TilesCatalog, context.Catalogs.UnitsCatalog, levelProvider,
                 context.Catalogs.ArmyColorsCatalog, armyInfos, gameStateArgs.LevelId);
             mapController = new MapController(worldView.TileMapView, tileMapModel, unitHandler, buildingHandler);
-            //mapController.OnTileClicked += OnTileClicked;
             mapController.OnMapClicked += OnMapClicked;
             mapController.OnCreate();
         }
 
         private void OnMapClicked() {
-            var tileClickedPosition = inputCalculatorHelper.GetTileClicked();
+            var tileClickedPosition = inputCalculatorHelper.GetTileFromMousePosition();
             var type = mapController.GetTypeFromTile(tileClickedPosition);
             var tileData = new TileData {
                 Position = tileClickedPosition,
@@ -233,7 +241,8 @@ namespace Assets.Controllers {
             cameraController.Destroy();
 			mapController.OnMapClicked -= OnMapClicked;
 			mapController.OnDestroy();
-			uiView.OnSecondaryButtonClick -= OnSecondaryButtonClicked;
+			worldView.OnSecondaryButtonClick -= OnSecondaryButtonClicked;
+            worldView.OnMouseUpdate -= OnTileHover;
         }
 
         public void OnSendToBack() {

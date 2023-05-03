@@ -13,16 +13,6 @@ namespace Assets.Views {
         [SerializeField]
         private Transform playersParent;
 
-        public event Action OnSecondaryButtonClick;
-
-        public override void OnUpdate() {
-            base.OnUpdate();
-
-            if (Input.GetMouseButtonDown(1)) {
-                OnSecondaryButtonClick?.Invoke();
-            }
-        }
-
         public PlayerView InstantiatePlayerView() {
             var playerView = Instantiate(playerViewPrefab, playersParent);
             return playerView;
