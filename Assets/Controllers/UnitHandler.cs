@@ -200,7 +200,7 @@ namespace Assets.Controllers {
             unitControllerDictionary[selectedUnitKey.Value].Exhaust() ;
 		}
 
-        internal void CleanLastMove() {
+        public void CleanLastMove() {
             lastMovementData = null;
         }
 

@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Assets.Controllers {
     public class GameStateController : BaseStateController<GameStateUiView, GameStateWorldView>, IStateBase {
@@ -35,6 +36,7 @@ namespace Assets.Controllers {
         private TileHoverHandler tileHoverHandler;
 
         private readonly GameStateArgs gameStateArgs;
+        
 
         public GameStateController(Context context, GameStateArgs stateArgs) : base(context) {
             this.gameStateArgs = stateArgs;
@@ -67,6 +69,7 @@ namespace Assets.Controllers {
             inputCalculatorHelper.Init();
 
             tileHoverHandler = new TileHoverHandler(inputCalculatorHelper, mapController);
+
 		}
 
         private void OnTileHover() {
@@ -74,7 +77,8 @@ namespace Assets.Controllers {
         }
 
         private void CreatePlayers() {
-            warController = new WarController();
+
+            warController = new WarController(new BattleCalculatorHelper());
 
             for (var armyIndex = 0; armyIndex < gameStateArgs.ArmyDatas.Count; armyIndex++)
             {
@@ -114,13 +118,18 @@ namespace Assets.Controllers {
             OnTileClicked(tileData);
         }
 
+
+        //Ugliest method in the class, but it shouldnt grow much now
         private void OnTileClicked(TileData tileData)
         {
             //Almost all of this could be inside unit handler
             if (unitHandler.HasUnitSelected) {
 
-                TryMoveSelectedUnit(tileData);
-
+                if (model.IsAttacking) {
+                    TryAttackSelectedTile(tileData);
+                } else {
+					TryMoveSelectedUnit(tileData);
+				}
                 return;
             }
 
@@ -145,6 +154,77 @@ namespace Assets.Controllers {
             OnBuildingClicked(tileData);
         }
 
+        private void TryAttackSelectedTile(TileData tileData) {
+            var isEmpty = unitHandler.IsSpaceEmpty(tileData.Position);
+            if (isEmpty) {
+                return;
+            }
+
+            var currentArmy = warController.GetCurrentTurnArmyIndex();
+            var isSameArmy = unitHandler.IsFromArmy(tileData.Position, currentArmy);
+            if (isSameArmy) {
+                return; //Can't attack your own units... for now..
+            }
+
+            var currentUnit = unitHandler.GetSelectedUnitId();
+            var currentUnitPosition = unitHandler.GetSelectedUnitPosition();
+            var currentUnitEntry = model.GetUnitCatalogEntry(currentUnit);
+            var tilesInRange = mapController.GetTilesInRange(currentUnitPosition, currentUnitEntry.UnitSpecificationConfig);
+            if (!tilesInRange.Contains(tileData.Position)) {
+                return; //Not in range
+            }
+
+            //Check if units can be attacked maybe air, earth etc etc
+
+            AttackSelectedTile(tileData);
+		}
+
+        private void AttackSelectedTile(TileData tileData) {
+            var config = GetBattleConfig(tileData);
+            var result = warController.SimulateBattle(config);
+            ApplyBattleResult(result);
+            model.IsAttacking = false;
+            
+ 			var tilesInRange = mapController.GetTilesInRange(result.AttackerPosition, result.AttackerUnit.UnitSpecificationConfig);
+			mapController.ClearAttackableTiles(tilesInRange);
+
+			unitHandler.ExhaustCurrentUnit();
+			unitHandler.CleanLastMove();
+			unitHandler.DeselectSelectedUnit();
+		}
+
+        private void ApplyBattleResult(BattleConfiguration result) {
+            //WIP
+            if(result.DefenderHp == 0) {
+                RemoveUnit(result.DefenderPosition);
+			}
+		}
+
+        private BattleConfiguration GetBattleConfig(TileData tileData) {
+
+			var currentUnit = unitHandler.GetSelectedUnitId();
+			var currentUnitEntry = model.GetUnitCatalogEntry(currentUnit);
+
+            var defenderUnit = unitHandler.GetUnitControllerAtPosition(tileData.Position);
+            var defenderUnitEntry = model.GetUnitCatalogEntry(defenderUnit.GetUnitId());
+
+            var attackerTileType = mapController.GetTypeFromTile(unitHandler.GetSelectedUnitPosition());
+            var attackerTileEntry = model.GetTileEntryById(attackerTileType);
+
+            var defenderTilEntry = model.GetTileEntryById(tileData.TypeId);
+
+            return new BattleConfiguration {
+                AttackerHp = 10000,
+                DefenderHp = 10000,
+                AttackerPosition = unitHandler.GetSelectedUnitPosition(),
+                DefenderPosition = tileData.Position,
+                AttackerUnit = currentUnitEntry,
+                DefenderUnit = defenderUnitEntry,
+                AttackerTile = attackerTileEntry,
+                DefenderTile = defenderTilEntry
+            };
+        }
+
         private void TryMoveSelectedUnit(TileData tileData) {
 
 			var gridPath = mapController.GetPath(tileData.Position);
@@ -163,6 +243,7 @@ namespace Assets.Controllers {
 
 		private void OnAttackSelected() {
             HighlightAttackableTiles();
+            model.IsAttacking = true;
         }
 
         private void HighlightAttackableTiles() {
@@ -249,7 +330,7 @@ namespace Assets.Controllers {
 
         }
 
-        private void RemoveUnit(Vector2Int position) {
+        private void RemoveUnit(Vector2Int position) { //TODO: Should be inside UnitHandler
             var removedController = unitHandler.GetUnitControllerAtPosition(position);
             removedController.OnDestroy();
             removedController.OnMovementStart -= ClearPathFinding;
@@ -284,9 +365,17 @@ namespace Assets.Controllers {
         private void OnSecondaryButtonClicked() {
 
             if (unitHandler.HasUnitSelected) {
-
-                unitHandler.DeselectSelectedUnit();
-                mapController.ClearCurrentPathfinding();
+                if (model.IsAttacking) {
+                    model.IsAttacking = false;
+					var currentUnitPosition = unitHandler.GetSelectedUnitPosition();
+                    var currentUnitEntry = model.GetUnitCatalogEntry(unitHandler.GetSelectedUnitId());
+					var tilesInRange = mapController.GetTilesInRange(currentUnitPosition, currentUnitEntry.UnitSpecificationConfig);
+					mapController.ClearAttackableTiles(tilesInRange);
+					PushPostMovementState();
+                } else {
+					unitHandler.DeselectSelectedUnit();
+					mapController.ClearCurrentPathfinding();
+				}
                 return;
             }
 

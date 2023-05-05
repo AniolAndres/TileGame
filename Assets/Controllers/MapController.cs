@@ -222,5 +222,12 @@ namespace Assets.Controllers {
             var realPosition = GetRealTilePosition(tile);
             cursorController.SetPosition(realPosition);
         }
-	}
+
+        public void ClearAttackableTiles(List<Vector2Int> tilesInRange) {
+			foreach (var tile in tilesInRange) {
+				var controller = map[tile.x, tile.y];
+				controller.SetState(TileState.None);
+			}
+		}
+    }
 }

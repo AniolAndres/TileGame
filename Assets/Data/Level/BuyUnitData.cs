@@ -2,7 +2,7 @@
 using System.Collections;
 
 namespace Assets.Data {
-    public class BuyUnitData {
+    public struct BuyUnitData {
 
         public Vector2Int Position { get; set; }
 

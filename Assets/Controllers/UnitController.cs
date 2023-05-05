@@ -68,6 +68,8 @@ namespace Assets.Controllers {
         public void OnDestroy() {
             unitView.OnMovementEnd -= FireMovementEndAction;
             unitView.OnMovementStart -= FireMovementStartAction;
+
+            UnityEngine.Object.Destroy(unitView.gameObject);
         }
 
 		public void Exhaust() {

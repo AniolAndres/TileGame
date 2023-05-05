@@ -1,4 +1,5 @@
-﻿using Assets.Data;
+﻿
+using Assets.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,12 @@ namespace Assets.Controllers {
         private readonly List<PlayerController> players = new List<PlayerController>();
 
         private PlayerController currentPlayer; //The one currently playing the turn
+
+        private readonly BattleCalculatorHelper battleCalculatorHelper;
+
+        public WarController(BattleCalculatorHelper battleCalculatorHelper) {
+            this.battleCalculatorHelper = battleCalculatorHelper;
+		}
 
         public void AddPlayer(PlayerController player) {
             players.Add(player);
@@ -58,6 +65,10 @@ namespace Assets.Controllers {
                 }) ;
             }
             return colorIdList;
+        }
+
+        public BattleConfiguration SimulateBattle(BattleConfiguration config) {
+            return battleCalculatorHelper.SimulateBattle(config);
         }
     }
 }
