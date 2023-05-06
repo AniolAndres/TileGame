@@ -59,6 +59,8 @@ namespace Assets.Controllers {
                 context.Catalogs.CommandersCatalog, context.Catalogs.ArmyColorsCatalog, gameStateArgs.LevelId);
             inputLocker = new GameplayInputLocker(context.ScreenMachine);
             unitHandler = new UnitHandler(inputLocker);
+            unitHandler.OnUnitMovementStart += OnMovementStart;
+            unitHandler.OnUnitMovementEnd += OnMovementEnd;
 			buildingHandler = new BuildingHandler();
 
             CreatePlayers();
@@ -324,17 +326,23 @@ namespace Assets.Controllers {
 			mapController.OnDestroy();
 			worldView.OnSecondaryButtonClick -= OnSecondaryButtonClicked;
             worldView.OnMouseUpdate -= OnTileHover;
-        }
+			unitHandler.OnUnitMovementStart += OnMovementStart;
+			unitHandler.OnUnitMovementEnd += OnMovementEnd;
+		}
+
+        private void OnMovementEnd() {
+            PushPostMovementState();
+		}
+
+        private void OnMovementStart() {
+            ClearPathFinding();
+		}
 
         public void OnSendToBack() {
 
         }
 
         private void RemoveUnit(Vector2Int position) { //TODO: Should be inside UnitHandler
-            var removedController = unitHandler.GetUnitControllerAtPosition(position);
-            removedController.OnDestroy();
-            removedController.OnMovementStart -= ClearPathFinding;
-            removedController.OnMovementEnd -= TryUnlockInput;
             unitHandler.RemoveUnitAtPosition(position);
         }
 
@@ -348,13 +356,9 @@ namespace Assets.Controllers {
             var unitEntry = model.GetUnitCatalogEntry(unitData.UnitId);
             warController.TakeFundsFromCurrentPlayer(unitEntry.UnitSpecificationConfig.Cost);
             var unitModel = new UnitModel(unitEntry, currentArmyId);
-            var unitMapView = mapController.CreateUnit(unitEntry, unitData);
-            var unitController = new UnitController(unitMapView, unitModel);
-            unitController.OnMovementEnd += PushPostMovementState;
-            //unitController.OnMovementEnd += unitHandler.TryUnlockInput;
-            unitController.OnMovementStart += ClearPathFinding;
-            unitController.OnCreate();
-            unitHandler.AddUnit(unitController, unitData.Position);
+            var unitMapView = mapController.CreateUnitView(unitEntry, unitData);
+
+            unitHandler.AddUnit(unitMapView,unitModel, unitData.Position);
         }
 
         private void ClearPathFinding() {

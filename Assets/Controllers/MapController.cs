@@ -97,7 +97,7 @@ namespace Assets.Controllers {
             return model.GetRealTileWorldPosition(tilePosition);
         }
 
-        public UnitMapView CreateUnit(UnitCatalogEntry unitEntry, BuyUnitData buyUnitData) {
+        public UnitMapView CreateUnitView(UnitCatalogEntry unitEntry, BuyUnitData buyUnitData) {
             var tilePosition = model.GetRealTileWorldPosition(buyUnitData.Position);
             var sideLength = model.GetSideLength();
             return view.CreateUnitView(unitEntry.UnitView, unitEntry.UnitPurchaseViewConfig.UnitSprite, tilePosition, sideLength);

@@ -13,24 +13,14 @@ namespace Assets.Views {
         private Transform tilesParent;
 
         [SerializeField]
-        private Button mapButton;
-
-        [SerializeField]
         private TileCursorView tileCursorView;
 
         public TileCursorView TileCursorView => tileCursorView;
 
         public event Action OnMapClicked;
 
-        private void OnEnable() {
-            mapButton.onClick.AddListener(FireMapClickEvent);
-        }
 
-        private void OnDisable() {
-			mapButton.onClick.RemoveListener(FireMapClickEvent);
-		}
-
-        private void FireMapClickEvent() {
+        public void FireMapClickEvent() {
             OnMapClicked?.Invoke();
         }
 

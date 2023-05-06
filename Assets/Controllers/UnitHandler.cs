@@ -1,6 +1,7 @@
 ﻿
 using Assets.Data;
 using Assets.ScreenMachine;
+using Assets.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,19 +20,38 @@ namespace Assets.Controllers {
 
         private MovementData lastMovementData; //could make this readonly, don't want to bother with checks inside the class for now
 
+        public event Action OnUnitMovementStart;
+
+        public event Action OnUnitMovementEnd;
+
         public UnitHandler(GameplayInputLocker inputLocker) {
             this.inputLocker = inputLocker;
         }
 
         public bool HasUnitSelected => selectedUnitKey.HasValue;
 
-        public void AddUnit(UnitController unitController, Vector2Int position) {
+        public void AddUnit(UnitMapView view, UnitModel model, Vector2Int position) {
             if (unitControllerDictionary.ContainsKey(position)) {
-                throw new NotSupportedException($"Trying to create {unitController.GetUnitId()} in ({position.x},{position.y})," +
+                throw new NotSupportedException($"Trying to create {model.GetId()} in ({position.x},{position.y})," +
                     $"but it's already occupied by {unitControllerDictionary[position]}");
             }
 
+            var unitController = new UnitController(view, model);
+
             unitControllerDictionary[position] = unitController;
+
+            unitController.OnMovementEnd += FireMovementEndEvent;
+            unitController.OnMovementStart += FireMovementStartEvent;
+
+            unitController.OnCreate();
+        }
+
+        private void FireMovementEndEvent() {
+            OnUnitMovementEnd?.Invoke();
+        }
+
+        private void FireMovementStartEvent() {
+            OnUnitMovementStart?.Invoke();
         }
 
         public void RemoveUnitAtPosition(Vector2Int position) {
@@ -39,7 +59,14 @@ namespace Assets.Controllers {
                 throw new NotSupportedException($"Trying to remove unit in ({position.x},{position.y}), but there's none!");
             }
 
+            var unitController = unitControllerDictionary[position];
+
+            unitController.OnMovementStart -= FireMovementStartEvent;
+            unitController.OnMovementEnd -= FireMovementEndEvent;
+
             unitControllerDictionary.Remove(position);
+
+            unitController.OnDestroy();
         }
 
         public bool IsSpaceEmpty(Vector2Int position) {
