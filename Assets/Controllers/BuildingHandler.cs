@@ -1,4 +1,6 @@
 ﻿
+using Assets.Catalogs.Scripts;
+using Assets.Data;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +9,12 @@ namespace Assets.Controllers {
     public class BuildingHandler {
 
         private readonly Dictionary<int, Dictionary<Vector2Int, TileController>> totalBuildings = new Dictionary<int, Dictionary<Vector2Int, TileController>>();
+
+        private readonly ArmyColorsCatalog armyColorsCatalog;
+
+        public BuildingHandler(ArmyColorsCatalog armyColorsCatalog) {
+            this.armyColorsCatalog = armyColorsCatalog;
+        }
 
         public Dictionary<Vector2Int, TileController> GetBuildingsFromPlayer(int playerIndex) {
             var buildings = totalBuildings[playerIndex];
@@ -39,16 +47,19 @@ namespace Assets.Controllers {
             throw new ArgumentException($"Couldn't find any building in the array with position {buildingPosition}, check level initialization");
         }
 
-        public void ConvertBuildingToPlayer(int playerIndex, Vector2Int buildingPosition) {
+        public void ConvertBuildingToPlayer(ArmyInfoData armyData, Vector2Int buildingPosition) {
 
             var buildingOwner = GetBuildingOwner(buildingPosition);
-            if(buildingOwner == playerIndex) {
+            if(buildingOwner == armyData.playerIndex) {
                 throw new NotSupportedException($"Building in position {buildingPosition} already belongs to player, check if it belongs to him first");
             }
 
-            var controller = totalBuildings[buildingOwner];
+            var controller = totalBuildings[buildingOwner][buildingPosition];
             totalBuildings[buildingOwner].Remove(buildingPosition);
-            totalBuildings[playerIndex] = controller;
+            totalBuildings[armyData.playerIndex][buildingPosition] = controller;
+
+            var color = armyColorsCatalog.GetEntry(armyData.armyColorId);
+            controller.ChangeOwner(color.ArmyColor);
         }
 
         public void AddBuilding(int playerIndex, Vector2Int position, TileController tileController) {

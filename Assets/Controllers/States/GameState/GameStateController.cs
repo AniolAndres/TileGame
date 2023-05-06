@@ -61,7 +61,7 @@ namespace Assets.Controllers {
             unitHandler = new UnitHandler(inputLocker);
             unitHandler.OnUnitMovementStart += OnMovementStart;
             unitHandler.OnUnitMovementEnd += OnMovementEnd;
-			buildingHandler = new BuildingHandler();
+			buildingHandler = new BuildingHandler(context.Catalogs.ArmyColorsCatalog);
 
             CreatePlayers();
             CreateMapController();
@@ -96,6 +96,7 @@ namespace Assets.Controllers {
             }
 
             warController.SetInitialPlayer();
+            warController.OnCreate();
         }
 
         private void CreateMapController() {
@@ -190,9 +191,7 @@ namespace Assets.Controllers {
  			var tilesInRange = mapController.GetTilesInRange(result.AttackerPosition, result.AttackerUnit.UnitSpecificationConfig);
 			mapController.ClearAttackableTiles(tilesInRange);
 
-			unitHandler.ExhaustCurrentUnit();
-			unitHandler.CleanLastMove();
-			unitHandler.DeselectSelectedUnit();
+            ExhaustCurrentUnit();
 		}
 
         private void ApplyBattleResult(BattleConfiguration result) {
@@ -260,22 +259,54 @@ namespace Assets.Controllers {
 
 			unitHandler.TryUnlockInput();
 
-			var postMovementArgs = new PostMovementMenuStateArgs {
+            var postMovementArgs = new PostMovementMenuStateArgs {
                 CanAttack = true,
                 OnAttack = OnAttackSelected,
                 OnMovementConfirmed = OnMovementConfirmed,
-                OnUndoMove = OnCancelMovement
+                OnUndoMove = OnCancelMovement,
+                OnCaptureBuilding = OnCaptureBuilding
             };
 
             var postMovementState = new PostMovementMenuStateController(context, postMovementArgs);
             PushState(postMovementState);
         }
 
-        private void OnMovementConfirmed() {           
-            unitHandler.ExhaustCurrentUnit();
-            unitHandler.CleanLastMove();
-            unitHandler.DeselectSelectedUnit();
+        private void OnCaptureBuilding() {
+            var position = unitHandler.GetSelectedUnitPosition();
+            var tileType = mapController.GetTypeFromTile(position);
+            var isBuilding = model.IsBuilding(tileType);
+            if (!isBuilding) {
+                Debug.LogWarning($"It should not be possible to capture a non-building tile, current tile ({position.x}, {position.y})");
+                return;
+            }
+
+            var currentPlayer = warController.GetCurrentTurnArmyIndex();
+            var isBuildingFromCurrentPlayer = buildingHandler.IsBuildingFromPlayer(currentPlayer, position);
+            if (isBuildingFromCurrentPlayer) {
+				Debug.LogWarning($"It should not be possible to capture your own tile, current tile ({position.x}, {position.y})");
+				return;
+			}
+
+            var armyInfo = warController.GetArmyInfos().FirstOrDefault(x=>x.playerIndex == currentPlayer);
+            if (armyInfo == null) {
+
+                Debug.LogWarning($"Couldn't find an army info for player index: {currentPlayer}");
+                return;
+            }
+			buildingHandler.ConvertBuildingToPlayer(armyInfo, position);
+            ExhaustCurrentUnit();
         }
+
+
+        private void ExhaustCurrentUnit() {
+			unitHandler.ExhaustCurrentUnit();
+			unitHandler.CleanLastMove();
+			unitHandler.DeselectSelectedUnit();
+		}
+
+        private void OnMovementConfirmed() {
+            ExhaustCurrentUnit();
+		}
 
         private void OnCancelMovement() {
             var lastMoveData = unitHandler.GetLastMoveData();

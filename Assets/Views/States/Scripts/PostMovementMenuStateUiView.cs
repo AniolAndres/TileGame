@@ -17,6 +17,9 @@ namespace Assets.Views {
         private Button cancelButton;
 
         [SerializeField]
+        private Button captureButton;
+
+        [SerializeField]
         private RectTransform layoutTransform;
 
         public event Action OnCancel;
@@ -26,6 +29,8 @@ namespace Assets.Views {
         public event Action OnAttack;
 
         public event Action OnUndoMove;
+
+        public event Action OnCapture;
 
         public override void OnUpdate() {
             if (Input.GetMouseButtonDown(1)) {
@@ -37,12 +42,18 @@ namespace Assets.Views {
             attackButton.onClick.AddListener(FireAttackEvent);
             moveButton.onClick.AddListener(FireMoveEvent);
             cancelButton.onClick.AddListener(FireCancelEvent);
+            captureButton.onClick.AddListener(FireCaptureEvent);
         }
 
         private void OnDisable() {
             attackButton.onClick.RemoveListener(FireAttackEvent);
             moveButton.onClick.RemoveListener(FireMoveEvent);
             cancelButton.onClick.RemoveListener(FireCancelEvent);
+			captureButton.onClick.RemoveListener(FireCaptureEvent);
+		}
+
+        private void FireCaptureEvent() {
+            OnCapture?.Invoke();
         }
 
         private void FireCancelEvent() {

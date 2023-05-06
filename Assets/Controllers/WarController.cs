@@ -13,8 +13,21 @@ namespace Assets.Controllers {
 
         private readonly BattleCalculatorHelper battleCalculatorHelper;
 
+        private List<ArmyInfoData> armyInfoList;
+
         public WarController(BattleCalculatorHelper battleCalculatorHelper) {
             this.battleCalculatorHelper = battleCalculatorHelper;
+		}
+
+        public void OnCreate() {
+			armyInfoList = new List<ArmyInfoData>(players.Count);
+			foreach (var player in players) {
+				armyInfoList.Add(new ArmyInfoData {
+					armyColorId = player.GetArmyColorId(),
+					playerIndex = player.GetArmyIndex(),
+					armyCommanderId = player.GetArmyCommanderId()
+				});
+			}
 		}
 
         public void AddPlayer(PlayerController player) {
@@ -56,15 +69,7 @@ namespace Assets.Controllers {
         }
 
         public List<ArmyInfoData> GetArmyInfos() {
-            var colorIdList = new List<ArmyInfoData>(players.Count);
-            foreach (var player in players) {
-                colorIdList.Add(new ArmyInfoData {
-                    armyColorId = player.GetArmyColorId(),
-                    playerIndex = player.GetArmyIndex(),
-                    armyCommanderId = player.GetArmyCommanderId()
-                }) ;
-            }
-            return colorIdList;
+            return armyInfoList;
         }
 
         public BattleConfiguration SimulateBattle(BattleConfiguration config) {

@@ -10,5 +10,7 @@ namespace Assets.Controllers.States {
         public Action OnAttack;
 
         public Action OnUndoMove;
+
+        public Action OnCaptureBuilding;
     }
 }

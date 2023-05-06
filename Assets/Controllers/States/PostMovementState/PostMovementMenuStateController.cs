@@ -29,7 +29,13 @@ namespace Assets.Controllers.States {
             uiView.OnAttack += OnAttack;
             uiView.OnUndoMove += OnUndoMovement;
             uiView.OnWait += OnConfirmMovement;
+            uiView.OnCapture += OnCaptureBuilding;
         }
+
+        private void OnCaptureBuilding() {
+			PopState();
+            stateArgs.OnCaptureBuilding?.Invoke();
+		}
 
         private void OnAttack() {
 			PopState();
@@ -40,9 +46,11 @@ namespace Assets.Controllers.States {
 			uiView.OnAttack -= OnAttack;
 			uiView.OnUndoMove -= OnUndoMovement;
             uiView.OnWait -= OnConfirmMovement;
-        }
+			uiView.OnCapture -= OnCaptureBuilding;
 
-        private void OnUndoMovement() {
+		}
+
+		private void OnUndoMovement() {
             PopState();
             stateArgs.OnUndoMove?.Invoke();
         }

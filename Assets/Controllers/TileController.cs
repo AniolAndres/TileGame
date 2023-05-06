@@ -4,6 +4,7 @@ using Assets.Data.Level;
 using Assets.Data.Models;
 using Assets.Views;
 using Assets.Views.ViewData;
+using UnityEngine;
 
 namespace Assets.Controllers {
     public class TileController{
@@ -31,6 +32,10 @@ namespace Assets.Controllers {
 
         public int GetFunds() {
             return model.GetFunds();
+        }
+
+        public void ChangeOwner(Color color) {
+            view.SetOwnerColor(color);
         }
 
 		public void SetState(TileState state) {
