@@ -9,9 +9,12 @@ using System.Collections.Generic;
 using Random = UnityEngine.Random;
 using Assets.Catalogs.Scripts;
 using Assets.Configs;
+using Unity.Plastic.Newtonsoft.Json;
 
 namespace Assets.Data.Models {
     public class TileMapModel {
+
+        private readonly SerializableLevelData currentLevel;
 
         private readonly LevelCatalogEntry currentLevelEntry;
 
@@ -32,9 +35,10 @@ namespace Assets.Data.Models {
         private readonly string levelId;
 
         public TileMapModel(LevelsCatalog levelsCatalog, MovementTypesCatalog movementTypesCatalog, TilesCatalog tilesCatalog, 
-            UnitsCatalog unitsCatalog,ILevelProvider levelProvider, ArmyColorsCatalog armyColorsCatalog, List<ArmyInfoData> armyInfoData, string levelId) {           
-            this.currentLevelEntry = levelsCatalog.GetAllEntries().First();
-            this.tilesCatalog = tilesCatalog;
+            UnitsCatalog unitsCatalog,ILevelProvider levelProvider, ArmyColorsCatalog armyColorsCatalog, List<ArmyInfoData> armyInfoData, string levelId) {
+			this.currentLevelEntry = levelsCatalog.GetEntry(levelId);
+			this.currentLevel = JsonConvert.DeserializeObject<SerializableLevelData>(currentLevelEntry.LevelJson.ToString());
+			this.tilesCatalog = tilesCatalog;
             this.movementTypesCatalog = movementTypesCatalog;
             this.unitsCatalog = unitsCatalog;
             this.levelProvider = levelProvider;
@@ -44,7 +48,7 @@ namespace Assets.Data.Models {
         }
 
         public Vector2Int GetSize() {
-            return currentLevelEntry.Size;
+            return new Vector2Int(currentLevel.width, currentLevel.height);
         }
 
         public SerializableLevelData GetLevelData() {
@@ -52,8 +56,9 @@ namespace Assets.Data.Models {
         }
 
         public Vector2 GetRealTileWorldPosition(Vector2Int tilePosition) {
-            return new Vector2((tilePosition.x - currentLevelEntry.Size.x/2f + 0.5f) * currentLevelEntry.TileSideLength, 
-                (tilePosition.y - currentLevelEntry.Size.y/2f + 0.5f) * currentLevelEntry.TileSideLength);
+            var size = new Vector2Int(currentLevel.width, currentLevel.height);
+			return new Vector2((tilePosition.x - size.x/2f + 0.5f) * currentLevelEntry.TileSideLength, 
+                (tilePosition.y - size.y/2f + 0.5f) * currentLevelEntry.TileSideLength);
         }
 
         public float GetSideLength() {

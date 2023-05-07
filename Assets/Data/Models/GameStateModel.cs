@@ -3,11 +3,13 @@ using Assets.Catalogs;
 using System;
 using Assets.Data.Level;
 using Assets.Catalogs.Scripts;
+using Assets.Configs;
+using Unity.Plastic.Newtonsoft.Json;
 
 namespace Assets.Data.Models {
     public class GameStateModel {
 
-        private readonly LevelCatalogEntry currentLevel;
+        private readonly SerializableLevelData currentLevel;
 
         private readonly UnitsCatalog unitsCatalog;
 
@@ -21,7 +23,8 @@ namespace Assets.Data.Models {
 
 		public GameStateModel(LevelsCatalog levelsCatalog, UnitsCatalog unitsCatalog, TilesCatalog tilesCatalog, 
             CommandersCatalog commandersCatalog, ArmyColorsCatalog armyColorsCatalog, string levelId) {
-            this.currentLevel = levelsCatalog.GetEntry(levelId);
+            var levelJson = levelsCatalog.GetEntry(levelId).LevelJson.ToString();
+            currentLevel = JsonConvert.DeserializeObject<SerializableLevelData>(levelJson);
             this.commandersCatalog = commandersCatalog;
             this.unitsCatalog = unitsCatalog;
             this.tilesCatalog = tilesCatalog;
@@ -29,7 +32,7 @@ namespace Assets.Data.Models {
         }
 
         public int GetTotalPlayers() {
-            return currentLevel.PlayersCount;
+            return currentLevel.playersCount;
         }
 
         public CommanderCatalogEntry GetCommanderEntry(SetupArmyData armyData) {

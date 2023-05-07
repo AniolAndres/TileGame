@@ -22,10 +22,6 @@ namespace Assets.Catalogs {
 
         public TextAsset LevelJson => levelJson;
 
-        public Vector2Int Size => size;
-
         public float TileSideLength => tileSideLength;
-
-        public int PlayersCount => playersCount;
     }
 }

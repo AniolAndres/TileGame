@@ -15,4 +15,5 @@ MonoBehaviour:
   id: first
   playersCount: 2
   size: {x: 24, y: 20}
+  levelJson: {fileID: 4900000, guid: e49f7f63a7f186144901ecb0a1f59706, type: 3}
   tileSideLength: 128
