@@ -376,10 +376,6 @@ namespace Assets.Controllers {
         private void RemoveUnit(Vector2Int position) { //TODO: Should be inside UnitHandler
             unitHandler.RemoveUnitAtPosition(position);
         }
-
-        private void TryUnlockInput() {
-            unitHandler.TryUnlockInput();
-        }
         
         private void CreateUnit(BuyUnitData unitData)
         {

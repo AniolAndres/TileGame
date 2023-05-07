@@ -70,10 +70,10 @@ namespace Assets.Controllers {
 
             void CreateTile(TileData tileData) {
 
-                var tileEntry = model.GetTileEntry(tileData.TypeId);
-                var tilePosition = model.GetRealTileWorldPosition(tileData.Position);
-                var tileViewColor = tileEntry.TileColor;
-                var tileView = view.InstantiateTileView(tileViewColor, tilePosition.x, tilePosition.y, sideLength);
+				var tileEntry = model.GetTileEntry(tileData.TypeId);
+
+				var tileViewData = GetTileViewData();
+                var tileView = view.InstantiateTileView(ref tileViewData);
                 var tileModel = new TileModel(tileEntry, tileData.Position);
                 var tileController = new TileController(tileView, tileModel);
 
@@ -85,8 +85,23 @@ namespace Assets.Controllers {
                     buildingHandler.AddBuilding(player.playerIndex, tileData.Position, tileController);
                     var color = model.GetColor(player.armyColorId);
                     tileView.SetOwnerColor(color); // need colors from players
-                }              
-            }
+                }
+
+                //--------
+
+				TileViewData GetTileViewData() {
+
+					var tilePosition = model.GetRealTileWorldPosition(tileData.Position);
+
+					return new TileViewData {
+                        TileColor = tileEntry.TileColor,
+                        xPosition = tilePosition.x,
+                        yPosition = tilePosition.y,
+                        IsMainTile = false,
+                        TileSideLength = sideLength
+                    };
+				}
+			}
         }
 
         public void OnDestroy() {

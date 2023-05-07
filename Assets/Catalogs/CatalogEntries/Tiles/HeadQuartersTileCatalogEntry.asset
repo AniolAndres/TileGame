@@ -10,12 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f1c0f703f9570254895b1b8cb625e5fb, type: 3}
-  m_Name: BuildingTileCatalogEntry
+  m_Name: HeadQuartersTileCatalogEntry
   m_EditorClassIdentifier: 
-  id: building
-  tileColor: {r: 0.8867924, g: 0.34665033, b: 0, a: 1}
-  spawnableUnits:
-  - {fileID: 11400000, guid: 81d619520438f1c4ebf0b57841632f6c, type: 2}
-  - {fileID: 11400000, guid: 3460594c9430398478530fc821942f47, type: 2}
+  id: headquarters
+  tileColor: {r: 0.57939434, g: 0, b: 1, a: 1}
+  spawnableUnits: []
   canBeControlled: 1
-  fundsMultiplier: 1
+  fundsMultiplier: 2

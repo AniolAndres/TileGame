@@ -15,3 +15,5 @@ MonoBehaviour:
   id: grass
   tileColor: {r: 0.036671314, g: 0.5943396, b: 0, a: 1}
   spawnableUnits: []
+  canBeControlled: 0
+  fundsMultiplier: 0

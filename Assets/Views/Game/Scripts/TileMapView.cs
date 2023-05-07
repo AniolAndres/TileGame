@@ -24,11 +24,11 @@ namespace Assets.Views {
             OnMapClicked?.Invoke();
         }
 
-        public TileView InstantiateTileView(Color tileColor, float x, float y, float sideLength) {
+        public TileView InstantiateTileView(ref TileViewData tileViewData) {
             var tileView = Instantiate(tileViewPrefab, tilesParent);
-            tileView.transform.AsRectTransform().sizeDelta = new Vector2(sideLength, sideLength);
-            tileView.transform.AsRectTransform().anchoredPosition = new Vector2(x, y);
-            tileView.Setup(tileColor);
+            tileView.transform.AsRectTransform().sizeDelta = new Vector2(tileViewData.TileSideLength, tileViewData.TileSideLength);
+            tileView.transform.AsRectTransform().anchoredPosition = new Vector2(tileViewData.xPosition, tileViewData.yPosition);
+            tileView.Setup(tileViewData.TileColor, tileViewData.IsMainTile);
             return tileView;
         }
 

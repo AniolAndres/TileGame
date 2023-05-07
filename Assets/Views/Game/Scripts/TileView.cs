@@ -17,6 +17,9 @@ namespace Assets.Views {
         private TextMeshProUGUI costText;
 
         [SerializeField]
+        private GameObject mainBuildingTextGO;
+
+        [SerializeField]
         private Image tileImage;
 
         [SerializeField]
@@ -31,9 +34,10 @@ namespace Assets.Views {
             //arrowTransform.localEulerAngles = new Vector3(0,0,arrowRotation);
         }
 
-        public void Setup(Color tileColor) {
+        public void Setup(Color tileColor, bool isMain) {
             tileImage.color = tileColor;
-        }
+            mainBuildingTextGO.SetActive(isMain);
+		}
 
         public void RemoveHighlight() {
             highlightGameObject.SetActive(false);
