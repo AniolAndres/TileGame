@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using Random = UnityEngine.Random;
 using Assets.Catalogs.Scripts;
+using Assets.Configs;
 
 namespace Assets.Data.Models {
     public class TileMapModel {
@@ -46,7 +47,7 @@ namespace Assets.Data.Models {
             return currentLevelEntry.Size;
         }
 
-        public LevelData GetLevelData() {
+        public SerializableLevelData GetLevelData() {
             return levelProvider.GetLevel(levelId);
         }
 
@@ -69,16 +70,16 @@ namespace Assets.Data.Models {
 
         public bool IsBuilding(string tileType) {
             var tileEntry = tilesCatalog.GetEntry(tileType);
-            return tileEntry.CanCreate;
+            return tileEntry.CanBeControlled;
         }
 
         public bool IsBuilding(TileCatalogEntry tileEntry) {
-            return tileEntry.CanCreate;
+            return tileEntry.CanBeControlled;
         }
 
-        public ArmyInfoData GetRandomArmyInfo() {
-            var playerIndex =  Random.Range(0, armyInfoData.Count+1);
-            if (playerIndex <= 0) {
+        public ArmyInfoData GetArmyInfo(int playerIndex) {
+            
+            if (playerIndex == 0) {
                 return new ArmyInfoData {
                     playerIndex = 0,
                     armyColorId = armyColorsCatalog.InactiveColorEntry.Id,

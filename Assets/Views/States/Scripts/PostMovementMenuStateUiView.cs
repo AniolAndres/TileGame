@@ -22,8 +22,6 @@ namespace Assets.Views {
         [SerializeField]
         private RectTransform layoutTransform;
 
-        public event Action OnCancel;
-
         public event Action OnWait;
 
         public event Action OnAttack;

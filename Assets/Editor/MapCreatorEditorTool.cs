@@ -5,16 +5,17 @@ using System.Collections.Generic;
 using System.IO;
 using Unity.Plastic.Newtonsoft.Json;
 using UnityEditor;
-using UnityEngine;
+using Assets.Configs;
 
 
 public class MapCreatorEditorTool : Editor
 {
-
     static string levelPath = "Assets/Editor/FirstLevel.json";
 
-
 	static SerializableLevelData levelData = new SerializableLevelData {
+        playersCount = 2,
+        height = 4,
+        width = 4,
         tiles = new List<SerializableTileData> { 
             
             new SerializableTileData {
@@ -128,5 +129,6 @@ public class MapCreatorEditorTool : Editor
     static void CreateNewLevel() {
         var data = JsonConvert.SerializeObject(levelData);
         File.WriteAllText(levelPath, data.ToString());
+        EditorUtility.DisplayDialog("Success!", "Level created", "Ok");
     }
 }

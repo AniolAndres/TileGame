@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
+using Assets.Configs;
 using System.Collections;
+using Unity.Plastic.Newtonsoft.Json;
 
 namespace Assets.Catalogs {
 
@@ -13,7 +15,12 @@ namespace Assets.Catalogs {
         private Vector2Int size;
 
         [SerializeField]
+        private TextAsset levelJson;
+
+        [SerializeField]
         private float tileSideLength;
+
+        public TextAsset LevelJson => levelJson;
 
         public Vector2Int Size => size;
 

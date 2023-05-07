@@ -102,7 +102,7 @@ namespace Assets.Controllers {
         private void CreateMapController() {
 
             var armyInfos = warController.GetArmyInfos();
-            var levelProvider = new LevelProvider(context.Catalogs.LevelsCatalog, context.Catalogs.TilesCatalog);
+            var levelProvider = new LevelProvider(context.Catalogs.LevelsCatalog);
             var tileMapModel = new TileMapModel(context.Catalogs.LevelsCatalog, context.Catalogs.MovementTypesCatalog, 
                 context.Catalogs.TilesCatalog, context.Catalogs.UnitsCatalog, levelProvider,
                 context.Catalogs.ArmyColorsCatalog, armyInfos, gameStateArgs.LevelId);
@@ -149,7 +149,7 @@ namespace Assets.Controllers {
             }
 
 
-            var isBuilding = model.IsBuilding(tileData.TypeId);
+            var isBuilding = model.IsSpawnableBuilding(tileData.TypeId);
             if (!isBuilding) {
                 return;
             }

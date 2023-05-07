@@ -1,10 +1,12 @@
 
 using Assets.Catalogs;
+using Assets.Configs;
 using Assets.Data.Level;
 using Assets.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Plastic.Newtonsoft.Json;
 using Random = UnityEngine.Random;
 
 namespace Assets.Data.Levels {
@@ -13,43 +15,17 @@ namespace Assets.Data.Levels {
 
         private readonly LevelsCatalog levelsCatalog;
 
-        private readonly TilesCatalog tilesCatalog;
-
-        public LevelProvider(LevelsCatalog levelsCatalog, TilesCatalog tilesCatalog) {
+        public LevelProvider(LevelsCatalog levelsCatalog) {
             this.levelsCatalog = levelsCatalog;
-            this.tilesCatalog = tilesCatalog;
         }
 
-        public LevelData GetLevel(string levelId)
+        public SerializableLevelData GetLevel(string levelId)
         {
-            var allTileEntries = tilesCatalog.GetAllEntries();
-            var tileDataList = new List<TileData>();
-
             var entry = levelsCatalog.GetEntry(levelId);
+            var levelDataString = entry.LevelJson.ToString();
+            var levelData = JsonConvert.DeserializeObject<SerializableLevelData>(levelDataString);
 
-            for (int i = 0; i < entry.Size.x; ++i) {
-                for (int j = 0; j < entry.Size.y; ++j) {
-                    tileDataList.Add(new TileData { TypeId = GetRandomType(),
-                    Position = new UnityEngine.Vector2Int(i,j)});
-                }
-            }
-
-
-            if (tileDataList.IsNullOrEmpty()) {
-                throw new NotSupportedException("Tile list was not build properly, check Level Provider");
-            }
-
-            return new LevelData { 
-                PlayersCount = entry.PlayersCount,
-                TileData = tileDataList,
-                Width = entry.Size.x,
-                Height = entry.Size.y};
-
-
-            string GetRandomType()
-            {
-                return allTileEntries[Random.Range(0, allTileEntries.Count)].Id;
-            }
+            return levelData;
         }
     }
 

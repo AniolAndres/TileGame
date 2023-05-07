@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using Assets.Catalogs;
-using Assets.Catalogs;
 using Assets.Views;
 
 namespace Assets.Data.Models {

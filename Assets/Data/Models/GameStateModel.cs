@@ -43,7 +43,7 @@ namespace Assets.Data.Models {
 
         public bool IsBuilding(string tileDataTypeId)
         {
-            return tilesCatalog.GetEntry(tileDataTypeId).CanCreate;
+            return tilesCatalog.GetEntry(tileDataTypeId).CanBeControlled;
         }
 
         public ArmyColorCatalogEntry GetArmyEntry(SetupArmyData armyData) {
@@ -53,5 +53,14 @@ namespace Assets.Data.Models {
 		public TileCatalogEntry GetTileEntryById(string tileDataTypeId) {
 			return tilesCatalog.GetEntry(tileDataTypeId);
 		}
-	}
+
+        public bool IsSpawnableBuilding(string typeId) {
+            var tileEntry = tilesCatalog.GetEntry(typeId);
+            if(tileEntry.CanCreate && !tileEntry.CanBeControlled) {
+                throw new NotSupportedException($"Tile Entry {typeId} can create but can't be controlled, it should not be possible, check the catalog entry");
+            }
+
+            return tileEntry.CanCreate;
+        }
+    }
 }
