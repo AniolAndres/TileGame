@@ -9,5 +9,10 @@ namespace Assets.Catalogs {
 
         public string Id => id;
 
-    }
+#if UNITY_EDITOR
+		public void SetId(string id) {
+			this.id = id;
+		}
+#endif
+	}
 }

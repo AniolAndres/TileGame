@@ -41,7 +41,6 @@ namespace Assets.Catalogs {
             }
             return referenceList;
         }
-
     }
 
 }
