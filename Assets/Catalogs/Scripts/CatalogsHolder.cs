@@ -29,6 +29,9 @@ namespace Assets.Catalogs {
         [SerializeField]
         private ArmyColorsCatalog armyColorsCatalog;
 
+        [SerializeField]
+        private DialogsCatalog dialogsCatalog;
+
         public StatesCatalog StatesCatalog => statesCatalog;
 
         public LevelsCatalog LevelsCatalog => levelsCatalog;
@@ -42,5 +45,7 @@ namespace Assets.Catalogs {
         public MovementTypesCatalog MovementTypesCatalog => movementTypesCatalog;
 
         public ArmyColorsCatalog ArmyColorsCatalog => armyColorsCatalog;
+
+        public DialogsCatalog DialogsCatalog => dialogsCatalog;
     }
 }

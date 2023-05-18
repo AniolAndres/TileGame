@@ -10,13 +10,13 @@ namespace Assets.ScreenMachine {
 
         void DestroyViews();
 
-        void OnBringToFront();
+		void OnCreate();
+
+		void OnDestroy();
+
+		void OnBringToFront();
 
         void OnSendToBack();
-
-        void OnCreate();
-
-        void OnDestroy();
 
         void OnUpdate();
 

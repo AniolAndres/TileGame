@@ -8,7 +8,7 @@ using UnityEditor;
 using Assets.Configs;
 
 
-public class MapCreatorEditorTool : Editor
+public class MapCreatorEditorTool
 {
     static string levelPath = "Assets/Editor/FirstLevel.json";
 
