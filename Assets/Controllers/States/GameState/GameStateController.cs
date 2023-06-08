@@ -61,6 +61,7 @@ namespace Assets.Controllers {
             unitHandler = new UnitHandler(inputLocker);
             unitHandler.OnUnitMovementStart += OnMovementStart;
             unitHandler.OnUnitMovementEnd += OnMovementEnd;
+            unitHandler.OnUnitRemoved += OnUnitRemoved;
 			buildingHandler = new BuildingHandler(context.Catalogs.ArmyColorsCatalog);
 
             CreatePlayers();
@@ -73,6 +74,15 @@ namespace Assets.Controllers {
             tileHoverHandler = new TileHoverHandler(inputCalculatorHelper, mapController);
 
 		}
+
+        private void OnUnitRemoved(Vector2Int _) {
+            var dialogStateArgs = new DialogStateArgs {
+                DialogId = "first"
+            };
+
+            var dialogState = new DialogStateController(context, dialogStateArgs);
+            PushState(dialogState);
+        }
 
         private void OnTileHover() {
             tileHoverHandler.OnHover();

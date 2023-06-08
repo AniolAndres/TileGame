@@ -2,7 +2,9 @@
 using Assets.Data.Models;
 using Assets.ScreenMachine;
 using Assets.Views;
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Controllers {
@@ -10,7 +12,7 @@ namespace Assets.Controllers {
 
 		private readonly DialogStateArgs stateArgs;
 
-		private readonly DialogStateModel model;
+		private DialogStateModel model;
 
 		private const string Id = "DialogState";
 
@@ -22,16 +24,42 @@ namespace Assets.Controllers {
 			return Id;
 		}
 
-		public void OnBringToFront() {
-			
+		public void OnCreate() {
+
+			uiView.OnContinuePressed += Continue;
+			uiView.OnSkip += Skip;
+
+			var dialogEntry = context.Catalogs.DialogsCatalog.GetEntry(stateArgs.DialogId);
+			model = new DialogStateModel(dialogEntry);
+
+			var viewData = model.GetCurrentDialogViewData();
+			uiView.DisplayMessage(viewData);
 		}
 
-		public void OnCreate() {
-			
+		private void Skip() {
+			PopState();
+		}
+
+		private void Continue() {
+			model.AdvanceDialog();
+
+			if (model.IsDialogFinished()) {
+				Skip();
+				return;
+			}
+
+			var currentDialog = model.GetCurrentDialogViewData();
+			uiView.DisplayMessage(currentDialog);
 		}
 
 		public void OnDestroy() {
-			
+			uiView.OnContinuePressed -= Continue;
+			uiView.OnSkip -= Skip;
+
+		}
+
+		public void OnBringToFront() {
+
 		}
 
 		public void OnSendToBack() {

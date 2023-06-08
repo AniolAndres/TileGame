@@ -1,12 +1,9 @@
-using Assets.Controllers;
-using System;
-using System.Collections;
+
 using System.Collections.Generic;
 using System.IO;
 using Unity.Plastic.Newtonsoft.Json;
 using UnityEditor;
 using Assets.Configs;
-
 
 public class MapCreatorEditorTool
 {

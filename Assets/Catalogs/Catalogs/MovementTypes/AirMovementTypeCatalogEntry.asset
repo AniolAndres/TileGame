@@ -23,3 +23,5 @@ MonoBehaviour:
     cost: 1
   - tileEntry: {fileID: 11400000, guid: 05f41f3f132562844958183eeb2b58ff, type: 2}
     cost: 1
+  - tileEntry: {fileID: 11400000, guid: e45099c7c8c4e7548b2f2c3fb07dc2b8, type: 2}
+    cost: 1

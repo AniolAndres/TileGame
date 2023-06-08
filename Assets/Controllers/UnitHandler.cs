@@ -24,6 +24,8 @@ namespace Assets.Controllers {
 
         public event Action OnUnitMovementEnd;
 
+        public event Action<Vector2Int> OnUnitRemoved;
+
         public UnitHandler(GameplayInputLocker inputLocker) {
             this.inputLocker = inputLocker;
         }
@@ -65,8 +67,9 @@ namespace Assets.Controllers {
             unitController.OnMovementEnd -= FireMovementEndEvent;
 
             unitControllerDictionary.Remove(position);
-
             unitController.OnDestroy();
+
+            OnUnitRemoved?.Invoke(position);
         }
 
         public bool IsSpaceEmpty(Vector2Int position) {

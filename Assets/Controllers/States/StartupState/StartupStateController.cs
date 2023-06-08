@@ -1,10 +1,7 @@
 using Assets.Data;
 using Assets.ScreenMachine;
 using Assets.Views;
-using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using UnityEngine;
 
 namespace Assets.Controllers {
     public class StartupStateController : BaseStateController<StartupStateUiView, StartupStateWorldView>, IStateBase {
@@ -12,8 +9,6 @@ namespace Assets.Controllers {
         private const string Id = "StartUpState";
 
         public StartupStateController(Context context) : base(context) { }
-
-        private IAssetLoader assetLoader;
 
         public string GetId() {
             return Id;
@@ -33,6 +28,7 @@ namespace Assets.Controllers {
                 LevelId = "first",
                 ArmyDatas = GetArmyDatas()
             };
+
             PushState(new GameStateController(context, gameStateArgs));
         }
 

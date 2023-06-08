@@ -31,10 +31,10 @@ RectTransform:
   m_Father: {fileID: 7698948049348139579}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0}
-  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!1 &4933162546103113202
 GameObject:
@@ -67,10 +67,10 @@ RectTransform:
   m_Father: {fileID: 7698948049348139579}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 1}
-  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
+  m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!1001 &6326613388461744721
 PrefabInstance:
@@ -163,6 +163,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4510623229484001241, guid: ad7aa464f46138a4c8cb51b009aa40d4, type: 3}
+      propertyPath: m_AdditionalShaderChannelsFlag
+      value: 25
+      objectReference: {fileID: 0}
     - target: {fileID: 4852841307745935751, guid: ad7aa464f46138a4c8cb51b009aa40d4, type: 3}
       propertyPath: m_Name
       value: DialogStateUiView
@@ -186,6 +190,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f121be2346060940a3c0326431d2914, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  topParent: {fileID: 2273625310035882052}
+  bottomParent: {fileID: 7488587396385130150}
+  dialogViewPrefab: {fileID: 6858900597654513295, guid: c7fc592b0e3515344ac5fb570467241e, type: 3}
 --- !u!224 &7698948049348139579 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4401297967440148586, guid: ad7aa464f46138a4c8cb51b009aa40d4, type: 3}
