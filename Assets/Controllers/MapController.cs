@@ -246,5 +246,23 @@ namespace Assets.Controllers {
 				controller.SetState(TileState.None);
 			}
 		}
+
+		public bool IsOutOfBounds(Vector2Int tilePosition) {
+			var maxX = map.GetLength(0);
+			var maxY = map.GetLength(1);
+
+            var currentX = tilePosition.x;
+            var currentY = tilePosition.y;
+
+            if(currentX < 0 || currentX >= maxX) {
+                return true;
+            }
+
+			if (currentY < 0 || currentY >= maxY) {
+				return true;
+			}
+
+            return false;
+		}
     }
 }

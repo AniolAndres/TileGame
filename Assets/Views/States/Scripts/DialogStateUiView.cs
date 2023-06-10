@@ -25,13 +25,22 @@ namespace Assets.Views {
 		public override void OnUpdate() {
 
 			if (Input.GetKeyDown(KeyCode.Return)) {
-				OnContinuePressed?.Invoke();
+				CompleteOrContinue();
 				return;
 			}
 
 			if (Input.GetKeyDown(KeyCode.Escape)) {
 				OnSkip?.Invoke();
 			}
+		}
+
+		private void CompleteOrContinue() {
+			if (cachedDialog.IsFinished) {
+				OnContinuePressed?.Invoke();
+				return;
+			}
+
+			cachedDialog.Complete();
 		}
 
 		public void DisplayMessage(DialogViewData viewData) {

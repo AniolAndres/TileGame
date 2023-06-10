@@ -122,7 +122,14 @@ namespace Assets.Controllers {
         }
 
         private void OnMapClicked() {
+
             var tileClickedPosition = inputCalculatorHelper.GetTileFromMousePosition();
+
+            //On small maps the click can be out of bounds
+            if (mapController.IsOutOfBounds(tileClickedPosition)) {
+                return;
+            }
+
             var type = mapController.GetTypeFromTile(tileClickedPosition);
             var tileData = new TileData {
                 Position = tileClickedPosition,

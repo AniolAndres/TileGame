@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5658518631281899424}
   - component: {fileID: 6858900597654513295}
   m_Layer: 0
-  m_Name: DialogBox
+  m_Name: DialogSampleView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51,6 +51,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   textMessage: {fileID: 3770167168304158018}
+  letterSpeed: 20
 --- !u!1 &7779991133854927566
 GameObject:
   m_ObjectHideFlags: 0
