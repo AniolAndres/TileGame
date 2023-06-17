@@ -193,8 +193,8 @@ namespace Assets.Controllers {
             var minRange = unitSpecConfig.MinRange;
             var maxRange = unitSpecConfig.MaxRange;
 
-            var maxX = map.GetLength(0);
-            var maxY = map.GetLength(1);
+            var maxX = map.GetLength(0) - 1;
+            var maxY = map.GetLength(1) - 1;
 
             var originX = origin.x;
             var originY = origin.y;

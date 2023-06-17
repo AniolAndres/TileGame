@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,12 @@ namespace Assets.Views {
         [SerializeField]
         private Image image;
 
+        [SerializeField]
+        private TextMeshProUGUI hpText;
+
+        [SerializeField]
+        private GameObject hpGameObject;
+
         public event Action OnMovementEnd;
 
         public event Action OnMovementStart;
@@ -22,6 +29,22 @@ namespace Assets.Views {
 
         public void SetViewData(Sprite unitSprite){
             image.sprite = unitSprite;
+
+			hpGameObject.SetActive(false);
+		}
+        
+        public void SetHp(int currentHp) {
+            if(currentHp > 10) { //10 is max HP, will probably move to constant
+                throw new ArgumentException($"It should not be possible to set more than the hp, current HP: {currentHp}");
+            }
+
+            if(currentHp == 10) {
+                hpGameObject.SetActive(false);
+                return;
+            }
+
+			hpGameObject.SetActive(true);
+			hpText.text = currentHp.ToString();
         }
 
         public void SetSelectStatus(bool selected) {

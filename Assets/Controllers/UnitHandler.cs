@@ -214,7 +214,7 @@ namespace Assets.Controllers {
 
         public void UndoLastMove(Vector2 realOriginPosition) {
 			if (!selectedUnitKey.HasValue) {
-				throw new NotSupportedException("Trying to get selected while undoing the movement but there's none, should not ever happen");
+				throw new NotSupportedException("Trying to get selected while undoing the movement but there's none, should not ever h1en");
 			}
 
 			MoveUnitFromTo(lastMovementData.Destination, lastMovementData.Origin); //Undo the move
@@ -237,5 +237,26 @@ namespace Assets.Controllers {
         public MovementData GetLastMoveData() {
             return lastMovementData;
         }
-    }
+
+		public void ApplyBattleResult(ref BattleConfiguration result) {
+            ApplyBattleResultToUnit(result.AttackerHp, result.AttackerPosition);
+            ApplyBattleResultToUnit(result.DefenderHp, result.DefenderPosition);
+        }
+
+        private void ApplyBattleResultToUnit(int hp, Vector2Int unitPosition) {
+            if (!unitControllerDictionary.ContainsKey(unitPosition)) {
+                throw new ArgumentException($"Couldn't find any unit in position ({unitPosition.x}:{unitPosition.y})");
+            }
+
+            var unitController = unitControllerDictionary[unitPosition];
+
+            if(hp == 0) {
+                RemoveUnitAtPosition(unitPosition);
+                return;
+            }
+
+            unitController.SetHp(hp);
+        }
+
+	}
 }

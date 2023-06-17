@@ -12,11 +12,17 @@ namespace Assets.Data {
 
         private bool canMove;
 
+        private int currentHp = 1000;
+
         public bool CanMove => canMove;
 
         public UnitModel(UnitCatalogEntry unitCatalogEntry, int armyIndex) {
             this.unitCatalogEntry = unitCatalogEntry;
             this.armyIndex = armyIndex;
+        }
+
+        public void SetHp(int newHp) {
+            currentHp = newHp;
         }
 
         public void RefreshUnit()
@@ -32,9 +38,18 @@ namespace Assets.Data {
             return armyIndex;
         }
 
-        public void SetToAlreadyMoved()
+		public int GetNormalizedHp() {
+			var hpFloat = (float)currentHp;
+			return Mathf.CeilToInt(hpFloat / 100);
+		}
+
+		public void SetToAlreadyMoved()
         {
             canMove = false;
+        }
+
+        public int GetAbsoluteHp() {
+            return currentHp;
         }
     }
 }

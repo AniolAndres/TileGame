@@ -63,6 +63,8 @@ namespace Assets.Controllers {
         public void OnCreate() {
             unitView.OnMovementEnd += FireMovementEndAction;
             unitView.OnMovementStart += FireMovementStartAction;
+            var hp = unitModel.GetNormalizedHp();
+            unitView.SetHp(hp);
         }
 
         public void OnDestroy() {
@@ -72,12 +74,22 @@ namespace Assets.Controllers {
             UnityEngine.Object.Destroy(unitView.gameObject);
         }
 
+        public void SetHp(int currentHp) {
+            unitModel.SetHp(currentHp);
+            var normalizedHp = unitModel.GetNormalizedHp();
+            unitView.SetHp(normalizedHp);
+        }
+
 		public void Exhaust() {
             unitModel.SetToAlreadyMoved();
 		}
 
         public void MoveToInstant(Vector2 realEndPosition) {
             unitView.MoveOnCancelTo(realEndPosition);
+        }
+
+		public int GetHp() {
+            return unitModel.GetAbsoluteHp();
         }
     }
 }

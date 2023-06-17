@@ -202,7 +202,7 @@ namespace Assets.Controllers {
         private void AttackSelectedTile(TileData tileData) {
             var config = GetBattleConfig(tileData);
             var result = warController.SimulateBattle(config);
-            ApplyBattleResult(result);
+            ApplyBattleResult(ref result);
             model.IsAttacking = false;
             
  			var tilesInRange = mapController.GetTilesInRange(result.AttackerPosition, result.AttackerUnit.UnitSpecificationConfig);
@@ -211,17 +211,20 @@ namespace Assets.Controllers {
             ExhaustCurrentUnit();
 		}
 
-        private void ApplyBattleResult(BattleConfiguration result) {
+        private void ApplyBattleResult(ref BattleConfiguration result) {
             //WIP
-            if(result.DefenderHp == 0) {
-                RemoveUnit(result.DefenderPosition);
-			}
+
+            unitHandler.ApplyBattleResult(ref result);
+
 		}
 
         private BattleConfiguration GetBattleConfig(TileData tileData) {
 
-			var currentUnit = unitHandler.GetSelectedUnitId();
-			var currentUnitEntry = model.GetUnitCatalogEntry(currentUnit);
+			var attackerId = unitHandler.GetSelectedUnitId();
+            var attackerPosition = unitHandler.GetSelectedUnitPosition();
+            var attackerUnit = unitHandler.GetUnitControllerAtPosition(attackerPosition);
+			var currentUnitEntry = model.GetUnitCatalogEntry(attackerId);
+
 
             var defenderUnit = unitHandler.GetUnitControllerAtPosition(tileData.Position);
             var defenderUnitEntry = model.GetUnitCatalogEntry(defenderUnit.GetUnitId());
@@ -232,9 +235,9 @@ namespace Assets.Controllers {
             var defenderTilEntry = model.GetTileEntryById(tileData.TypeId);
 
             return new BattleConfiguration {
-                AttackerHp = 10000,
-                DefenderHp = 10000,
-                AttackerPosition = unitHandler.GetSelectedUnitPosition(),
+                AttackerHp = attackerUnit.GetHp(),
+                DefenderHp = defenderUnit.GetHp(),
+                AttackerPosition = attackerPosition,
                 DefenderPosition = tileData.Position,
                 AttackerUnit = currentUnitEntry,
                 DefenderUnit = defenderUnitEntry,
