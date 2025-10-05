@@ -1,8 +1,6 @@
-﻿using UnityEngine;
-using System.Collections;
-using System;
+﻿using System;
 
-namespace Assets.ScreenMachine {
+namespace Modules.TimerFactory {
     public interface ITimer {
 
         void Fire();

@@ -13,14 +13,6 @@ MonoBehaviour:
   m_Name: PostMovementMenuStateCatalogEntry
   m_EditorClassIdentifier: 
   id: PostMovementMenu
-  uiView:
-    m_AssetGUID: fe014f351472b334ba91cf8cca68a05e
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  worldView:
-    m_AssetGUID: 
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
+  uiView: {fileID: 1684484643550538526, guid: fe014f351472b334ba91cf8cca68a05e, type: 3}
+  worldView: {fileID: 0}
   stateAssets: []

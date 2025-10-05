@@ -1,6 +1,8 @@
 using Assets.Catalogs;
 using Assets.Data;
 using Assets.ScreenMachine;
+using Modules.AssetLoader;
+using Modules.TimerFactory;
 using UnityEngine;
 
 namespace Assets.Controllers {

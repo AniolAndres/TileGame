@@ -13,14 +13,6 @@ MonoBehaviour:
   m_Name: DialogStateCatalogEntry
   m_EditorClassIdentifier: 
   id: DialogState
-  uiView:
-    m_AssetGUID: 874b7b35c92ebc845a0becf592cdf33e
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  worldView:
-    m_AssetGUID: 
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
+  uiView: {fileID: 1597952103466863379, guid: 874b7b35c92ebc845a0becf592cdf33e, type: 3}
+  worldView: {fileID: 0}
   stateAssets: []

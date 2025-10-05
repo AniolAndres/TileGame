@@ -3,7 +3,7 @@ using UnityEngine.AddressableAssets;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
-namespace Assets.ScreenMachine {
+namespace Modules.AssetLoader {
     public interface IAssetLoader {
 
         Task LoadAsync();

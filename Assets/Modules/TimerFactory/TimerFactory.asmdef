@@ -1,11 +1,8 @@
 {
-    "name": "Catalogs",
+    "name": "TimerFactory",
     "rootNamespace": "",
     "references": [
-        "GUID:13ca35c520c8d0a45b405acf30f9b277",
-        "GUID:d0c1cb9dd6d78ce429dbb7a516544773",
-        "GUID:9e24947de15b9834991c9d8411ea37cf",
-        "GUID:d29648c77abe1604e9643c45afc69ee3"
+        "GUID:84651a3751eca9349aac36a66bba901b"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

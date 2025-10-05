@@ -1,25 +1,23 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System;
 
-namespace Assets.ScreenMachine {
+namespace Modules.TimerFactory {
+    
     public class TimerFactory : ITimerFactory {
 
         private Dictionary<string, List<Timer>> timersDictionary = new Dictionary<string, List<Timer>>();
 
         private List<Timer> finishedTimers = new List<Timer>(4); // I think 4 is enough, it's the default anyway
 
-        public ITimer CreateTimer(IStateBase state, float duration) {
-
-            var stateId = state.GetId();
-            if (!timersDictionary.ContainsKey(stateId)) {
-                timersDictionary[stateId] = new List<Timer>();
+        public ITimer CreateTimer(string id, float duration) {
+            
+            if (!timersDictionary.ContainsKey(id)) {
+                timersDictionary[id] = new List<Timer>();
             }
 
-            var timer = new Timer(duration, stateId);
+            var timer = new Timer(duration, id);
             timer.OnComplete += DestroyTimer;
-            timersDictionary[stateId].Add(timer);
+            timersDictionary[id].Add(timer);
 
             return timer;
         }
@@ -32,14 +30,13 @@ namespace Assets.ScreenMachine {
             timersDictionary[timerToDestroy.StateId].Remove(timerToDestroy);
         }
 
-        public void DestroyAllTimersFromState(IStateBase stateBase) {
-            var stateId = stateBase.GetId();
+        public void DestroyAllTimersWithId(string id) {
 
-            if (!timersDictionary.ContainsKey(stateId)) {
+            if (!timersDictionary.ContainsKey(id)) {
                 return; //It can be that a state hasnt created any timers at all
             }
 
-            timersDictionary.Remove(stateId); //This should remove all timers through Garbage collector right? 98.6% sure
+            timersDictionary.Remove(id); //This should remove all timers through Garbage collector right? 98.6% sure
             //Maybe force complete them? have to think about it
         }
 

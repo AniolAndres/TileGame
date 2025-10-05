@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Assets.Configs;
 using UnityEngine;
 
 namespace Assets.ScreenMachine {
@@ -24,7 +25,7 @@ namespace Assets.ScreenMachine {
         
         void DisableRaycasts();
 
-        void CacheStateAssets(List<ScriptableObject> stateAssets);
+        void CacheStateAssets(List<StateAsset> stateAssets);
         
         void ReleaseAssets(string stateId);
     }

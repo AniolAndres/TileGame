@@ -13,22 +13,8 @@ MonoBehaviour:
   m_Name: GameStateCatalogEntry
   m_EditorClassIdentifier: 
   id: GameState
-  uiView:
-    m_AssetGUID: 5e3bb1317ebe5d449bada515a65d1efe
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  worldView:
-    m_AssetGUID: d85a7a058bf527a4bafd23e0f97543be
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
+  uiView: {fileID: 407008081641699042, guid: 5e3bb1317ebe5d449bada515a65d1efe, type: 3}
+  worldView: {fileID: 8677256143794096493, guid: d85a7a058bf527a4bafd23e0f97543be, type: 3}
   stateAssets:
-  - m_AssetGUID: d19ec0f8df2e59247bed74c659214cad
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  - m_AssetGUID: 8f6716d384d7c73488267289555171e0
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
+  - {fileID: 11400000, guid: d19ec0f8df2e59247bed74c659214cad, type: 2}
+  - {fileID: 11400000, guid: 8f6716d384d7c73488267289555171e0, type: 2}

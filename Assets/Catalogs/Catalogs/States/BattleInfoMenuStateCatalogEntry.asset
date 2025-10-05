@@ -13,14 +13,6 @@ MonoBehaviour:
   m_Name: BattleInfoMenuStateCatalogEntry
   m_EditorClassIdentifier: 
   id: BattleInfoMenu
-  uiView:
-    m_AssetGUID: 61214074f55f83a4b96052aca1495d5d
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  worldView:
-    m_AssetGUID: f36098fae0a20d049a0e84be3c14e5ae
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
+  uiView: {fileID: 6823249112395199344, guid: 61214074f55f83a4b96052aca1495d5d, type: 3}
+  worldView: {fileID: 482236106219558533, guid: f36098fae0a20d049a0e84be3c14e5ae, type: 3}
   stateAssets: []

@@ -1,8 +1,11 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using Assets.Configs;
 using Assets.ScreenMachine;
 using Assets.Data;
+using Modules.AssetLoader;
+using Modules.TimerFactory;
 
 namespace Assets.Controllers {
     public abstract class BaseStateController<TuiView, TWorldView> 
@@ -19,7 +22,7 @@ namespace Assets.Controllers {
 
         protected ITimerFactory timerFactory => context.TimerFactory;
 
-        private List<ScriptableObject> stateAssets = new List<ScriptableObject>();
+        private List<StateAsset> stateAssets = new List<StateAsset>();
 
         private IScreenMachine screenMachine => context.ScreenMachine;
 
@@ -64,13 +67,13 @@ namespace Assets.Controllers {
             worldView?.EnableRaycast();
         }
 
-        public void CacheStateAssets(List<ScriptableObject> stateAssets) {
-            this.stateAssets = stateAssets;
+        public void CacheStateAssets(List<StateAsset> assets) {
+            this.stateAssets = assets;
         }
 
-        public void LinkViews(UiView uiView, WorldView worldView) {
-            this.uiView = uiView as TuiView;
-            this.worldView = worldView as TWorldView;
+        public void LinkViews(UiView ui, WorldView world) {
+            this.uiView = ui as TuiView;
+            this.worldView = world as TWorldView;
         }
 
         public void DestroyViews() {

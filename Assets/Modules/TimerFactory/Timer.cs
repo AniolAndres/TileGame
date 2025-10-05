@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEngine.UIElements;
 
-namespace Assets.ScreenMachine {
+namespace Modules.TimerFactory {
     public class Timer : ITimer {
 
         public List<Action> actionsOnComplete = new List<Action>();

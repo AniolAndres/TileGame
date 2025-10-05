@@ -13,14 +13,6 @@ MonoBehaviour:
   m_Name: StartUpStateCatalogEntry
   m_EditorClassIdentifier: 
   id: StartUpState
-  uiView:
-    m_AssetGUID: 203a4769fc2b3d64ab5f561ce62f3abe
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  worldView:
-    m_AssetGUID: 
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
+  uiView: {fileID: 5506821445196339695, guid: 203a4769fc2b3d64ab5f561ce62f3abe, type: 3}
+  worldView: {fileID: 4846335390166093024, guid: b65c870f55c675640a7e0631d01d6d5e, type: 3}
   stateAssets: []

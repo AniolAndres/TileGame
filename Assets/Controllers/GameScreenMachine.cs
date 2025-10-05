@@ -2,6 +2,8 @@ using Assets.Catalogs;
 using Assets.ScreenMachine;
 using System;
 using System.Collections.Generic;
+using Modules.AssetLoader;
+using Modules.TimerFactory;
 using UnityEngine;
 
 namespace Assets.Controllers {
@@ -85,8 +87,6 @@ namespace Assets.Controllers {
 
         private void PushStateLocally(IStateBase state) {
 
-            isLoading = true;
-
             screenStack.Push(state);
 
             var stateEntry = statesCatalog.GetEntry(state.GetId());
@@ -94,35 +94,16 @@ namespace Assets.Controllers {
             InstantiateViews(stateEntry, state);
         }
 
-        private async void InstantiateViews(StateCatalogEntry stateEntry, IStateBase state) {
+        private void InstantiateViews(StateCatalogEntry stateEntry, IStateBase state)
+        {
 
-            var stateAssetLoader = assetLoaderFactory.CreateLoader(stateEntry.Id);
-
-            if (stateEntry.WorldView.RuntimeKeyIsValid()) {
-                stateAssetLoader.AddReference(stateEntry.WorldView);
-            }
-
-            if (stateEntry.UiView.RuntimeKeyIsValid()) {
-                stateAssetLoader.AddReference(stateEntry.UiView);
-            }
-
-            foreach(var stateAsset in stateEntry.StateAssets) {
-                stateAssetLoader.AddReference(stateAsset);
-            }
-
-            await stateAssetLoader.LoadAsync();
-
-            var uiViewAsset = stateEntry.UiView.RuntimeKeyIsValid() ? stateAssetLoader.GetAsset<UiView>(stateEntry.UiView) : null;
-            var worldViewAsset = stateEntry.WorldView.RuntimeKeyIsValid() ? stateAssetLoader.GetAsset<WorldView>(stateEntry.WorldView) : null;
-
-            var stateAssetsList = new List<ScriptableObject>();
-
-            foreach(var stateAsset in stateEntry.StateAssets) {
-                stateAssetsList.Add(stateAssetLoader.GetAsset<ScriptableObject>(stateAsset));
-            }
-
+            var stateAssetsList = stateEntry.StateAssets;
+            
             state.CacheStateAssets(stateAssetsList);
 
+            var worldViewAsset = stateEntry.WorldView;
+            var uiViewAsset = stateEntry.UiView;
+            
             var worldView = worldViewAsset != null ? UnityEngine.Object.Instantiate(worldViewAsset) : null;
             var uiView = uiViewAsset != null ? UnityEngine.Object.Instantiate(uiViewAsset) : null;
 
@@ -131,19 +112,13 @@ namespace Assets.Controllers {
             }
 
             worldView?.SetCanvasOrder((screenStack.Count - 1) * CanvasOffset);
-            uiView?.SetCanvasOrder((screenStack.Count - 1) * CanvasOffset + Mathf.RoundToInt(CanvasOffset/2));
+            uiView?.SetCanvasOrder((screenStack.Count - 1) * CanvasOffset + Mathf.RoundToInt(CanvasOffset/2f));
 
             state.LinkViews(uiView, worldView);
 
-            if(state is IPreloadable preloadableState) {
-                await preloadableState.Preload();
-            }
-
-            state.OnCreate();
-
-            isLoading = false;
-
             CleanStatesViews();
+            
+            state.OnCreate();
         }
 
         private void PopStateLocally() {
@@ -152,7 +127,7 @@ namespace Assets.Controllers {
             state.OnDestroy();
             statesToCleanUp.Enqueue(state);
 
-            timerFactory.DestroyAllTimersFromState(state);
+            timerFactory.DestroyAllTimersWithId(state.GetId());
 
             if(screenStack.Count != 0) {
                 var nextState = screenStack.Peek();

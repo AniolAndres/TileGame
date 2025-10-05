@@ -2,16 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.ScreenMachine {
+namespace Modules.AssetLoader {
     public class AssetLoaderFactory : IAssetLoaderFactory {
 
         private Dictionary<string, List<AssetLoader>> stateAssetLoaders = new Dictionary<string, List<AssetLoader>>();
-
-        public IAssetLoader CreateLoader(IStateBase originState) {
-            var id = originState.GetId();
-            return CreateLoader(id);
-        }
-
+        
         public IAssetLoader CreateLoader(string id) {
             var loader = new AssetLoader();
 

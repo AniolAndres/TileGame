@@ -6,7 +6,7 @@ using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
 using Object = UnityEngine.Object;
 
-namespace Assets.ScreenMachine {
+namespace Modules.AssetLoader {
     public class AssetLoader : IAssetLoader{
 
         private readonly List<AssetReference> assetsToLoad = new List<AssetReference>();

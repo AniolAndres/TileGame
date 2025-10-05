@@ -1,7 +1,5 @@
-﻿using UnityEngine;
-using System.Collections;
-
-namespace Assets.ScreenMachine {
+﻿
+namespace Modules.TimerFactory {
     public enum TimerState{
 
         NotStarted,

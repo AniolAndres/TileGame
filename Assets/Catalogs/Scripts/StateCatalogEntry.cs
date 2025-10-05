@@ -3,6 +3,7 @@ using UnityEngine;
 using System;
 using System.Collections.Generic;
 using Assets.Configs;
+using Assets.ScreenMachine;
 using UnityEngine.AddressableAssets;
 
 namespace Assets.Catalogs {
@@ -11,36 +12,36 @@ namespace Assets.Catalogs {
     public class StateCatalogEntry : CatalogEntry{
 
         [SerializeField]
-        private AssetReference uiView;
+        private UiView uiView;
 
         [SerializeField]
-        private AssetReference worldView;
+        private WorldView worldView;
 
         [SerializeField]
-        private List<AssetReference> stateAssets;
+        private List<StateAsset> stateAssets;
 
-        public AssetReference UiView => uiView;
+        public UiView UiView => uiView;
 
-        public AssetReference WorldView => worldView;
+        public WorldView WorldView => worldView;
 
-        public List<AssetReference> StateAssets => stateAssets;
+        public List<StateAsset> StateAssets => stateAssets;
 
-        public List<AssetReference> GetViewsAssetReferences() {
-            var referenceList = new List<AssetReference>();
-            referenceList.Add(uiView);
-            referenceList.Add(worldView);
-            return referenceList;
-        }
-
-        public List<AssetReference> GetAllAssetReferences() {
-            var referenceList = new List<AssetReference>();
-            referenceList.Add(uiView);
-            referenceList.Add(worldView);
-            foreach(var asset in stateAssets) {
-                referenceList.Add(asset);
-            }
-            return referenceList;
-        }
+        // public List<AssetReference> GetViewsAssetReferences() {
+        //     var referenceList = new List<AssetReference>();
+        //     referenceList.Add(uiView);
+        //     referenceList.Add(worldView);
+        //     return referenceList;
+        // }
+        //
+        // public List<StateAsset> GetAllAssetReferences() {
+        //     var referenceList = new List<AssetReference>();
+        //     referenceList.Add(uiView);
+        //     referenceList.Add(worldView);
+        //     foreach(var asset in stateAssets) {
+        //         referenceList.Add(asset);
+        //     }
+        //     return referenceList;
+        // }
     }
 
 }
