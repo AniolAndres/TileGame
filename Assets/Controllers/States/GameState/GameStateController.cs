@@ -276,9 +276,7 @@ namespace Assets.Controllers {
         }
 
         private void PushPostMovementState() {
-
-			unitHandler.TryUnlockInput();
-
+            
             var postMovementArgs = new PostMovementMenuStateArgs {
                 CanAttack = true,
                 OnAttack = OnAttackSelected,

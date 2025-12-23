@@ -57,6 +57,12 @@ namespace Assets.Controllers {
                 node = node.previousNode;               
             }
 
+            //this can happen if unit doesn't move
+            if (path.IsEmpty())
+            {
+                path.Add(node.position);
+            }
+
             path.Reverse();
 
             return path;
@@ -66,13 +72,17 @@ namespace Assets.Controllers {
         {
             mappedNodes.Clear();
 
+            var originNode = new Node { position = origin, accumulatedCost = 0 };
+            
+            mappedNodes.Add(originNode); //Origin is always available
+
             var movementTypeId = unitCatalogEntry.MovementTypeCatalogEntry.Id;
             var unitMaxMovement = unitCatalogEntry.UnitSpecificationConfig.Movemement;
 
             var nodesToCheck = new List<Node>();
             var nodesChecked = new HashSet<Vector2Int>();
 
-            nodesToCheck.Add(new Node {position = origin, accumulatedCost = 0 });
+            nodesToCheck.Add(originNode);
 
             while (nodesToCheck.Count != 0) {
 

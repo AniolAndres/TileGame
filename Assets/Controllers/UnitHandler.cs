@@ -42,14 +42,15 @@ namespace Assets.Controllers {
 
             unitControllerDictionary[position] = unitController;
 
-            unitController.OnMovementEnd += FireMovementEndEvent;
+            unitController.OnMovementEnd += HandleMovementEnd;
             unitController.OnMovementStart += FireMovementStartEvent;
 
             unitController.OnCreate();
         }
 
-        private void FireMovementEndEvent() {
+        private void HandleMovementEnd() {
             OnUnitMovementEnd?.Invoke();
+            TryUnlockInput();
         }
 
         private void FireMovementStartEvent() {
@@ -64,7 +65,7 @@ namespace Assets.Controllers {
             var unitController = unitControllerDictionary[position];
 
             unitController.OnMovementStart -= FireMovementStartEvent;
-            unitController.OnMovementEnd -= FireMovementEndEvent;
+            unitController.OnMovementEnd -= HandleMovementEnd;
 
             unitControllerDictionary.Remove(position);
             unitController.OnDestroy();
@@ -76,7 +77,12 @@ namespace Assets.Controllers {
             return !unitControllerDictionary.ContainsKey(position);
         }
 
-        public void MoveUnitFromTo(Vector2Int oldPos, Vector2Int newPos) {
+        void MoveUnitFromTo(Vector2Int oldPos, Vector2Int newPos) {
+            if (newPos == oldPos)
+            {
+                return;
+            }
+            
             if (unitControllerDictionary.ContainsKey(newPos)) {
                 throw new NotSupportedException($"Trying to move unit to ({newPos.x},{newPos.y}), but it's not empty!, check if it's empty first");
             }
@@ -128,16 +134,16 @@ namespace Assets.Controllers {
             var newPosition = gridPositions.Last();
 
             var empty = IsSpaceEmpty(newPosition);
-            if (!empty) {
+            var isMovingInPlace = gridPositions.Count == 1;
+            if (!empty && !isMovingInPlace) {
                 return;
             }
 
-            MoveUnitFromTo(selectedUnitKey.Value, newPosition);
-
+            MoveUnitFromTo(selectedUnitKey.Value, newPosition); //Data
+            
             inputLock = inputLocker.LockInput();
-
             var controller = unitControllerDictionary[newPosition];
-            controller.OnMove(previousPosition, gridPositions, realPositions);
+            controller.OnMove(previousPosition, gridPositions, realPositions); //
 
             lastMovementData = new MovementData {
                 Destination = newPosition,
@@ -148,7 +154,7 @@ namespace Assets.Controllers {
         }
 
 
-        public void TryUnlockInput() {
+        void TryUnlockInput() {
             if(inputLock == null) {
                 throw new NotSupportedException("You're tyring to unlock input after movement, but it was never locked in the first place");
             }

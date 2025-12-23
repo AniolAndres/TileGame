@@ -52,8 +52,19 @@ namespace Assets.Views {
         }
 
         public void MoveUnitViewTo(Vector2Int firstGridPosition, List<Vector2Int> gridPositions, List<Vector2> pathPositions) {
-
+            if (gridPositions.Count == 1 && firstGridPosition == gridPositions[0])
+            {
+                SimulateEmptyMovement();
+                return;
+            }
+            
             StartCoroutine(MoveUnitAsyncTo(firstGridPosition, gridPositions, pathPositions));
+        }
+
+        private void SimulateEmptyMovement()
+        {
+            OnMovementStart?.Invoke();
+            OnMovementEnd?.Invoke();
         }
 
         private IEnumerator MoveUnitAsyncTo(Vector2Int firstGridPosition, List<Vector2Int> gridPositions, List<Vector2> pathPositions) { //Maybe a coroutine would be better

@@ -25,11 +25,11 @@ namespace Assets.Controllers {
             return unitModel.GetId();
         }
 
-        public void FireMovementStartAction() {
+        private void FireMovementStartAction() {
             OnMovementStart?.Invoke();  
         }
 
-        public void FireMovementEndAction() {
+        private void FireMovementEndAction() {
             OnMovementEnd?.Invoke();
         }
 
