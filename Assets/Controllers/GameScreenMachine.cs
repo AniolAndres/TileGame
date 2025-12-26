@@ -122,7 +122,7 @@ namespace Assets.Controllers {
         }
 
         private void PopStateLocally() {
-            var state = screenStack.Pop();
+            IStateBase state = screenStack.Pop();
             state.ReleaseAssets(state.GetId());
             state.OnDestroy();
             statesToCleanUp.Enqueue(state);

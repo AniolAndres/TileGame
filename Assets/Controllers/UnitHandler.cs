@@ -25,6 +25,7 @@ namespace Assets.Controllers {
         public event Action OnUnitMovementEnd;
 
         public event Action<Vector2Int> OnUnitRemoved;
+        public event Action<Vector2Int> OnUnitCreated;
 
         public UnitHandler(GameplayInputLocker inputLocker) {
             this.inputLocker = inputLocker;
@@ -46,6 +47,8 @@ namespace Assets.Controllers {
             unitController.OnMovementStart += FireMovementStartEvent;
 
             unitController.OnCreate();
+            
+            OnUnitCreated?.Invoke(position);
         }
 
         private void HandleMovementEnd() {

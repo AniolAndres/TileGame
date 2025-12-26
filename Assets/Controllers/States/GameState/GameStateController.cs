@@ -30,6 +30,8 @@ namespace Assets.Controllers {
         private CameraController cameraController;
 
         private WarController warController;
+        
+        private LevelEventDispatcher levelEventDispatcher;
 
         private InputCalculatorHelper inputCalculatorHelper;
 
@@ -61,27 +63,38 @@ namespace Assets.Controllers {
             unitHandler = new UnitHandler(inputLocker);
             unitHandler.OnUnitMovementStart += OnMovementStart;
             unitHandler.OnUnitMovementEnd += OnMovementEnd;
-            unitHandler.OnUnitRemoved += OnUnitRemoved;
 			buildingHandler = new BuildingHandler(context.Catalogs.ArmyColorsCatalog);
 
             CreatePlayers();
             CreateMapController();
             CreateCameraController();
 
+            levelEventDispatcher = new LevelEventDispatcher(warController, unitHandler);
+            levelEventDispatcher.Init();
+            SubscribeToLevelEvents();
+            
 			inputCalculatorHelper = new InputCalculatorHelper(mapController);
             inputCalculatorHelper.Init();
 
             tileHoverHandler = new TileHoverHandler(inputCalculatorHelper, mapController);
-
+            
 		}
 
-        private void OnUnitRemoved(Vector2Int _) {
-            var dialogStateArgs = new DialogStateArgs {
-                DialogId = "first"
-            };
+        private void SubscribeToLevelEvents()
+        {
+            levelEventDispatcher.OnTurnStart += HandleTurnStart;
+        }
 
-            var dialogState = new DialogStateController(context, dialogStateArgs);
-            PushState(dialogState);
+        private void HandleTurnStart(int turnNumber, PlayerController playerController)
+        {
+            var armyName = playerController.GetArmyCommanderId();
+            
+            var startOverlayLock = inputLocker.LockInput();
+            
+            var turnStartArgs = new TurnStartOverlayStateArgs(turnNumber, armyName, () => startOverlayLock.Unlock());
+            var turnStartState = new TurnStartOverlayStateController(context, turnStartArgs);
+            
+            PushState(turnStartState);
         }
 
         private void OnTileHover() {
@@ -106,7 +119,7 @@ namespace Assets.Controllers {
             }
 
             warController.SetInitialPlayer();
-            warController.OnCreate();
+            warController.Init();
         }
 
         private void CreateMapController() {
@@ -391,10 +404,6 @@ namespace Assets.Controllers {
 
         }
 
-        private void RemoveUnit(Vector2Int position) { //TODO: Should be inside UnitHandler
-            unitHandler.RemoveUnitAtPosition(position);
-        }
-        
         private void CreateUnit(BuyUnitData unitData)
         {
             var currentArmyId = warController.GetCurrentTurnArmyIndex();

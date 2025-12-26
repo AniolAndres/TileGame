@@ -15,6 +15,6 @@ MonoBehaviour:
   cost: 1200
   movement: 20
   vision: 3
-  attack: 200
+  attack: 500
   minRange: 1
   maxRange: 1

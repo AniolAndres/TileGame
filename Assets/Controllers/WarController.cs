@@ -13,13 +13,18 @@ namespace Assets.Controllers {
 
         private readonly BattleCalculatorHelper battleCalculatorHelper;
 
+        private int turnNumber = 0;
+
         private List<ArmyInfoData> armyInfoList;
+
+        public event Action<int, PlayerController> OnTurnStart;
+        public event Action<int> OnRoundStart;
 
         public WarController(BattleCalculatorHelper battleCalculatorHelper) {
             this.battleCalculatorHelper = battleCalculatorHelper;
 		}
 
-        public void OnCreate() {
+        public void Init() {
 			armyInfoList = new List<ArmyInfoData>(players.Count);
 			foreach (var player in players) {
 				armyInfoList.Add(new ArmyInfoData {
@@ -28,7 +33,9 @@ namespace Assets.Controllers {
 					armyCommanderId = player.GetArmyCommanderId()
 				});
 			}
-		}
+
+            turnNumber = 1;
+        }
 
         public void AddPlayer(PlayerController player) {
             players.Add(player);
@@ -42,15 +49,28 @@ namespace Assets.Controllers {
 
             currentPlayer = players.First();
             currentPlayer.OnTurnStart();
+            
+            OnTurnStart?.Invoke(turnNumber, currentPlayer);
         }
 
         public void SetNextPlayer() {
             currentPlayer.OnTurnEnd();
             var index = players.IndexOf(currentPlayer);
             ++index;
-            index = index > players.Count - 1 ? 0 : index;
+            
+            var isNewRound = index > players.Count - 1;
+            
+            index = isNewRound ? 0 : index;
             currentPlayer = players[index];
             currentPlayer.OnTurnStart();
+
+            if (isNewRound)
+            {
+                turnNumber++;
+                OnRoundStart?.Invoke(turnNumber);
+            }
+            
+            OnTurnStart?.Invoke(turnNumber, currentPlayer);
         }
 
         public int GetCurrentTurnArmyIndex()

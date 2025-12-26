@@ -26,6 +26,8 @@ namespace Assets.Controllers {
 
         private IScreenMachine screenMachine => context.ScreenMachine;
 
+        public event Action OnStateDestroyed;
+
         public BaseStateController(Context context) {
             this.context = context;
         }

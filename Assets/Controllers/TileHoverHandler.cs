@@ -8,9 +8,9 @@ namespace Assets.Controllers {
 
 		private Vector2Int previousHoveredTile;
 
-		readonly private InputCalculatorHelper inputCalculator;
+		private readonly InputCalculatorHelper inputCalculator;
 
-		readonly private MapController mapController;
+		private readonly MapController mapController;
 
 		public TileHoverHandler(InputCalculatorHelper inputCalculatorHelper, MapController mapController) {
 			this.inputCalculator = inputCalculatorHelper;
