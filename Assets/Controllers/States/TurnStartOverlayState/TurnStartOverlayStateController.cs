@@ -23,11 +23,15 @@ namespace Assets.Controllers
 
         public void OnCreate()
         {
+            uiView.OnMovementCompleted += PopState;
+            
             uiView.Setup(stateArgs.RoundNumber, stateArgs.PlayerName);
         }
 
         public void OnDestroy()
         {
+            uiView.OnMovementCompleted -= PopState;
+            
             stateArgs.OnStatePop?.Invoke(); //Ugly
         }
 
