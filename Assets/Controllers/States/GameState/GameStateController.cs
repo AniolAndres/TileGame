@@ -9,6 +9,9 @@ using Assets.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Catalogs;
+using Assets.Catalogs.Scripts;
+using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -57,17 +60,22 @@ namespace Assets.Controllers {
             worldView.OnSecondaryButtonClick += OnSecondaryButtonClicked;
             worldView.OnMouseUpdate += OnTileHover;
 
-            model = new GameStateModel(context.Catalogs.LevelsCatalog, context.Catalogs.UnitsCatalog, context.Catalogs.TilesCatalog, 
-                context.Catalogs.CommandersCatalog, context.Catalogs.ArmyColorsCatalog, gameStateArgs.LevelId);
+            var levelProvider = new LevelProvider(context.Catalogs.LevelsCatalog);
+            model = new GameStateModel(context.Catalogs.UnitsCatalog, context.Catalogs.TilesCatalog, 
+                context.Catalogs.CommandersCatalog, context.Catalogs.ArmyColorsCatalog, gameStateArgs.LevelId, levelProvider);
             inputLocker = new GameplayInputLocker(context.ScreenMachine);
             unitHandler = new UnitHandler(inputLocker);
             unitHandler.OnUnitMovementStart += OnMovementStart;
             unitHandler.OnUnitMovementEnd += OnMovementEnd;
 			buildingHandler = new BuildingHandler(context.Catalogs.ArmyColorsCatalog);
 
-            CreatePlayers();
-            CreateMapController();
-            CreateCameraController();
+
+            var playerData = model.GetCurrentLevelPlayerData();
+            CreatePlayers(playerData);
+            
+            var currentMap = model.GetCurrentLevelMapData();
+            CreateMapController(currentMap);
+            CreateCameraController(currentMap);
 
             levelEventDispatcher = new LevelEventDispatcher(warController, unitHandler);
             levelEventDispatcher.Init();
@@ -101,18 +109,23 @@ namespace Assets.Controllers {
             tileHoverHandler.OnHover();
         }
 
-        private void CreatePlayers() {
+        private void CreatePlayers(PlayerData[] players){
 
-            warController = new WarController(new BattleCalculatorHelper());
+            warController = new WarController(new BattleCalculatorHelper(), players);
 
-            for (var armyIndex = 0; armyIndex < gameStateArgs.ArmyDatas.Count; armyIndex++)
+            if (gameStateArgs.ArmyDatas != null)
             {
-                var armyData = gameStateArgs.ArmyDatas[armyIndex];
-                var commanderEntry = model.GetCommanderEntry(armyData);
-                var armyEntry = model.GetArmyEntry(armyData);
-                var fundsController = new FundsController();
-                var playerModel = new PlayerModel(commanderEntry, armyEntry);
-                var playerView = uiView.InstantiatePlayerView();
+                throw new NotImplementedException("Not implemented having option to inject characters before level setup");
+            }
+
+            for (var i = 0; i < players.Length; i++)
+            {
+                PlayerData playerData = players[i];
+                CommanderCatalogEntry commanderEntry = model.GetCommanderEntry(playerData.CommanderId);
+                ArmyColorCatalogEntry armyEntry = model.GetArmyEntry(playerData.ColorId);
+                FundsController fundsController = new FundsController();
+                PlayerModel playerModel = new PlayerModel(commanderEntry, armyEntry, playerData.PlayerIndex, playerData.TeamId);
+                PlayerView playerView = uiView.InstantiatePlayerView();
                 var playerController = new PlayerController(playerView, playerModel, fundsController);
                 playerController.OnCreate();
                 warController.AddPlayer(playerController);
@@ -122,13 +135,11 @@ namespace Assets.Controllers {
             warController.Init();
         }
 
-        private void CreateMapController() {
-
-            var armyInfos = warController.GetArmyInfos();
-            var levelProvider = new LevelProvider(context.Catalogs.LevelsCatalog);
-            var tileMapModel = new TileMapModel(context.Catalogs.LevelsCatalog, context.Catalogs.MovementTypesCatalog, 
-                context.Catalogs.TilesCatalog, context.Catalogs.UnitsCatalog, levelProvider,
-                context.Catalogs.ArmyColorsCatalog, armyInfos, gameStateArgs.LevelId);
+        private void CreateMapController(MapData currentMap) {
+            var armyInfos = warController.GetPlayersData();
+            var tileMapModel = new TileMapModel(context.Catalogs.MovementTypesCatalog, 
+                context.Catalogs.TilesCatalog, context.Catalogs.UnitsCatalog,
+                context.Catalogs.ArmyColorsCatalog, armyInfos, currentMap);
             mapController = new MapController(worldView.TileMapView, tileMapModel, unitHandler, buildingHandler);
             mapController.OnMapClicked += OnMapClicked;
             mapController.OnCreate();
@@ -144,7 +155,7 @@ namespace Assets.Controllers {
             }
 
             var type = mapController.GetTypeFromTile(tileClickedPosition);
-            var tileData = new TileData {
+            var tileData = new Tile {
                 Position = tileClickedPosition,
                 TypeId = type
             };
@@ -153,48 +164,48 @@ namespace Assets.Controllers {
 
 
         //Ugliest method in the class, but it shouldnt grow much now
-        private void OnTileClicked(TileData tileData)
+        private void OnTileClicked(Tile tile)
         {
             //Almost all of this could be inside unit handler
             if (unitHandler.HasUnitSelected) {
 
                 if (model.IsAttacking) {
-                    TryAttackSelectedTile(tileData);
+                    TryAttackSelectedTile(tile);
                 } else {
-					TryMoveSelectedUnit(tileData);
+					TryMoveSelectedUnit(tile);
 				}
                 return;
             }
 
             var currentArmyId = warController.GetCurrentTurnArmyIndex();
-            var isTileEmpty = unitHandler.IsSpaceEmpty(tileData.Position);
+            var isTileEmpty = unitHandler.IsSpaceEmpty(tile.Position);
 
             if (!isTileEmpty)
             {
-                if (unitHandler.IsFromArmy(tileData.Position, currentArmyId) && unitHandler.CanUnitMove(tileData.Position)) {
-                    unitHandler.SetUnitSelected(tileData.Position);
-                    mapController.HighlightAvailableTiles(tileData.Position, currentArmyId, unitHandler.GetSelectedUnitId());
+                if (unitHandler.IsFromArmy(tile.Position, currentArmyId) && unitHandler.CanUnitMove(tile.Position)) {
+                    unitHandler.SetUnitSelected(tile.Position);
+                    mapController.HighlightAvailableTiles(tile.Position, currentArmyId, unitHandler.GetSelectedUnitId());
                 }
                 return;
             }
 
 
-            var isBuilding = model.IsSpawnableBuilding(tileData.TypeId);
+            var isBuilding = model.IsSpawnableBuilding(tile.TypeId);
             if (!isBuilding) {
                 return;
             }
             
-            OnBuildingClicked(tileData);
+            OnBuildingClicked(tile);
         }
 
-        private void TryAttackSelectedTile(TileData tileData) {
-            var isEmpty = unitHandler.IsSpaceEmpty(tileData.Position);
+        private void TryAttackSelectedTile(Tile tile) {
+            var isEmpty = unitHandler.IsSpaceEmpty(tile.Position);
             if (isEmpty) {
                 return;
             }
 
             var currentArmy = warController.GetCurrentTurnArmyIndex();
-            var isSameArmy = unitHandler.IsFromArmy(tileData.Position, currentArmy);
+            var isSameArmy = unitHandler.IsFromArmy(tile.Position, currentArmy);
             if (isSameArmy) {
                 return; //Can't attack your own units... for now..
             }
@@ -203,17 +214,17 @@ namespace Assets.Controllers {
             var currentUnitPosition = unitHandler.GetSelectedUnitPosition();
             var currentUnitEntry = model.GetUnitCatalogEntry(currentUnit);
             var tilesInRange = mapController.GetTilesInRange(currentUnitPosition, currentUnitEntry.UnitSpecificationConfig);
-            if (!tilesInRange.Contains(tileData.Position)) {
+            if (!tilesInRange.Contains(tile.Position)) {
                 return; //Not in range
             }
 
             //Check if units can be attacked maybe air, earth etc etc
 
-            AttackSelectedTile(tileData);
+            AttackSelectedTile(tile);
 		}
 
-        private void AttackSelectedTile(TileData tileData) {
-            var config = GetBattleConfig(tileData);
+        private void AttackSelectedTile(Tile tile) {
+            var config = GetBattleConfig(tile);
             var result = warController.SimulateBattle(config);
             ApplyBattleResult(ref result);
             model.IsAttacking = false;
@@ -231,7 +242,7 @@ namespace Assets.Controllers {
 
 		}
 
-        private BattleConfiguration GetBattleConfig(TileData tileData) {
+        private BattleConfiguration GetBattleConfig(Tile tile) {
 
 			var attackerId = unitHandler.GetSelectedUnitId();
             var attackerPosition = unitHandler.GetSelectedUnitPosition();
@@ -239,19 +250,19 @@ namespace Assets.Controllers {
 			var currentUnitEntry = model.GetUnitCatalogEntry(attackerId);
 
 
-            var defenderUnit = unitHandler.GetUnitControllerAtPosition(tileData.Position);
+            var defenderUnit = unitHandler.GetUnitControllerAtPosition(tile.Position);
             var defenderUnitEntry = model.GetUnitCatalogEntry(defenderUnit.GetUnitId());
 
             var attackerTileType = mapController.GetTypeFromTile(unitHandler.GetSelectedUnitPosition());
             var attackerTileEntry = model.GetTileEntryById(attackerTileType);
 
-            var defenderTilEntry = model.GetTileEntryById(tileData.TypeId);
+            var defenderTilEntry = model.GetTileEntryById(tile.TypeId);
 
             return new BattleConfiguration {
                 AttackerHp = attackerUnit.GetHp(),
                 DefenderHp = defenderUnit.GetHp(),
                 AttackerPosition = attackerPosition,
-                DefenderPosition = tileData.Position,
+                DefenderPosition = tile.Position,
                 AttackerUnit = currentUnitEntry,
                 DefenderUnit = defenderUnitEntry,
                 AttackerTile = attackerTileEntry,
@@ -259,9 +270,9 @@ namespace Assets.Controllers {
             };
         }
 
-        private void TryMoveSelectedUnit(TileData tileData) {
+        private void TryMoveSelectedUnit(Tile tile) {
 
-			var gridPath = mapController.GetPath(tileData.Position);
+			var gridPath = mapController.GetPath(tile.Position);
 
 			if (gridPath == null) {
 				return;
@@ -318,7 +329,7 @@ namespace Assets.Controllers {
 				return;
 			}
 
-            var armyInfo = warController.GetArmyInfos().FirstOrDefault(x=>x.playerIndex == currentPlayer);
+            var armyInfo = warController.GetPlayersData().FirstOrDefault(x=>x.PlayerIndex == currentPlayer);
             if (armyInfo == null) {
 
                 Debug.LogWarning($"Couldn't find an army info for player index: {currentPlayer}");
@@ -346,38 +357,38 @@ namespace Assets.Controllers {
             unitHandler.CleanLastMove();
             unitHandler.DeselectSelectedUnit();
             var type = mapController.GetTypeFromTile(lastMoveData.Origin);
-            OnTileClicked(new TileData { //simulate selecting the unit again
+            OnTileClicked(new Tile { //simulate selecting the unit again
                 TypeId = type,
                 Position = lastMoveData.Origin
             });
 		}
 
-        private void OnBuildingClicked(TileData tileData)
+        private void OnBuildingClicked(Tile tile)
         {
             var currentPlayer = warController.GetCurrentTurnArmyIndex();
-            var isFromPlayer = buildingHandler.IsBuildingFromPlayer(currentPlayer,tileData.Position);
+            var isFromPlayer = buildingHandler.IsBuildingFromPlayer(currentPlayer,tile.Position);
             if (!isFromPlayer)
             {
                 return;
             }
             
-            PushPopupState(tileData);
+            PushPopupState(tile);
         }
 
-        private void PushPopupState(TileData tileData) {
+        private void PushPopupState(Tile tile) {
             var popupStateArgs = new CreateUnitStateArgs { 
                 OnUnitCreated = CreateUnit,
                 CurrentFunds = warController.GetFundsFromCurrentPlayer(),
-                TileTypeId = tileData.TypeId,
-                Position = tileData.Position
+                TileTypeId = tile.TypeId,
+                Position = tile.Position
             };
             
             PushState(new CreateUnitStateController(context, popupStateArgs));
         }
 
-        private void CreateCameraController() {
+        private void CreateCameraController(MapData mapData) {
             var cameraConfig = GetStateAsset<CameraConfig>();
-            var cameraModel = new CameraModel(cameraConfig, context.Catalogs.LevelsCatalog.GetAllEntries().First());
+            var cameraModel = new CameraModel(cameraConfig, mapData);
             cameraController = new CameraController(worldView.CameraView, cameraModel);
             cameraController.Init();
         }

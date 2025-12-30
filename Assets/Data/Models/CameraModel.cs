@@ -9,13 +9,12 @@ namespace Assets.Data.Models {
 
         private readonly CameraConfig cameraConfig;
         private readonly LevelCatalogEntry levelCatalogEntry;
-        private readonly SerializableLevelData serializableLevelData;
+        private readonly MapData mapData;
         private readonly Vector2Int screenBounds;
 
-        public CameraModel(CameraConfig config, LevelCatalogEntry levelCatalogEntry) {
-            this.cameraConfig = config;
-            this.levelCatalogEntry = levelCatalogEntry;
-            serializableLevelData = JsonConvert.DeserializeObject<SerializableLevelData>(levelCatalogEntry.LevelJson.ToString());
+        public CameraModel(CameraConfig cameraConfig, MapData mapData) {
+            this.cameraConfig = cameraConfig;
+            this.mapData = mapData;
             this.screenBounds = new Vector2Int(Screen.width, Screen.height);
         }
 
@@ -26,7 +25,7 @@ namespace Assets.Data.Models {
 
         public bool CanCameraMoveVertical(Vector2 camPosition, Vector2Int direction) {
 
-            var size = new Vector2Int { x = serializableLevelData.width, y = serializableLevelData.height };
+            var size = new Vector2Int { x = mapData.Width, y = mapData.Height };
             var leftOverHeight = size.y * levelCatalogEntry.TileSideLength - screenBounds.y;
 
             return  - direction.y * camPosition.y < leftOverHeight / 2f;
@@ -34,7 +33,7 @@ namespace Assets.Data.Models {
 
         public bool CanCameraMoveHorizontal(Vector2 camPosition, Vector2Int direction) {
 
-			var size = new Vector2Int { x = serializableLevelData.width, y = serializableLevelData.height };
+			var size = new Vector2Int { x = mapData.Width, y = mapData.Height };
 			var leftoverWidth = size.x * levelCatalogEntry.TileSideLength - screenBounds.x;
 
             return camPosition.x * -direction.x < leftoverWidth / 2f;

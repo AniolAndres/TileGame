@@ -1,68 +1,52 @@
 ﻿using UnityEngine;
 using Assets.Catalogs;
-using System.Linq;
-using Assets.Views;
-using Assets.Data.Levels;
-using Assets.Data.Level;
 using System;
 using System.Collections.Generic;
-using Random = UnityEngine.Random;
 using Assets.Catalogs.Scripts;
 using Assets.Configs;
-using Unity.Plastic.Newtonsoft.Json;
 
 namespace Assets.Data.Models {
     public class TileMapModel {
 
-        private readonly SerializableLevelData currentLevel;
-
-        private readonly LevelCatalogEntry currentLevelEntry;
-
+        private readonly MapData mapData;
+        
         private readonly TilesCatalog tilesCatalog;
 
         private readonly UnitsCatalog unitsCatalog;
 
         private readonly ArmyColorsCatalog armyColorsCatalog;
 
-        private readonly ILevelProvider levelProvider;
-
         private readonly MovementTypesCatalog movementTypesCatalog;
 
-        private List<ArmyInfoData> armyInfoData;
+        private readonly PlayerData[] playersData;
 
         public MovementTypesCatalog MovementTypesCatalog => movementTypesCatalog;
 
-        private readonly string levelId;
-
-        public TileMapModel(LevelsCatalog levelsCatalog, MovementTypesCatalog movementTypesCatalog, TilesCatalog tilesCatalog, 
-            UnitsCatalog unitsCatalog,ILevelProvider levelProvider, ArmyColorsCatalog armyColorsCatalog, List<ArmyInfoData> armyInfoData, string levelId) {
-			this.currentLevelEntry = levelsCatalog.GetEntry(levelId);
-			this.currentLevel = JsonConvert.DeserializeObject<SerializableLevelData>(currentLevelEntry.LevelJson.ToString());
+        public TileMapModel(MovementTypesCatalog movementTypesCatalog, TilesCatalog tilesCatalog, 
+            UnitsCatalog unitsCatalog, ArmyColorsCatalog armyColorsCatalog, PlayerData[] playersData,
+            MapData mapData)
+        {
+            this.mapData = mapData;
 			this.tilesCatalog = tilesCatalog;
             this.movementTypesCatalog = movementTypesCatalog;
             this.unitsCatalog = unitsCatalog;
-            this.levelProvider = levelProvider;
-            this.levelId = levelId;
             this.armyColorsCatalog = armyColorsCatalog;
-            this.armyInfoData = armyInfoData;
+            this.playersData = playersData;
         }
 
         public Vector2Int GetSize() {
-            return new Vector2Int(currentLevel.width, currentLevel.height);
-        }
-
-        public SerializableLevelData GetLevelData() {
-            return levelProvider.GetLevel(levelId);
+            return new Vector2Int(mapData.Width, mapData.Height);
         }
 
         public Vector2 GetRealTileWorldPosition(Vector2Int tilePosition) {
-            var size = new Vector2Int(currentLevel.width, currentLevel.height);
-			return new Vector2((tilePosition.x - size.x/2f + 0.5f) * currentLevelEntry.TileSideLength, 
-                (tilePosition.y - size.y/2f + 0.5f) * currentLevelEntry.TileSideLength);
+            var size = new Vector2Int(mapData.Width, mapData.Height);
+            var tileSizeLength = mapData.TileSideLength;
+			return new Vector2((tilePosition.x - size.x/2f + 0.5f) * tileSizeLength, 
+                (tilePosition.y - size.y/2f + 0.5f) * tileSizeLength);
         }
 
         public float GetSideLength() {
-            return currentLevelEntry.TileSideLength;
+            return mapData.TileSideLength;
         }
 
         public TileCatalogEntry GetTileEntry(string typeId) {
@@ -82,19 +66,11 @@ namespace Assets.Data.Models {
             return tileEntry.CanBeControlled;
         }
 
-        public ArmyInfoData GetArmyInfo(int playerIndex) {
-            
-            if (playerIndex == 0) {
-                return new ArmyInfoData {
-                    playerIndex = 0,
-                    armyColorId = armyColorsCatalog.InactiveColorEntry.Id,
-                    armyCommanderId = null
-                };
-            }
-
-            foreach(var armyInfo in armyInfoData) {
-                if(armyInfo.playerIndex == playerIndex) {
-                    return armyInfo;
+        public PlayerData GetPlayerData(int playerIndex)
+        {
+            foreach(var playerData in playersData) {
+                if(playerData.PlayerIndex == playerIndex) {
+                    return playerData;
                 }
             }
 
@@ -104,6 +80,11 @@ namespace Assets.Data.Models {
         public Color GetColor(string colorId) {
             var colorEntry = armyColorsCatalog.GetEntry(colorId);
             return colorEntry.ArmyColor;
+        }
+
+        public MapData GetMapData()
+        {
+            return mapData;
         }
     }
 }

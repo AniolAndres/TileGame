@@ -17,8 +17,8 @@ namespace Assets.Data.Models {
             this.tileEntry = tileEntry;
         }
 
-        public TileData GetTileData() {
-            return new TileData {
+        public Tile GetTileData() {
+            return new Tile {
                 Position = Position,
                 TypeId = TypeId
             };

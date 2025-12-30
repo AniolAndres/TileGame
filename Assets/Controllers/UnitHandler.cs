@@ -167,11 +167,10 @@ namespace Assets.Controllers {
 
         public bool IsFromArmy(Vector2Int position, int currentArmyIndex)
         {
-            if (!unitControllerDictionary.ContainsKey(position)) {
+            if (!unitControllerDictionary.TryGetValue(position, out var unitController)) {
                 throw new NotSupportedException($"Trying to check if unit in ({position.x},{position.y}) belongs to army {currentArmyIndex} but it doesn't exist!");
             }
 
-            var unitController = unitControllerDictionary[position];
             return unitController.GetUnitArmyId() == currentArmyIndex;
         }
 

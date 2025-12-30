@@ -25,7 +25,8 @@ namespace Assets.Controllers {
 
         public event Action OnMapClicked;
 
-        public MapController(TileMapView tileMapView, TileMapModel model, UnitHandler unitHandler, BuildingHandler buildingHandler) {
+        public MapController(TileMapView tileMapView, TileMapModel model, UnitHandler unitHandler, 
+            BuildingHandler buildingHandler) {
             this.view = tileMapView;
             this.model = model;
             this.unitHandler = unitHandler;
@@ -36,8 +37,8 @@ namespace Assets.Controllers {
 
             view.OnMapClicked += FireMapClickedEvent;
 
-            var levelData = model.GetLevelData();
-            map = new TileController[levelData.width, levelData.height];
+            var levelData = model.GetMapData();
+            map = new TileController[levelData.Width, levelData.Height];
 
             SetUp(levelData);
 
@@ -51,13 +52,13 @@ namespace Assets.Controllers {
             OnMapClicked?.Invoke();
         }
 
-        private void SetUp(SerializableLevelData levelData) {
+        private void SetUp(MapData levelData) {
 
             var time = DateTime.Now;
 
             var sideLength = model.GetSideLength();
 
-            foreach (var tile in levelData.tiles) {
+            foreach (var tile in levelData.Tiles) {
                 CreateTile(tile);
             }
 
@@ -69,7 +70,7 @@ namespace Assets.Controllers {
 
             //-----------------------------------
 
-            void CreateTile(SerializableTileData tileData) {
+            void CreateTile(TileData tileData) {
 
 				var tileEntry = model.GetTileEntry(tileData.tileType);
 				var position = new Vector2Int(tileData.xPosition, tileData.yPosition);
@@ -83,9 +84,9 @@ namespace Assets.Controllers {
 
                 var isBuilding = model.IsBuilding(tileEntry);
                 if (isBuilding) {
-                    var player = model.GetArmyInfo(tileData.owner); 
-                    buildingHandler.AddBuilding(player.playerIndex, position, tileController);
-                    var color = model.GetColor(player.armyColorId);
+                    var player = model.GetPlayerData(tileData.owner); 
+                    buildingHandler.AddBuilding(player.PlayerIndex, position, tileController);
+                    var color = model.GetColor(player.ColorId);
                     tileView.SetOwnerColor(color); // need colors from players
                 }
 

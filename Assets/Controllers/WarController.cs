@@ -3,6 +3,7 @@ using Assets.Data;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Assets.Configs;
 
 namespace Assets.Controllers {
     public class WarController {
@@ -15,25 +16,17 @@ namespace Assets.Controllers {
 
         private int turnNumber = 0;
 
-        private List<ArmyInfoData> armyInfoList;
+        private PlayerData[] playersData;
 
         public event Action<int, PlayerController> OnTurnStart;
         public event Action<int> OnRoundStart;
 
-        public WarController(BattleCalculatorHelper battleCalculatorHelper) {
+        public WarController(BattleCalculatorHelper battleCalculatorHelper, PlayerData[] playersData) {
             this.battleCalculatorHelper = battleCalculatorHelper;
+            this.playersData = playersData;
 		}
 
         public void Init() {
-			armyInfoList = new List<ArmyInfoData>(players.Count);
-			foreach (var player in players) {
-				armyInfoList.Add(new ArmyInfoData {
-					armyColorId = player.GetArmyColorId(),
-					playerIndex = player.GetArmyIndex(),
-					armyCommanderId = player.GetArmyCommanderId()
-				});
-			}
-
             turnNumber = 1;
         }
 
@@ -88,8 +81,8 @@ namespace Assets.Controllers {
             currentPlayer.TakeFundsFromPlayer(cost);
         }
 
-        public List<ArmyInfoData> GetArmyInfos() {
-            return armyInfoList;
+        public PlayerData[] GetPlayersData() {
+            return playersData;
         }
 
         public BattleConfiguration SimulateBattle(BattleConfiguration config) {

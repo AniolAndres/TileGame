@@ -9,12 +9,6 @@ namespace Assets.Catalogs {
     public class LevelCatalogEntry : CatalogEntry {
 
         [SerializeField]
-        private int playersCount;
-
-        [SerializeField]
-        private Vector2Int size;
-
-        [SerializeField]
         private TextAsset levelJson;
 
         [SerializeField]

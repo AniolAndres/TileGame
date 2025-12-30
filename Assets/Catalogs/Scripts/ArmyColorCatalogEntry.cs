@@ -8,12 +8,7 @@ namespace Assets.Catalogs.Scripts {
 
         [SerializeField]
         private Color armyColor;
-
-        [SerializeField]
-        private int armyId;
-
+        
         public Color ArmyColor => armyColor;
-
-        public int ArmyId => armyId;
     }
 }

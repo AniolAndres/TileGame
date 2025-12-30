@@ -12,9 +12,16 @@ namespace Assets.Data {
 
         private readonly ArmyColorCatalogEntry armyColorEntry;
 
-        public PlayerModel(CommanderCatalogEntry commanderCatalogEntry, ArmyColorCatalogEntry armyColorEntry) {
+        private readonly int PlayerIndex;
+        
+        private readonly int TeamId;
+        
+        public PlayerModel(CommanderCatalogEntry commanderCatalogEntry, ArmyColorCatalogEntry armyColorEntry,
+            int playerIndex, int teamIndex) {
             this.commanderEntry = commanderCatalogEntry;
             this.armyColorEntry = armyColorEntry;
+            this.PlayerIndex = playerIndex;
+            this.TeamId = teamIndex;
         }
 
         public CommanderViewData GetCommanderViewData() {
@@ -26,7 +33,7 @@ namespace Assets.Data {
 
         public int GetArmyIndex()
         {
-            return armyColorEntry.ArmyId;
+            return PlayerIndex;
         }
 
         public string GetColorId() {

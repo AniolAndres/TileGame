@@ -1,1 +1,130 @@
-{"tiles":[{"x":0,"y":0,"type":"headquarters","main":1},{"x":1,"y":0,"type":"grass","main":-1},{"x":2,"y":0,"type":"grass","main":-1},{"x":3,"y":0,"type":"mountain","main":-1},{"x":0,"y":1,"type":"building","main":1},{"x":1,"y":1,"type":"water","main":-1},{"x":2,"y":1,"type":"building","main":0},{"x":3,"y":1,"type":"water","main":-1},{"x":0,"y":2,"type":"grass","main":-1},{"x":1,"y":2,"type":"water","main":-1},{"x":2,"y":2,"type":"mountain","main":-1},{"x":3,"y":2,"type":"grass","main":-1},{"x":0,"y":3,"type":"water","main":-1},{"x":1,"y":3,"type":"water","main":-1},{"x":2,"y":3,"type":"building","main":2},{"x":3,"y":3,"type":"headquarters","main":2}],"players":2,"width":4,"height":4}
+{
+  "endGame": {
+    "loseStrategy": "standard",
+    "winStrategy": "standard"
+  },
+  "map": {
+    "tiles": [
+      {
+        "x": 0,
+        "y": 0,
+        "type": "headquarters",
+        "owner": 0
+      },
+      {
+        "x": 1,
+        "y": 0,
+        "type": "grass",
+        "owner": -1
+      },
+      {
+        "x": 2,
+        "y": 0,
+        "type": "grass",
+        "owner": -1
+      },
+      {
+        "x": 3,
+        "y": 0,
+        "type": "mountain",
+        "owner": -1
+      },
+      {
+        "x": 0,
+        "y": 1,
+        "type": "building",
+        "owner": 0
+      },
+      {
+        "x": 1,
+        "y": 1,
+        "type": "water",
+        "owner": -1
+      },
+      {
+        "x": 2,
+        "y": 1,
+        "type": "building",
+        "owner": 0
+      },
+      {
+        "x": 3,
+        "y": 1,
+        "type": "water",
+        "owner": -1
+      },
+      {
+        "x": 0,
+        "y": 2,
+        "type": "grass",
+        "owner": -1
+      },
+      {
+        "x": 1,
+        "y": 2,
+        "type": "water",
+        "owner": -1
+      },
+      {
+        "x": 2,
+        "y": 2,
+        "type": "mountain",
+        "owner": -1
+      },
+      {
+        "x": 3,
+        "y": 2,
+        "type": "grass",
+        "owner": -1
+      },
+      {
+        "x": 0,
+        "y": 3,
+        "type": "water",
+        "owner": -1
+      },
+      {
+        "x": 1,
+        "y": 3,
+        "type": "water",
+        "owner": -1
+      },
+      {
+        "x": 2,
+        "y": 3,
+        "type": "building",
+        "owner": 1
+      },
+      {
+        "x": 3,
+        "y": 3,
+        "type": "headquarters",
+        "owner": 1
+      }
+    ],
+    "width": 4,
+    "height": 4,
+    "tileSideLength":128
+  },
+  "players": [
+    {
+      "commanderId": "colin",
+      "playerIndex": 0,
+      "teamId": 0,
+      "color":"blue"
+    },
+    {
+      "commanderId": "andy",
+      "playerIndex": 1,
+      "teamId": 1,
+      "color":"red"
+    }
+  ],
+  "triggers": [
+    {
+      "action": "Dialog",
+      "data": "dialog1",
+      "kind": "UnitKilled"
+    }
+  ]
+}

@@ -26,29 +26,14 @@ namespace Assets.Controllers {
         private void PushNewState() {
             var gameStateArgs = new GameStateArgs {
                 LevelId = "first",
-                ArmyDatas = GetArmyDatas()
             };
 
             PushState(new GameStateController(context, gameStateArgs));
         }
 
-        private List<SetupArmyData> GetArmyDatas() {
-            return new List<SetupArmyData> {
-                new SetupArmyData {
-                    ArmyColorId = "red",
-                    CommanderId = "andy"
-                },
-                new SetupArmyData {
-                    ArmyColorId = "blue",
-                    CommanderId = "colin"
-                } 
-            };
-        }
-
         private void PresentNewState() {
             var gameStateArgs = new GameStateArgs {
                 LevelId = "first",
-                ArmyDatas = GetArmyDatas()
             };
             PresentState(new GameStateController(context, gameStateArgs));
         }

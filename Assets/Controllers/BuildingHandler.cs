@@ -3,6 +3,7 @@ using Assets.Catalogs.Scripts;
 using Assets.Data;
 using System;
 using System.Collections.Generic;
+using Assets.Configs;
 using UnityEngine;
 
 namespace Assets.Controllers {
@@ -47,18 +48,18 @@ namespace Assets.Controllers {
             throw new ArgumentException($"Couldn't find any building in the array with position {buildingPosition}, check level initialization");
         }
 
-        public void ConvertBuildingToPlayer(ArmyInfoData armyData, Vector2Int buildingPosition) {
+        public void ConvertBuildingToPlayer(PlayerData playerData, Vector2Int buildingPosition) {
 
             var buildingOwner = GetBuildingOwner(buildingPosition);
-            if(buildingOwner == armyData.playerIndex) {
+            if(buildingOwner == playerData.PlayerIndex) {
                 throw new NotSupportedException($"Building in position {buildingPosition} already belongs to player, check if it belongs to him first");
             }
 
             var controller = totalBuildings[buildingOwner][buildingPosition];
             totalBuildings[buildingOwner].Remove(buildingPosition);
-            totalBuildings[armyData.playerIndex][buildingPosition] = controller;
+            totalBuildings[playerData.PlayerIndex][buildingPosition] = controller;
 
-            var color = armyColorsCatalog.GetEntry(armyData.armyColorId);
+            var color = armyColorsCatalog.GetEntry(playerData.ColorId);
             controller.ChangeOwner(color.ArmyColor);
         }
 

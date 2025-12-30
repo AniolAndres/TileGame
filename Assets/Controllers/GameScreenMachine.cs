@@ -96,7 +96,6 @@ namespace Assets.Controllers {
 
         private void InstantiateViews(StateCatalogEntry stateEntry, IStateBase state)
         {
-
             var stateAssetsList = stateEntry.StateAssets;
             
             state.CacheStateAssets(stateAssetsList);
@@ -123,7 +122,6 @@ namespace Assets.Controllers {
 
         private void PopStateLocally() {
             IStateBase state = screenStack.Pop();
-            state.ReleaseAssets(state.GetId());
             state.OnDestroy();
             statesToCleanUp.Enqueue(state);
 

@@ -1,15 +1,14 @@
 ﻿
 using Assets.Catalogs;
 using System;
-using Assets.Data.Level;
 using Assets.Catalogs.Scripts;
 using Assets.Configs;
-using Unity.Plastic.Newtonsoft.Json;
+using Assets.Data.Levels;
 
 namespace Assets.Data.Models {
     public class GameStateModel {
 
-        private readonly SerializableLevelData currentLevel;
+        private readonly LevelData currentLevel;
 
         private readonly UnitsCatalog unitsCatalog;
 
@@ -18,25 +17,20 @@ namespace Assets.Data.Models {
         private readonly CommandersCatalog commandersCatalog;
 
         private readonly ArmyColorsCatalog armyColorsCatalog;
-
+        
 		public bool IsAttacking { get; set; }
 
-		public GameStateModel(LevelsCatalog levelsCatalog, UnitsCatalog unitsCatalog, TilesCatalog tilesCatalog, 
-            CommandersCatalog commandersCatalog, ArmyColorsCatalog armyColorsCatalog, string levelId) {
-            var levelJson = levelsCatalog.GetEntry(levelId).LevelJson.ToString();
-            currentLevel = JsonConvert.DeserializeObject<SerializableLevelData>(levelJson);
+		public GameStateModel(UnitsCatalog unitsCatalog, TilesCatalog tilesCatalog, 
+            CommandersCatalog commandersCatalog, ArmyColorsCatalog armyColorsCatalog, string levelId, ILevelProvider levelProvider) {
+            currentLevel = levelProvider.GetLevel(levelId);
             this.commandersCatalog = commandersCatalog;
             this.unitsCatalog = unitsCatalog;
             this.tilesCatalog = tilesCatalog;
             this.armyColorsCatalog = armyColorsCatalog;
         }
 
-        public int GetTotalPlayers() {
-            return currentLevel.playersCount;
-        }
-
-        public CommanderCatalogEntry GetCommanderEntry(SetupArmyData armyData) {
-            return commandersCatalog.GetEntry(armyData.CommanderId);
+        public CommanderCatalogEntry GetCommanderEntry(string commanderId) {
+            return commandersCatalog.GetEntry(commanderId);
         }
 
         public UnitCatalogEntry GetUnitCatalogEntry(string unitId)
@@ -49,8 +43,8 @@ namespace Assets.Data.Models {
             return tilesCatalog.GetEntry(tileDataTypeId).CanBeControlled;
         }
 
-        public ArmyColorCatalogEntry GetArmyEntry(SetupArmyData armyData) {
-            return armyColorsCatalog.GetEntry(armyData.ArmyColorId);
+        public ArmyColorCatalogEntry GetArmyEntry(string colorId) {
+            return armyColorsCatalog.GetEntry(colorId);
         }
 
 		public TileCatalogEntry GetTileEntryById(string tileDataTypeId) {
@@ -64,6 +58,16 @@ namespace Assets.Data.Models {
             }
 
             return tileEntry.CanCreate;
+        }
+
+        public MapData GetCurrentLevelMapData()
+        {
+            return currentLevel.MapData;
+        }
+
+        public PlayerData[] GetCurrentLevelPlayerData()
+        {
+            return currentLevel.Players;
         }
     }
 }

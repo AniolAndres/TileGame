@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 namespace Assets.Data.Level {
-    public class TileData {
+    public class Tile {
 
         public string TypeId { get; set; }
 

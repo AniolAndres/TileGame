@@ -19,11 +19,11 @@ namespace Assets.Data.Levels {
             this.levelsCatalog = levelsCatalog;
         }
 
-        public SerializableLevelData GetLevel(string levelId)
+        public LevelData GetLevel(string levelId)
         {
             var entry = levelsCatalog.GetEntry(levelId);
             var levelDataString = entry.LevelJson.ToString();
-            var levelData = JsonConvert.DeserializeObject<SerializableLevelData>(levelDataString);
+            var levelData = JsonConvert.DeserializeObject<LevelData>(levelDataString);
 
             return levelData;
         }

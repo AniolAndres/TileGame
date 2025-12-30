@@ -25,23 +25,6 @@ namespace Assets.Catalogs {
         public WorldView WorldView => worldView;
 
         public List<StateAsset> StateAssets => stateAssets;
-
-        // public List<AssetReference> GetViewsAssetReferences() {
-        //     var referenceList = new List<AssetReference>();
-        //     referenceList.Add(uiView);
-        //     referenceList.Add(worldView);
-        //     return referenceList;
-        // }
-        //
-        // public List<StateAsset> GetAllAssetReferences() {
-        //     var referenceList = new List<AssetReference>();
-        //     referenceList.Add(uiView);
-        //     referenceList.Add(worldView);
-        //     foreach(var asset in stateAssets) {
-        //         referenceList.Add(asset);
-        //     }
-        //     return referenceList;
-        // }
     }
 
 }

@@ -10,9 +10,20 @@ namespace Assets.Catalogs {
         [SerializeField]
         private List<T> entries;
 
+        [NonSerialized]
+        private readonly Dictionary<string, T> cacheEntries = new  Dictionary<string, T>();
+
         public T GetEntry(string id) {
-            foreach(var entry in entries) {
-                if(entry.Id == id) {
+
+            if (cacheEntries.TryGetValue(id, out T cachedEntry))
+            {
+                return cachedEntry;
+            }
+            
+            foreach(T entry in entries) {
+                if(entry.Id == id)
+                {
+                    cacheEntries[id] = entry;
                     return entry;
                 }
             }
