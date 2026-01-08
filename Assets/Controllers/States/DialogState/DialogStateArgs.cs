@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using Assets.Configs;
 
 namespace Assets.Controllers {
-	public class DialogStateArgs {
-
-		public string DialogId {get;set;}
+	public class DialogStateArgs
+	{
+		public DialogData DialogData;
 	}
 }

@@ -14,9 +14,9 @@ namespace Assets.Data.Models {
 
 		private int dialogIndex = 0;
 
-		public DialogStateModel(DialogCatalogEntry dialogCatalogEntry) {
-			var jsonData = dialogCatalogEntry.DialogJson.ToString();
-			dialog = JsonConvert.DeserializeObject<DialogData>(jsonData);
+		public DialogStateModel(DialogData dialogData)
+		{
+			dialog = dialogData;
 		}
 		
 		public DialogViewData GetCurrentDialogViewData() {

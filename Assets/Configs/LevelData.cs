@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using Unity.Plastic.Newtonsoft.Json;
-using Unity.Plastic.Newtonsoft.Json.Serialization;
-using UnityEngine;
 
 namespace Assets.Configs {
 
@@ -21,6 +18,9 @@ namespace Assets.Configs {
 		
 		[JsonProperty(PropertyName = "endGame")]
 		public EndGameData EndGame;
+
+		[JsonProperty(PropertyName = "dialogs")]
+		public DialogData[] Dialogs;
 	}
 
 	public class EndGameData

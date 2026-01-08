@@ -28,6 +28,8 @@ namespace Assets.Controllers {
 
         public event Action OnStateDestroyed;
 
+        public event Action<BaseStateController<TuiView, TWorldView>> OnPostPopState;
+
         public BaseStateController(Context context) {
             this.context = context;
         }
@@ -44,6 +46,7 @@ namespace Assets.Controllers {
 
         protected void PopState() {
             screenMachine.PopState();
+            OnPostPopState?.Invoke(this);
         }
 
         protected void PushState(IStateBase state) {

@@ -11,9 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Assets.Catalogs;
 using Assets.Catalogs.Scripts;
-using Unity.Plastic.Newtonsoft.Json;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Assets.Controllers {
     public class GameStateController : BaseStateController<GameStateUiView, GameStateWorldView>, IStateBase {
@@ -39,9 +37,11 @@ namespace Assets.Controllers {
         private InputCalculatorHelper inputCalculatorHelper;
 
         private TileHoverHandler tileHoverHandler;
+        
+        private GameTriggerHandler gameTriggerHandler;
 
         private readonly GameStateArgs gameStateArgs;
-        
+
 
         public GameStateController(Context context, GameStateArgs stateArgs) : base(context) {
             this.gameStateArgs = stateArgs;
@@ -69,7 +69,6 @@ namespace Assets.Controllers {
             unitHandler.OnUnitMovementEnd += OnMovementEnd;
 			buildingHandler = new BuildingHandler(context.Catalogs.ArmyColorsCatalog);
 
-
             var playerData = model.GetCurrentLevelPlayerData();
             CreatePlayers(playerData);
             
@@ -81,12 +80,25 @@ namespace Assets.Controllers {
             levelEventDispatcher.Init();
             SubscribeToLevelEvents();
             
+            gameTriggerHandler = new GameTriggerHandler(levelEventDispatcher, model.GetCurrentLevelDialogData(), model.GetTriggerData());
+            gameTriggerHandler.Init();
+            gameTriggerHandler.OnPushDialogStateRequested += HandlePushDialogState;
+            
 			inputCalculatorHelper = new InputCalculatorHelper(mapController);
             inputCalculatorHelper.Init();
 
             tileHoverHandler = new TileHoverHandler(inputCalculatorHelper, mapController);
-            
 		}
+
+        private void HandlePushDialogState(DialogData dialogData)
+        {
+            var dialogStateArgs = new DialogStateArgs
+            {
+                DialogData = dialogData
+            };
+            var dialogStateController = new DialogStateController(context, dialogStateArgs);
+            PushState(dialogStateController);
+        }
 
         private void SubscribeToLevelEvents()
         {
@@ -99,10 +111,18 @@ namespace Assets.Controllers {
             
             var startOverlayLock = inputLocker.LockInput();
             
-            var turnStartArgs = new TurnStartOverlayStateArgs(turnNumber, armyName, () => startOverlayLock.Unlock());
+            var turnStartArgs = new TurnStartOverlayStateArgs(turnNumber, armyName);
             var turnStartState = new TurnStartOverlayStateController(context, turnStartArgs);
+            turnStartState.OnPostPopState += HandleStatePopped;
             
             PushState(turnStartState);
+            
+            //Local function-------
+            void HandleStatePopped(BaseStateController<TurnStartOverlayUiView, DummyWorldView> state)
+            {
+                state.OnPostPopState -= HandleStatePopped;
+                startOverlayLock.Unlock();
+            }
         }
 
         private void OnTileHover() {
@@ -399,8 +419,10 @@ namespace Assets.Controllers {
 			mapController.OnDestroy();
 			worldView.OnSecondaryButtonClick -= OnSecondaryButtonClicked;
             worldView.OnMouseUpdate -= OnTileHover;
-			unitHandler.OnUnitMovementStart += OnMovementStart;
-			unitHandler.OnUnitMovementEnd += OnMovementEnd;
+			unitHandler.OnUnitMovementStart -= OnMovementStart;
+			unitHandler.OnUnitMovementEnd -= OnMovementEnd;
+            levelEventDispatcher.OnTurnStart -= HandleTurnStart;
+            gameTriggerHandler.OnPushDialogStateRequested -= HandlePushDialogState;
 		}
 
         private void OnMovementEnd() {
@@ -429,8 +451,7 @@ namespace Assets.Controllers {
         private void ClearPathFinding() {
             mapController.ClearCurrentPathfinding();
         }
-
-
+        
         private void OnSecondaryButtonClicked() {
 
             if (unitHandler.HasUnitSelected) {

@@ -31,8 +31,6 @@ namespace Assets.Controllers
         public void OnDestroy()
         {
             uiView.OnMovementCompleted -= PopState;
-            
-            stateArgs.OnStatePop?.Invoke(); //Ugly
         }
 
         public void OnBringToFront()

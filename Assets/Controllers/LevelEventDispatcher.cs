@@ -10,6 +10,9 @@ namespace Assets.Controllers
         public event Action<int> OnRoundStart; //Number of the turn that is starting, 0-based
         public event Action<int, PlayerController> OnTurnStart; //Number of the turn that is starting, 0-based
 
+        public delegate void OnDialogRequestedDelegate(string dialogID);
+        public event OnDialogRequestedDelegate OnDialogRequested; //Playing around with delegates, it could be an Action
+
         private readonly WarController warController;
         private readonly UnitHandler unitHandler;
 
@@ -21,6 +24,7 @@ namespace Assets.Controllers
         
         public void Init()
         {
+            
             unitHandler.OnUnitRemoved += FireUnitRemovedEvent;
             unitHandler.OnUnitCreated += FireUnitCreatedEvent;
 

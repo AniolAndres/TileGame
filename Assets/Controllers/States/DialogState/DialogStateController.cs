@@ -29,8 +29,7 @@ namespace Assets.Controllers {
 			uiView.OnContinuePressed += Continue;
 			uiView.OnSkip += Skip;
 
-			var dialogEntry = context.Catalogs.DialogsCatalog.GetEntry(stateArgs.DialogId);
-			model = new DialogStateModel(dialogEntry);
+			model = new DialogStateModel(stateArgs.DialogData);
 
 			var viewData = model.GetCurrentDialogViewData();
 			uiView.DisplayMessage(viewData);

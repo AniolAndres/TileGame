@@ -69,5 +69,15 @@ namespace Assets.Data.Models {
         {
             return currentLevel.Players;
         }
+
+        public DialogData[] GetCurrentLevelDialogData()
+        {
+            return currentLevel.Dialogs;
+        }
+
+        public TriggerData[] GetTriggerData()
+        {
+            return currentLevel.Triggers;
+        }
     }
 }
